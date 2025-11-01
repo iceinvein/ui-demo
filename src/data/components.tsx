@@ -494,10 +494,10 @@ export function AnimatedDialogTrigger({
 		id: "button-to-dialog",
 		title: "Button to Dialog",
 		description:
-			"Family-style button that morphs into a confirmation dialog with the button staying in place",
+			"Destructive action button that morphs into a warning dialog with smooth layout animations",
 		category: "animation",
 		component: ButtonToDialogDemo,
-		tags: ["animation", "dialog", "button", "confirmation"],
+		tags: ["animation", "dialog", "button", "confirmation", "destructive"],
 		code: [
 			{
 				filename: "button-to-dialog-demo.tsx",
