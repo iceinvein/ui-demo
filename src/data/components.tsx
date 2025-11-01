@@ -43,7 +43,7 @@ export const components: ComponentItem[] = [
 			{
 				filename: "animated-tabs-demo.tsx",
 				language: "tsx",
-				code: `import { AnimatedTabs, type AnimatedTab } from "./ui/animated-tabs";
+				code: `import { type AnimatedTab, AnimatedTabs } from "./ui/animated-tabs";
 
 export function AnimatedTabsDemo() {
   const tabs: AnimatedTab[] = [
@@ -55,19 +55,20 @@ export function AnimatedTabsDemo() {
         <>
           <div className="flex items-center gap-3">
             <span className="h-5 w-5 rounded-full bg-blue-500" />
-            <h3 className="m-0 text-xl font-semibold">Project Overview</h3>
+            <h3 className="m-0 font-semibold text-xl">Project Overview</h3>
           </div>
           <p className="text-default-500">
-            Welcome to your project dashboard. Track progress and collaborate.
+            Welcome to your project dashboard. Track progress, manage tasks, and
+            collaborate with your team all in one place.
           </p>
           <div className="mt-4 grid grid-cols-2 gap-3">
             <div className="rounded-lg bg-blue-50 p-3">
-              <p className="text-xs font-medium text-blue-900">Active Tasks</p>
-              <p className="text-2xl font-bold text-blue-600">24</p>
+              <p className="font-medium text-blue-900 text-xs">Active Tasks</p>
+              <p className="font-bold text-2xl text-blue-600">24</p>
             </div>
             <div className="rounded-lg bg-green-50 p-3">
-              <p className="text-xs font-medium text-green-900">Completed</p>
-              <p className="text-2xl font-bold text-green-600">156</p>
+              <p className="font-medium text-green-900 text-xs">Completed</p>
+              <p className="font-bold text-2xl text-green-600">156</p>
             </div>
           </div>
         </>
@@ -81,11 +82,27 @@ export function AnimatedTabsDemo() {
         <>
           <div className="flex items-center gap-3">
             <span className="h-5 w-5 rounded-full bg-pink-500" />
-            <h3 className="m-0 text-xl font-semibold">Team Members</h3>
+            <h3 className="m-0 font-semibold text-xl">Team Members</h3>
           </div>
           <p className="text-default-500">
             Collaborate with 12 team members across 3 departments.
           </p>
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center gap-3 rounded-lg bg-default-100 p-2">
+              <div className="h-8 w-8 rounded-full bg-pink-200" />
+              <div>
+                <p className="font-medium text-sm">Sarah Chen</p>
+                <p className="text-default-400 text-xs">Product Designer</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-lg bg-default-100 p-2">
+              <div className="h-8 w-8 rounded-full bg-purple-200" />
+              <div>
+                <p className="font-medium text-sm">Alex Rivera</p>
+                <p className="text-default-400 text-xs">Frontend Developer</p>
+              </div>
+            </div>
+          </div>
         </>
       ),
     },
@@ -97,14 +114,26 @@ export function AnimatedTabsDemo() {
         <>
           <div className="flex items-center gap-3">
             <span className="h-5 w-5 rounded-full bg-purple-500" />
-            <h3 className="m-0 text-xl font-semibold">Performance Analytics</h3>
+            <h3 className="m-0 font-semibold text-xl">Performance Analytics</h3>
           </div>
           <p className="text-default-500">
-            Monitor metrics and track key performance indicators.
+            Monitor your project metrics and track key performance indicators.
           </p>
-          <p className="mt-2 text-sm text-default-500">
-            Notice how the container smoothly adjusts to fit content.
+          <p className="mt-2 text-default-500 text-sm">
+            This tab demonstrates the dynamic height adjustment feature - notice
+            how the container smoothly expands to fit longer content.
           </p>
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-default-600 text-sm">User Engagement</span>
+              <span className="font-semibold text-purple-600 text-sm">
+                +23%
+              </span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-default-200">
+              <div className="h-full w-3/4 bg-purple-500" />
+            </div>
+          </div>
         </>
       ),
     },
@@ -116,12 +145,12 @@ export function AnimatedTabsDemo() {
         <>
           <div className="flex items-center gap-3">
             <span className="h-5 w-5 rounded-full bg-amber-500" />
-            <h3 className="m-0 text-xl font-semibold">Project Settings</h3>
+            <h3 className="m-0 font-semibold text-xl">Project Settings</h3>
           </div>
           <p className="text-default-500">
-            Configure preferences and manage integrations.
+            Configure your project preferences and manage integrations.
           </p>
-          <ul className="mt-4 space-y-2 text-sm text-default-500">
+          <ul className="mt-4 space-y-2 text-default-500 text-sm">
             <li className="flex items-center gap-2">
               <span className="text-amber-500">✓</span>
               Notifications enabled
@@ -130,6 +159,14 @@ export function AnimatedTabsDemo() {
               <span className="text-amber-500">✓</span>
               Auto-save active
             </li>
+            <li className="flex items-center gap-2">
+              <span className="text-amber-500">✓</span>
+              Dark mode synced
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-amber-500">✓</span>
+              API integration connected
+            </li>
           </ul>
         </>
       ),
@@ -137,14 +174,23 @@ export function AnimatedTabsDemo() {
   ];
 
   return (
-    <div className="w-full max-w-md">
-      <AnimatedTabs
-        tabs={tabs}
-        defaultTab="home"
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        enableBlur={false}
-        minHeight={150}
-      />
+    <div className="flex items-center justify-center p-8">
+      <div className="w-full max-w-md">
+        <div className="mb-4 text-center">
+          <h2 className="mb-2 font-bold text-2xl">Animated Tabs Demo</h2>
+          <p className="text-default-500 text-sm">
+            Switch between tabs to see smooth animations and dynamic height
+            adjustment
+          </p>
+        </div>
+        <AnimatedTabs
+          tabs={tabs}
+          defaultTab="overview"
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          enableBlur={false}
+          minHeight={150}
+        />
+      </div>
     </div>
   );
 }`,
@@ -153,7 +199,7 @@ export function AnimatedTabsDemo() {
 				filename: "animated-tabs.tsx",
 				language: "tsx",
 				code: `import { motion, type Transition } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 export interface AnimatedTab {
   id: string;
@@ -182,7 +228,7 @@ export function AnimatedTabs({
   maxHeight,
 }: AnimatedTabsProps) {
   const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id);
-  const [contentHeight, setContentHeight] = useState<number>(minHeight);
+  const [contentHeight, setContentHeight] = useState<number | "auto">("auto");
   const contentRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const handleTabChange = (tabId: string) => {
@@ -193,17 +239,17 @@ export function AnimatedTabs({
   const activeIndex = tabs.findIndex((tab) => tab.id === activeTab);
 
   // Measure and update height when active tab changes
-  useEffect(() => {
+  useLayoutEffect(() => {
     const activeContent = contentRefs.current.get(activeTab);
     if (activeContent) {
       const measureHeight = () => {
-        const rect = activeContent.getBoundingClientRect();
+        const scrollHeight = activeContent.scrollHeight;
         const computedStyle = window.getComputedStyle(activeContent);
-        const marginTop = parseFloat(computedStyle.marginTop);
-        const marginBottom = parseFloat(computedStyle.marginBottom);
+        const marginTop = Number.parseFloat(computedStyle.marginTop);
+        const marginBottom = Number.parseFloat(computedStyle.marginBottom);
         const parentPadding = 16;
-        const totalHeight = rect.height + marginTop + marginBottom + parentPadding;
-        
+        const totalHeight = scrollHeight + marginTop + marginBottom + parentPadding;
+
         let finalHeight = Math.max(totalHeight, minHeight);
         if (maxHeight) {
           finalHeight = Math.min(finalHeight, maxHeight);
@@ -211,16 +257,17 @@ export function AnimatedTabs({
         setContentHeight(finalHeight);
       };
 
+      measureHeight();
+      const timeoutId = setTimeout(measureHeight, 150);
+
       const resizeObserver = new ResizeObserver(() => {
         measureHeight();
       });
 
       resizeObserver.observe(activeContent);
-      requestAnimationFrame(() => {
-        measureHeight();
-      });
 
       return () => {
+        clearTimeout(timeoutId);
         resizeObserver.disconnect();
       };
     }
@@ -228,7 +275,7 @@ export function AnimatedTabs({
 
   return (
     <div className="flex w-full flex-col gap-2">
-      {/* Content Container */}
+      {/* Content Container with animated height */}
       <motion.div
         className="relative w-full rounded-xl border border-default-200 bg-default-50/50 backdrop-blur-md"
         animate={{ height: contentHeight }}
@@ -242,7 +289,7 @@ export function AnimatedTabs({
           return (
             <motion.div
               key={tab.id}
-              className="absolute top-0 right-0 left-0 h-full p-2"
+              className="absolute top-0 right-0 left-0 p-2"
               initial={false}
               animate={{
                 x: \`\${offset}%\`,
@@ -275,15 +322,26 @@ export function AnimatedTabs({
 
       {/* Tab Buttons */}
       <ul className="flex w-full gap-0 rounded-xl border border-default-200 bg-default-50/50 p-1 backdrop-blur-md">
-        {tabs.map((tab) => {
+        {tabs.map((tab, index) => {
           const isActive = tab.id === activeTab;
 
           return (
-            <li key={tab.id} className="flex flex-1">
+            <li
+              key={tab.id}
+              className="flex flex-1"
+              style={{
+                padding:
+                  index === 0
+                    ? "0 0 0 0"
+                    : index === tabs.length - 1
+                      ? "0 0 0 0"
+                      : "0",
+              }}
+            >
               <button
                 type="button"
                 onClick={() => handleTabChange(tab.id)}
-                className="relative w-full cursor-pointer rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+                className="relative w-full cursor-pointer rounded-lg px-4 py-2 font-medium text-sm transition-colors"
                 aria-current={isActive ? "page" : undefined}
               >
                 <span
@@ -330,18 +388,15 @@ export function AnimatedTabs({
 			{
 				filename: "animated-dialog-demo.tsx",
 				language: "tsx",
-				code: `import { useState } from "react";
-import { motion } from "framer-motion";
-import {
-  AnimatedDialog,
-  AnimatedDialogTrigger,
-} from "./ui/animated-dialog";
+				code: `import { motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatedDialog, AnimatedDialogTrigger } from "./ui/animated-dialog";
 
 export function AnimatedDialogDemo() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex items-center justify-center min-h-[400px]">
+    <div className="flex min-h-[400px] items-center justify-center">
       <AnimatedDialogTrigger
         layoutId="demo-dialog"
         isOpen={isOpen}
@@ -349,8 +404,8 @@ export function AnimatedDialogDemo() {
       >
         <div className="text-center">
           <div className="mb-2 text-2xl">✨</div>
-          <h3 className="font-semibold text-lg mb-2">Click to Open</h3>
-          <p className="text-sm text-default-600">
+          <h3 className="mb-2 font-semibold text-lg">Click to Open</h3>
+          <p className="text-default-600 text-sm">
             Watch the button morph into a dialog
           </p>
         </div>
@@ -365,33 +420,92 @@ export function AnimatedDialogDemo() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="flex flex-col h-full"
+          className="flex h-full flex-col"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-default-200 bg-default-50/50 px-6 py-4 rounded-t-3xl">
+          <div className="flex items-center justify-between rounded-t-3xl border-default-200 border-b bg-default-50/50 px-6 py-4">
             <div>
-              <h2 className="text-2xl font-bold">Animated Dialog</h2>
-              <p className="text-sm text-default-600">
-                Smooth morphing transition
+              <h2 className="font-bold text-2xl text-default-900">
+                Animated Dialog
+              </h2>
+              <p className="text-default-600 text-sm">
+                Smooth morphing transition from button to dialog
               </p>
             </div>
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="p-2 rounded-full hover:bg-default-100"
+              className="rounded-full p-2 transition-colors hover:bg-default-100"
+              aria-label="Close dialog"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
 
           {/* Content */}
           <div className="flex-1 overflow-y-auto p-8">
-            <div className="max-w-2xl mx-auto">
-              <p className="text-default-600">
-                This dialog uses Framer Motion's layout animations with a shared layoutId.
-              </p>
+            <div className="mx-auto max-w-2xl space-y-6">
+              <div>
+                <h3 className="mb-3 font-semibold text-xl">How it works</h3>
+                <p className="text-default-600 leading-relaxed">
+                  This dialog uses Framer Motion's layout animations with a
+                  shared{" "}
+                  <code className="rounded bg-default-100 px-2 py-1 text-sm">
+                    layoutId
+                  </code>
+                  . When the trigger button unmounts and the dialog mounts,
+                  Framer Motion automatically animates the position, size, and
+                  border radius between them.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="mb-3 font-semibold text-xl">Key Features</h3>
+                <ul className="space-y-2 text-default-600">
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1 text-primary">•</span>
+                    <span>
+                      Smooth morphing animation from trigger to dialog
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1 text-primary">•</span>
+                    <span>Spring-based physics for natural movement</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1 text-primary">•</span>
+                    <span>Backdrop blur and fade effects</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1 text-primary">•</span>
+                    <span>Staggered content animations</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1 text-primary">•</span>
+                    <span>Fully accessible with keyboard support</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 p-6">
+                <p className="text-center text-default-700">
+                  This is inspired by Family's beautiful dialog animations. The
+                  shared layout ID creates a seamless transition that feels
+                  magical! ✨
+                </p>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -420,7 +534,7 @@ export function AnimatedDialog({
   layoutId,
 }: AnimatedDialogProps) {
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <>
           {/* Backdrop */}
@@ -434,10 +548,10 @@ export function AnimatedDialog({
           />
 
           {/* Dialog - morphs from button */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+          <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               layoutId={layoutId}
-              className="relative w-full max-w-5xl h-[90vh] flex flex-col rounded-3xl border border-default-200 bg-background shadow-2xl pointer-events-auto"
+              className="pointer-events-auto relative flex h-[90vh] w-full max-w-5xl flex-col rounded-3xl border border-default-200 bg-background shadow-2xl"
               onClick={(e) => e.stopPropagation()}
               transition={{
                 type: "spring",
@@ -468,27 +582,66 @@ export function AnimatedDialogTrigger({
   isOpen,
 }: AnimatedDialogTriggerProps) {
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {!isOpen && (
         <motion.button
           layoutId={layoutId}
           onClick={onClick}
-          className="group relative rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md"
+          className="group relative flex h-full min-h-[240px] flex-col rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm overflow-hidden"
           whileHover={{
-            y: -4,
-            transition: { duration: 0.3, ease: "easeOut" },
+            y: -8,
+            scale: 1.02,
+            transition: {
+              type: "spring",
+              stiffness: 400,
+              damping: 25,
+            },
           }}
+          whileTap={{ scale: 0.98 }}
           transition={{
             type: "spring",
             stiffness: 300,
             damping: 30,
           }}
         >
-          {/* Subtle glow effect on hover */}
+          {/* Animated gradient glow on hover */}
           <motion.div
-            className="absolute inset-0 rounded-2xl bg-primary/0 transition-all duration-300 group-hover:bg-primary/5"
+            className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0"
             initial={false}
+            whileHover={{
+              background: [
+                "linear-gradient(135deg, rgba(var(--color-primary-rgb, 99, 102, 241), 0) 0%, rgba(var(--color-primary-rgb, 99, 102, 241), 0) 100%)",
+                "linear-gradient(135deg, rgba(var(--color-primary-rgb, 99, 102, 241), 0.05) 0%, rgba(var(--color-primary-rgb, 99, 102, 241), 0.1) 100%)",
+              ],
+              transition: { duration: 0.4 },
+            }}
           />
+
+          {/* Shimmer effect on hover */}
+          <motion.div
+            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
+            }}
+            initial={{ x: "-100%" }}
+            whileHover={{
+              x: "100%",
+              transition: { duration: 0.6, ease: "easeInOut" },
+            }}
+          />
+
+          {/* Border highlight */}
+          <motion.div
+            className="absolute inset-0 rounded-2xl border-2 border-primary/0"
+            initial={false}
+            whileHover={{
+              borderColor: "rgba(var(--color-primary-rgb, 99, 102, 241), 0.3)",
+              boxShadow: "0 8px 24px -4px rgba(var(--color-primary-rgb, 99, 102, 241), 0.2)",
+              transition: { duration: 0.3 },
+            }}
+          />
+
           {children}
         </motion.button>
       )}

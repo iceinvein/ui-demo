@@ -128,7 +128,7 @@ export function ComponentDialog({
 
 							{/* Content */}
 							<div className="relative flex-1 overflow-hidden">
-								<div className="absolute inset-0 overflow-y-auto p-6">
+								<div className="absolute inset-0 overflow-hidden p-6">
 									{/* Preview Tab */}
 									<motion.div
 										initial={false}
@@ -141,7 +141,7 @@ export function ComponentDialog({
 											stiffness: 300,
 											damping: 30,
 										}}
-										className="absolute inset-0 flex items-center justify-center p-6"
+										className="absolute inset-0 flex items-center justify-center overflow-y-auto p-6"
 										style={{
 											pointerEvents: activeTab === "preview" ? "auto" : "none",
 										}}
@@ -163,7 +163,7 @@ export function ComponentDialog({
 											stiffness: 300,
 											damping: 30,
 										}}
-										className="absolute inset-0 p-6"
+										className="absolute inset-0 overflow-y-auto p-6"
 										style={{
 											pointerEvents: activeTab === "code" ? "auto" : "none",
 										}}

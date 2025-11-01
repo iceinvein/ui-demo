@@ -15,7 +15,7 @@ export function AnimatedDialog({
 	layoutId,
 }: AnimatedDialogProps) {
 	return (
-		<AnimatePresence>
+		<AnimatePresence mode="wait">
 			{isOpen && (
 				<>
 					{/* Backdrop */}
@@ -63,12 +63,12 @@ export function AnimatedDialogTrigger({
 	isOpen,
 }: AnimatedDialogTriggerProps) {
 	return (
-		<AnimatePresence>
+		<AnimatePresence mode="wait">
 			{!isOpen && (
 				<motion.button
 					layoutId={layoutId}
 					onClick={onClick}
-					className="group relative flex h-full min-h-[240px] flex-col rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm overflow-hidden"
+					className="group relative flex h-full min-h-[240px] flex-col overflow-hidden rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm"
 					whileHover={{
 						y: -8,
 						scale: 1.02,
@@ -97,7 +97,7 @@ export function AnimatedDialogTrigger({
 							transition: { duration: 0.4 },
 						}}
 					/>
-					
+
 					{/* Shimmer effect on hover */}
 					<motion.div
 						className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
@@ -111,18 +111,19 @@ export function AnimatedDialogTrigger({
 							transition: { duration: 0.6, ease: "easeInOut" },
 						}}
 					/>
-					
+
 					{/* Border highlight */}
 					<motion.div
 						className="absolute inset-0 rounded-2xl border-2 border-primary/0"
 						initial={false}
 						whileHover={{
 							borderColor: "rgba(var(--color-primary-rgb, 99, 102, 241), 0.3)",
-							boxShadow: "0 8px 24px -4px rgba(var(--color-primary-rgb, 99, 102, 241), 0.2)",
+							boxShadow:
+								"0 8px 24px -4px rgba(var(--color-primary-rgb, 99, 102, 241), 0.2)",
 							transition: { duration: 0.3 },
 						}}
 					/>
-					
+
 					{children}
 				</motion.button>
 			)}

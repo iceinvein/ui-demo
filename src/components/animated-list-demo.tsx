@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
 	Calendar,
 	CheckCircle2,
@@ -336,26 +336,30 @@ export function AnimatedListDemo() {
 				</motion.div>
 
 				{/* List */}
-				{items.length === 0 ? (
-					<motion.div
-						initial={{ opacity: 0, scale: 0.95 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: 0.1 }}
-						className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border-2 border-default-200 border-dashed bg-default-50/50 p-8"
-					>
-						<div className="mb-4 rounded-full bg-default-100 p-4">
-							<CheckCircle2 className="h-8 w-8 text-default-400" />
-						</div>
-						<h3 className="mb-2 font-semibold text-default-900 text-lg">
-							No tasks yet
-						</h3>
-						<p className="text-center text-default-500">
-							Add your first task above or try the random task button
-						</p>
-					</motion.div>
-				) : (
-					<AnimatedList items={items} onRemove={removeItem} />
-				)}
+				<AnimatePresence mode="wait">
+					{items.length === 0 ? (
+						<motion.div
+							key="empty-state"
+							initial={{ opacity: 0, scale: 0.95 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0.95 }}
+							transition={{ duration: 0.2 }}
+							className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border-2 border-default-200 border-dashed bg-default-50/50 p-8"
+						>
+							<div className="mb-4 rounded-full bg-default-100 p-4">
+								<CheckCircle2 className="h-8 w-8 text-default-400" />
+							</div>
+							<h3 className="mb-2 font-semibold text-default-900 text-lg">
+								No tasks yet
+							</h3>
+							<p className="text-center text-default-500">
+								Add your first task above or try the random task button
+							</p>
+						</motion.div>
+					) : (
+						<AnimatedList key="task-list" items={items} onRemove={removeItem} />
+					)}
+				</AnimatePresence>
 			</div>
 		</div>
 	);

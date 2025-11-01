@@ -129,6 +129,7 @@ export function CodeViewer({ code }: CodeViewerProps) {
 							duration: 0.3,
 							ease: [0.21, 0.47, 0.32, 0.98],
 						}}
+						className="overflow-hidden"
 					>
 						<SyntaxHighlighter
 							language={currentLanguage}
