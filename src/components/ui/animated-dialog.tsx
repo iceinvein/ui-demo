@@ -62,29 +62,31 @@ export function AnimatedDialogTrigger({
 	layoutId,
 	isOpen,
 }: AnimatedDialogTriggerProps) {
-	if (isOpen) return null;
-
 	return (
-		<motion.button
-			layoutId={layoutId}
-			onClick={onClick}
-			className="group relative rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md"
-			whileHover={{
-				y: -4,
-				transition: { duration: 0.3, ease: "easeOut" },
-			}}
-			transition={{
-				type: "spring",
-				stiffness: 300,
-				damping: 30,
-			}}
-		>
-			{/* Subtle glow effect on hover */}
-			<motion.div
-				className="absolute inset-0 rounded-2xl bg-primary/0 transition-all duration-300 group-hover:bg-primary/5"
-				initial={false}
-			/>
-			{children}
-		</motion.button>
+		<AnimatePresence>
+			{!isOpen && (
+				<motion.button
+					layoutId={layoutId}
+					onClick={onClick}
+					className="group relative rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md"
+					whileHover={{
+						y: -4,
+						transition: { duration: 0.3, ease: "easeOut" },
+					}}
+					transition={{
+						type: "spring",
+						stiffness: 300,
+						damping: 30,
+					}}
+				>
+					{/* Subtle glow effect on hover */}
+					<motion.div
+						className="absolute inset-0 rounded-2xl bg-primary/0 transition-all duration-300 group-hover:bg-primary/5"
+						initial={false}
+					/>
+					{children}
+				</motion.button>
+			)}
+		</AnimatePresence>
 	);
 }

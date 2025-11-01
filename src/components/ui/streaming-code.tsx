@@ -39,9 +39,6 @@ export function StreamingCode({
 		}
 	}, [currentIndex, code, speed, onComplete, isComplete]);
 
-	const lines = displayedCode.split("\n");
-	const showCursor = !isComplete && displayedCode.length > 0;
-
 	return (
 		<div
 			className={`relative overflow-hidden rounded-lg border border-default-200 bg-zinc-950 ${className}`}
@@ -79,22 +76,6 @@ export function StreamingCode({
 				>
 					{displayedCode}
 				</SyntaxHighlighter>
-				{showCursor && (
-					<motion.span
-						className="absolute h-4 w-2 bg-blue-500"
-						style={{
-							top: `${lines.length * 1.5 + 0.5}rem`,
-							left: showLineNumbers ? "4rem" : "1rem",
-							marginLeft: "0.125rem",
-						}}
-						animate={{ opacity: [1, 0] }}
-						transition={{
-							duration: 0.8,
-							repeat: Number.POSITIVE_INFINITY,
-							ease: "easeInOut",
-						}}
-					/>
-				)}
 			</div>
 
 			{/* Progress Indicator */}

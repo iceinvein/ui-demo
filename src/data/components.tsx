@@ -1,6 +1,7 @@
 import { AnimatedDialogDemo } from "@/components/animated-dialog-demo";
 import { AnimatedTabsDemo } from "@/components/animated-tabs-demo";
 import { ButtonToDialogDemo } from "@/components/button-to-dialog-demo";
+import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
 import type { Category, ComponentItem } from "@/types/component";
 
@@ -470,10 +471,10 @@ export function AnimatedDialogTrigger({
         <motion.button
           layoutId={layoutId}
           onClick={onClick}
-          className="rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm transition-shadow duration-300 hover:shadow-lg"
+          className="group relative rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md"
           whileHover={{
-            y: -8,
-            transition: { duration: 0.2 },
+            y: -4,
+            transition: { duration: 0.3, ease: "easeOut" },
           }}
           transition={{
             type: "spring",
@@ -481,6 +482,11 @@ export function AnimatedDialogTrigger({
             damping: 30,
           }}
         >
+          {/* Subtle glow effect on hover */}
+          <motion.div
+            className="absolute inset-0 rounded-2xl bg-primary/0 transition-all duration-300 group-hover:bg-primary/5"
+            initial={false}
+          />
           {children}
         </motion.button>
       )}
@@ -703,10 +709,10 @@ export function ButtonToDialog({
 		id: "streaming-code",
 		title: "Streaming Code",
 		description:
-			"Animated code display that types out line by line with a blinking cursor",
+			"Animated code display that types out character by character with syntax highlighting",
 		category: "animation",
 		component: StreamingCodeDemo,
-		tags: ["animation", "code", "typing", "cursor"],
+		tags: ["animation", "code", "typing", "streaming"],
 		code: [
 			{
 				filename: "streaming-code-demo.tsx",
@@ -801,9 +807,6 @@ export function StreamingCode({
     }
   }, [currentIndex, code, speed, onComplete, isComplete]);
 
-  const lines = displayedCode.split("\\n");
-  const showCursor = !isComplete && displayedCode.length > 0;
-
   return (
     <div className="relative overflow-hidden rounded-lg border border-default-200 bg-zinc-950">
       {/* Header */}
@@ -839,22 +842,6 @@ export function StreamingCode({
         >
           {displayedCode}
         </SyntaxHighlighter>
-        {showCursor && (
-          <motion.span
-            className="absolute h-4 w-2 bg-blue-500"
-            style={{
-              top: \\\`\${lines.length * 1.5 + 0.5}rem\\\`,
-              left: showLineNumbers ? "4rem" : "1rem",
-              marginLeft: "0.125rem",
-            }}
-            animate={{ opacity: [1, 0] }}
-            transition={{
-              duration: 0.8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        )}
       </div>
 
       {/* Progress Indicator */}
@@ -871,6 +858,354 @@ export function StreamingCode({
         </div>
       )}
     </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "petrol-counter",
+		title: "Slot Machine Number Counter",
+		description:
+			"Animated number counter with slot machine-style rolling digits. Features smooth spring animations, stable keys for seamless transitions, and support for growing numbers. Includes a petrol station pump demo with press-and-hold interaction.",
+		category: "animation",
+		component: PetrolCounterDemo,
+		tags: [
+			"animation",
+			"counter",
+			"number",
+			"slot-machine",
+			"spring",
+			"interaction",
+			"press-hold",
+		],
+		code: [
+			{
+				filename: "petrol-counter-demo.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatedNumber } from "./ui/animated-number";
+
+const PRICE_PER_LITRE = 1.75;
+const LITRE_INCREMENT = 0.1; // 100ml
+const INTERVAL_MS = 100;
+
+export function PetrolCounterDemo() {
+  const [litres, setLitres] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Calculate price based on litres
+  const price = litres * PRICE_PER_LITRE;
+
+  // Start filling
+  const startFilling = () => {
+    setIsActive(true);
+    intervalRef.current = setInterval(() => {
+      setLitres((prev) => prev + LITRE_INCREMENT);
+    }, INTERVAL_MS);
+  };
+
+  // Stop filling
+  const stopFilling = () => {
+    setIsActive(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  // Reset counters
+  const reset = () => {
+    stopFilling();
+    setLitres(0);
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div className="flex min-h-[400px] items-center justify-center p-8">
+      <div className="w-full max-w-2xl">
+        {/* Petrol Pump Display */}
+        <div className="mb-8 rounded-3xl border-2 border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950 p-8 shadow-2xl">
+          {/* Header */}
+          <div className="mb-6 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20">
+                <span className="text-2xl">⛽</span>
+              </div>
+              <div>
+                <h2 className="font-bold text-xl text-white">Petrol Station</h2>
+                <p className="text-sm text-zinc-400">
+                  \${PRICE_PER_LITRE.toFixed(2)}/L
+                </p>
+              </div>
+            </div>
+            {isActive && (
+              <motion.div
+                className="flex items-center gap-2 rounded-full bg-emerald-500/20 px-4 py-2"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+              >
+                <motion.div
+                  className="h-2 w-2 rounded-full bg-emerald-400"
+                  animate={{ opacity: [1, 0.3, 1] }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+                <span className="text-sm font-medium text-emerald-400">
+                  Filling...
+                </span>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Counters */}
+          <div className="grid grid-cols-2 gap-6">
+            {/* Price Counter */}
+            <div className="rounded-2xl border border-zinc-800 bg-black/40 p-6">
+              <div className="mb-2 text-sm font-medium text-zinc-400">
+                Total Price
+              </div>
+              <div className="font-mono text-4xl font-bold text-emerald-400">
+                <AnimatedNumber
+                  value={price}
+                  decimals={2}
+                  prefix="$"
+                  minIntegerDigits={2}
+                />
+              </div>
+            </div>
+
+            {/* Litres Counter */}
+            <div className="rounded-2xl border border-zinc-800 bg-black/40 p-6">
+              <div className="mb-2 text-sm font-medium text-zinc-400">
+                Volume
+              </div>
+              <div className="font-mono text-4xl font-bold text-blue-400">
+                <AnimatedNumber
+                  value={litres}
+                  decimals={2}
+                  suffix=" L"
+                  minIntegerDigits={2}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Info */}
+          <div className="mt-6 rounded-xl bg-zinc-800/50 p-4">
+            <div className="grid grid-cols-2 gap-4 text-center text-sm">
+              <div>
+                <div className="text-zinc-400">Increment</div>
+                <div className="font-medium text-white">
+                  {(LITRE_INCREMENT * 1000).toFixed(0)}ml / {INTERVAL_MS}ms
+                </div>
+              </div>
+              <div>
+                <div className="text-zinc-400">Rate</div>
+                <div className="font-medium text-white">
+                  \${PRICE_PER_LITRE.toFixed(2)}/L
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex gap-4">
+            {/* Fill Button (Press & Hold) */}
+            <motion.button
+              type="button"
+              onMouseDown={startFilling}
+              onMouseUp={stopFilling}
+              onMouseLeave={stopFilling}
+              onTouchStart={startFilling}
+              onTouchEnd={stopFilling}
+              className={\`rounded-2xl px-8 py-4 font-semibold text-lg transition-all \${
+                isActive
+                  ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/50"
+                  : "bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30"
+              }\`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {isActive ? "Filling..." : "Hold to Fill"}
+            </motion.button>
+
+            {/* Reset Button */}
+            <motion.button
+              type="button"
+              onClick={reset}
+              className="rounded-2xl bg-zinc-800 px-8 py-4 font-semibold text-lg text-white transition-colors hover:bg-zinc-700"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Reset
+            </motion.button>
+          </div>
+
+          <p className="text-center text-sm text-zinc-500">
+            Press and hold the button to start filling. Release to stop.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "animated-number.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import { useMemo } from "react";
+
+interface AnimatedNumberProps {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  className?: string;
+  minIntegerDigits?: number;
+}
+
+function AnimatedDigit({ digit }: { digit: string }) {
+  const isNumber = !Number.isNaN(Number.parseInt(digit, 10));
+
+  if (!isNumber) {
+    return <span className="inline-block">{digit}</span>;
+  }
+
+  const numericValue = Number.parseInt(digit, 10);
+
+  return (
+    <span
+      className="relative inline-flex overflow-hidden"
+      style={{
+        width: "0.62em",
+        height: "1em",
+      }}
+    >
+      <motion.span
+        className="flex flex-col items-center"
+        animate={{
+          y: \\\`\${-numericValue * 100}%\\\`,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 200,
+          damping: 30,
+          mass: 0.8,
+        }}
+        style={{
+          width: "0.62em",
+        }}
+      >
+        {/* Render all digits 0-9 in a vertical column */}
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+          <span
+            key={num}
+            className="inline-flex items-center justify-center"
+            style={{
+              width: "0.62em",
+              height: "1em",
+            }}
+          >
+            {num}
+          </span>
+        ))}
+      </motion.span>
+    </span>
+  );
+}
+
+export function AnimatedNumber({
+  value,
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+  className = "",
+  minIntegerDigits = 1,
+}: AnimatedNumberProps) {
+  // Memoize the display string to prevent unnecessary re-renders
+  const displayParts = useMemo(() => {
+    // Split the number into integer and decimal parts BEFORE formatting
+    const absValue = Math.abs(value);
+    const integerPart = Math.floor(absValue);
+
+    // Calculate how many integer digits we need
+    const requiredDigits = Math.max(
+      minIntegerDigits,
+      integerPart === 0 ? 1 : Math.floor(Math.log10(integerPart)) + 1
+    );
+
+    // Format the integer part with padding
+    const paddedIntPart = integerPart.toString().padStart(requiredDigits, "0");
+
+    // Format the decimal part if needed
+    let numberPart = paddedIntPart;
+    if (decimals > 0) {
+      const decimalPart = (absValue - integerPart).toFixed(decimals).substring(2); // Remove "0."
+      numberPart = \\\`\${paddedIntPart}.\${decimalPart}\\\`;
+    }
+
+    // Build the full display string
+    const fullString = \\\`\${prefix}\${numberPart}\${suffix}\\\`;
+
+    // Create stable keys based on the role of each character
+    // prefix chars, integer digits (right-aligned), decimal point, decimal digits, suffix chars
+    const prefixLen = prefix.length;
+    const integerLen = requiredDigits;
+    const hasDecimal = decimals > 0;
+    const decimalLen = decimals;
+
+    const parts = fullString.split("").map((char, index) => {
+      let key: string;
+
+      if (index < prefixLen) {
+        // Prefix character
+        key = \\\`prefix-\${index}\\\`;
+      } else if (index < prefixLen + integerLen) {
+        // Integer digit (count from right to left for stability)
+        const digitPosition = integerLen - (index - prefixLen) - 1;
+        key = \\\`int-\${digitPosition}\\\`;
+      } else if (hasDecimal && index === prefixLen + integerLen) {
+        // Decimal point
+        key = "decimal-point";
+      } else if (hasDecimal && index < prefixLen + integerLen + 1 + decimalLen) {
+        // Decimal digit
+        const decimalPosition = index - (prefixLen + integerLen + 1);
+        key = \\\`dec-\${decimalPosition}\\\`;
+      } else {
+        // Suffix character
+        const suffixPosition = index - (prefixLen + integerLen + (hasDecimal ? 1 + decimalLen : 0));
+        key = \\\`suffix-\${suffixPosition}\\\`;
+      }
+
+      return { char, key };
+    });
+
+    return parts;
+  }, [value, decimals, prefix, suffix, minIntegerDigits]);
+
+  return (
+    <span className={\\\`inline-flex items-center \${className}\\\`}>
+      {displayParts.map(({ char, key }) => (
+        <AnimatedDigit key={key} digit={char} />
+      ))}
+    </span>
   );
 }`,
 			},
