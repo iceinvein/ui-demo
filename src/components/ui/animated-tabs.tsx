@@ -172,11 +172,13 @@ export function AnimatedTabs({
 								{/* Animated Background */}
 								{isActive && (
 									<motion.span
-										layoutId="activeTab"
 										className="absolute inset-0 rounded-lg"
 										style={{
 											backgroundColor: tab.color || "var(--nextui-primary)",
 										}}
+										initial={{ opacity: 0, scale: 0.95 }}
+										animate={{ opacity: 1, scale: 1 }}
+										exit={{ opacity: 0, scale: 0.95 }}
 										transition={transition}
 									/>
 								)}
