@@ -1,7 +1,9 @@
 import { AnimatedDialogDemo } from "@/components/animated-dialog-demo";
+import { AnimatedListDemo } from "@/components/animated-list-demo";
 import { AnimatedTabsDemo } from "@/components/animated-tabs-demo";
 import { ButtonToDialogDemo } from "@/components/button-to-dialog-demo";
 import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
+import { SplitTextDemo } from "@/components/split-text-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
 import type { Category, ComponentItem } from "@/types/component";
 
@@ -943,7 +945,7 @@ export function PetrolCounterDemo() {
                 <span className="text-2xl">⛽</span>
               </div>
               <div>
-                <h2 className="font-bold text-xl text-white">Petrol Station</h2>
+                <h2 className="font-bold text-xl text-white">Petrol Pump</h2>
                 <p className="text-sm text-zinc-400">
                   \${PRICE_PER_LITRE.toFixed(2)}/L
                 </p>
@@ -1206,6 +1208,363 @@ export function AnimatedNumber({
         <AnimatedDigit key={key} digit={char} />
       ))}
     </span>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "split-text",
+		title: "Split Text Animation",
+		description:
+			"Text animation that splits into individual characters with staggered spring animations",
+		category: "animation",
+		component: SplitTextDemo,
+		tags: ["animation", "text", "typography", "spring", "stagger"],
+		code: [
+			{
+				filename: "split-text-demo.tsx",
+				language: "tsx",
+				code: `import { useState } from "react";
+import { Button } from "@heroui/button";
+import { SplitText } from "./ui/split-text";
+
+export function SplitTextDemo() {
+  const [key, setKey] = useState(0);
+
+  const replay = () => {
+    setKey((prev) => prev + 1);
+  };
+
+  return (
+    <div className="flex min-h-[400px] flex-col items-center justify-center gap-8 p-8">
+      <div key={key} className="text-center">
+        <SplitText
+          text="Beautiful Split Text Animation"
+          className="mb-4 bg-gradient-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl text-transparent md:text-5xl"
+          delay={0.1}
+          duration={0.04}
+        />
+        <SplitText
+          text="Each character animates individually"
+          className="text-default-600 text-lg"
+          as="p"
+          delay={0.5}
+          duration={0.03}
+        />
+      </div>
+
+      <Button
+        color="primary"
+        variant="shadow"
+        onPress={replay}
+        className="mt-4"
+      >
+        Replay Animation
+      </Button>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/split-text.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+
+interface SplitTextProps {
+  text: string;
+  className?: string;
+  delay?: number;
+  duration?: number;
+  as?: "h1" | "h2" | "h3" | "p" | "span";
+}
+
+export function SplitText({
+  text,
+  className = "",
+  delay = 0,
+  duration = 0.05,
+  as = "h1",
+}: SplitTextProps) {
+  // Split text into words
+  const words = text.split(" ");
+
+  // Container animation
+  const container = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: duration, delayChildren: delay * i },
+    }),
+  };
+
+  // Child animation (each character)
+  const child = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        damping: 12,
+        stiffness: 200,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: 20,
+      transition: {
+        type: "spring",
+        damping: 12,
+        stiffness: 200,
+      },
+    },
+  };
+
+  const MotionComponent = motion[as];
+
+  return (
+    <MotionComponent
+      className={className}
+      variants={container}
+      initial="hidden"
+      animate="visible"
+    >
+      {words.map((word, wordIndex) => (
+        <span
+          key={\\\`word-\${wordIndex}\\\`}
+          style={{ display: "inline-block", marginRight: "0.25em" }}
+        >
+          {word.split("").map((char, charIndex) => (
+            <motion.span
+              key={\\\`char-\${wordIndex}-\${charIndex}\\\`}
+              variants={child}
+              style={{ display: "inline-block" }}
+            >
+              {char}
+            </motion.span>
+          ))}
+        </span>
+      ))}
+    </MotionComponent>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "animated-list",
+		title: "Animated Task List",
+		description:
+			"Modern task list with smooth enter/exit animations using lucide-react icons. Features spring physics, layout animations, and elegant hover states.",
+		category: "data-display",
+		component: AnimatedListDemo,
+		tags: ["animation", "list", "todo", "enter", "exit", "layout", "icons"],
+		code: [
+			{
+				filename: "animated-list-demo.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import { Calendar, CheckCircle2, ShoppingCart, FileText, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { AnimatedList, type AnimatedListItem } from "./ui/animated-list";
+
+export function AnimatedListDemo() {
+  const [items, setItems] = useState<AnimatedListItem[]>([
+    {
+      id: "1",
+      content: (
+        <div className="flex items-center gap-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10">
+            <ShoppingCart className="h-5 w-5 text-emerald-500" />
+          </div>
+          <div className="flex-1">
+            <h4 className="m-0 font-semibold text-default-900">Buy groceries</h4>
+            <p className="m-0 text-default-500 text-sm">Get milk and eggs</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "2",
+      content: (
+        <div className="flex items-center gap-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
+            <FileText className="h-5 w-5 text-blue-500" />
+          </div>
+          <div className="flex-1">
+            <h4 className="m-0 font-semibold text-default-900">Finish project report</h4>
+            <p className="m-0 text-default-500 text-sm">Due tomorrow</p>
+          </div>
+        </div>
+      ),
+    },
+  ]);
+
+  const [inputValue, setInputValue] = useState("");
+
+  const addItem = () => {
+    if (!inputValue.trim()) return;
+
+    const newItem: AnimatedListItem = {
+      id: Date.now().toString(),
+      content: (
+        <div className="flex items-center gap-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-pink-500/10">
+            <Sparkles className="h-5 w-5 text-pink-500" />
+          </div>
+          <div className="flex-1">
+            <h4 className="m-0 font-semibold text-default-900">{inputValue}</h4>
+            <p className="m-0 text-default-500 text-sm">Just added</p>
+          </div>
+        </div>
+      ),
+    };
+
+    setItems([...items, newItem]);
+    setInputValue("");
+  };
+
+  const removeItem = (id: string) => {
+    setItems(items.filter((item) => item.id !== id));
+  };
+
+  return (
+    <div className="w-full max-w-3xl mx-auto p-8">
+      <div className="mb-8 text-center">
+        <div className="mb-3 inline-flex items-center justify-center rounded-2xl bg-primary/10 p-3">
+          <Calendar className="h-6 w-6 text-primary" />
+        </div>
+        <h2 className="mb-2 font-bold text-3xl">Animated Task List</h2>
+        <p className="text-default-500 text-lg">
+          Watch smooth enter and exit animations
+        </p>
+      </div>
+
+      <div className="mb-6 flex gap-3">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && addItem()}
+          placeholder="What needs to be done?"
+          className="flex-1 rounded-xl border border-default-200 bg-default-100 px-4 py-3 text-default-900 outline-none transition-colors placeholder:text-default-400 focus:border-primary"
+        />
+        <motion.button
+          type="button"
+          onClick={addItem}
+          disabled={!inputValue.trim()}
+          className="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-white shadow-lg shadow-primary/25"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <Sparkles className="h-4 w-4" />
+          Add
+        </motion.button>
+      </div>
+
+      <motion.div
+        layout
+        className="mb-6 rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100/50 p-4"
+      >
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+            <CheckCircle2 className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-default-500 text-xs font-medium uppercase">Total Tasks</p>
+            <motion.p
+              key={items.length}
+              initial={{ scale: 1.3 }}
+              animate={{ scale: 1 }}
+              className="font-bold text-2xl"
+            >
+              {items.length}
+            </motion.p>
+          </div>
+        </div>
+      </motion.div>
+
+      {items.length === 0 ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-default-200 bg-default-50/50 p-8"
+        >
+          <div className="mb-4 rounded-full bg-default-100 p-4">
+            <CheckCircle2 className="h-8 w-8 text-default-400" />
+          </div>
+          <h3 className="mb-2 font-semibold text-lg">No tasks yet</h3>
+          <p className="text-center text-default-500">Add your first task above</p>
+        </motion.div>
+      ) : (
+        <AnimatedList items={items} onRemove={removeItem} />
+      )}
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/animated-list.tsx",
+				language: "tsx",
+				code: `import { AnimatePresence, motion } from "framer-motion";
+import { Trash2 } from "lucide-react";
+import type { ReactNode } from "react";
+
+export interface AnimatedListItem {
+  id: string;
+  content: ReactNode;
+}
+
+export interface AnimatedListProps {
+  items: AnimatedListItem[];
+  onRemove?: (id: string) => void;
+  className?: string;
+  itemClassName?: string;
+  showRemoveButton?: boolean;
+}
+
+export function AnimatedList({
+  items,
+  onRemove,
+  className = "",
+  itemClassName = "",
+  showRemoveButton = true,
+}: AnimatedListProps) {
+  return (
+    <ul className={\\\`flex flex-col gap-3 \${className}\\\`}>
+      <AnimatePresence initial={false}>
+        {items.map((item) => (
+          <motion.li
+            key={item.id}
+            layout
+            initial={{ opacity: 0, scale: 0.8, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -20 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 30,
+              mass: 0.8,
+            }}
+            className={\\\`group relative flex items-center justify-between gap-4 rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100/50 p-5 shadow-sm backdrop-blur-sm transition-all hover:border-default-300 hover:shadow-md \${itemClassName}\\\`}
+          >
+            <div className="flex-1">{item.content}</div>
+            {showRemoveButton && onRemove && (
+              <motion.button
+                type="button"
+                onClick={() => onRemove(item.id)}
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-danger/10 text-danger opacity-0 transition-all hover:bg-danger hover:text-white group-hover:opacity-100"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileTap={{ scale: 0.9, rotate: -5 }}
+                aria-label="Remove item"
+              >
+                <Trash2 className="h-4 w-4" />
+              </motion.button>
+            )}
+          </motion.li>
+        ))}
+      </AnimatePresence>
+    </ul>
   );
 }`,
 			},

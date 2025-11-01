@@ -68,22 +68,61 @@ export function AnimatedDialogTrigger({
 				<motion.button
 					layoutId={layoutId}
 					onClick={onClick}
-					className="group relative rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md"
+					className="group relative flex h-full min-h-[240px] flex-col rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm overflow-hidden"
 					whileHover={{
-						y: -4,
-						transition: { duration: 0.3, ease: "easeOut" },
+						y: -8,
+						scale: 1.02,
+						transition: {
+							type: "spring",
+							stiffness: 400,
+							damping: 25,
+						},
 					}}
+					whileTap={{ scale: 0.98 }}
 					transition={{
 						type: "spring",
 						stiffness: 300,
 						damping: 30,
 					}}
 				>
-					{/* Subtle glow effect on hover */}
+					{/* Animated gradient glow on hover */}
 					<motion.div
-						className="absolute inset-0 rounded-2xl bg-primary/0 transition-all duration-300 group-hover:bg-primary/5"
+						className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0"
 						initial={false}
+						whileHover={{
+							background: [
+								"linear-gradient(135deg, rgba(var(--color-primary-rgb, 99, 102, 241), 0) 0%, rgba(var(--color-primary-rgb, 99, 102, 241), 0) 100%)",
+								"linear-gradient(135deg, rgba(var(--color-primary-rgb, 99, 102, 241), 0.05) 0%, rgba(var(--color-primary-rgb, 99, 102, 241), 0.1) 100%)",
+							],
+							transition: { duration: 0.4 },
+						}}
 					/>
+					
+					{/* Shimmer effect on hover */}
+					<motion.div
+						className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
+						style={{
+							background:
+								"linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
+						}}
+						initial={{ x: "-100%" }}
+						whileHover={{
+							x: "100%",
+							transition: { duration: 0.6, ease: "easeInOut" },
+						}}
+					/>
+					
+					{/* Border highlight */}
+					<motion.div
+						className="absolute inset-0 rounded-2xl border-2 border-primary/0"
+						initial={false}
+						whileHover={{
+							borderColor: "rgba(var(--color-primary-rgb, 99, 102, 241), 0.3)",
+							boxShadow: "0 8px 24px -4px rgba(var(--color-primary-rgb, 99, 102, 241), 0.2)",
+							transition: { duration: 0.3 },
+						}}
+					/>
+					
 					{children}
 				</motion.button>
 			)}

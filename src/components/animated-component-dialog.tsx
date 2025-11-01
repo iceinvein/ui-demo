@@ -7,12 +7,29 @@ import { AnimatedDialog, AnimatedDialogTrigger } from "./ui/animated-dialog";
 
 interface AnimatedComponentDialogProps {
 	component: ComponentItem;
-	index: number;
 }
+
+// Card flip animation variants
+const cardVariants = {
+	hidden: {
+		opacity: 0,
+		rotateY: 90,
+		scale: 0.8,
+	},
+	visible: {
+		opacity: 1,
+		rotateY: 0,
+		scale: 1,
+		transition: {
+			type: "spring",
+			stiffness: 260,
+			damping: 20,
+		},
+	},
+};
 
 export function AnimatedComponentDialog({
 	component,
-	index,
 }: AnimatedComponentDialogProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
@@ -20,69 +37,70 @@ export function AnimatedComponentDialog({
 
 	return (
 		<>
-			{/* Trigger Button */}
-			<AnimatedDialogTrigger
-				layoutId={layoutId}
-				isOpen={isOpen}
-				onClick={() => setIsOpen(true)}
+			{/* Trigger Button with Casino Card Flip */}
+			<motion.div
+				variants={cardVariants}
+				style={{
+					perspective: "1000px",
+				}}
 			>
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{
-						duration: 0.5,
-						delay: index * 0.15,
-						ease: [0.21, 0.47, 0.32, 0.98],
-					}}
-					className="h-full text-left"
+				<AnimatedDialogTrigger
+					layoutId={layoutId}
+					isOpen={isOpen}
+					onClick={() => setIsOpen(true)}
 				>
-					{/* Content */}
-					<div className="relative z-10 h-full">
-						<div className="mb-3 flex items-start justify-between">
-							<h3 className="font-semibold text-default-900 text-lg">
-								{component.title}
-							</h3>
-							<motion.div
-								className="rounded-full bg-primary/10 p-2"
-								whileHover={{ scale: 1.1, rotate: 5 }}
-								transition={{ duration: 0.2 }}
-							>
-								<svg
-									className="h-4 w-4 text-primary"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
+					<div
+						className="flex h-full flex-col text-left"
+						style={{ transformStyle: "preserve-3d" }}
+					>
+						{/* Content */}
+						<div className="relative z-10 flex h-full flex-col">
+							<div className="mb-3 flex items-start justify-between">
+								<h3 className="font-semibold text-default-900 text-lg">
+									{component.title}
+								</h3>
+								<motion.div
+									className="flex-shrink-0 rounded-full bg-primary/10 p-2"
+									whileHover={{ scale: 1.1, rotate: 5 }}
+									transition={{ duration: 0.2 }}
 								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth={2}
-										d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-									/>
-								</svg>
-							</motion.div>
-						</div>
-
-						<p className="mb-4 text-default-600 text-sm leading-relaxed">
-							{component.description}
-						</p>
-
-						{/* Tags */}
-						{component.tags && component.tags.length > 0 && (
-							<div className="flex flex-wrap gap-2">
-								{component.tags.map((tag) => (
-									<span
-										key={tag}
-										className="rounded-full bg-default-200/50 px-3 py-1 font-medium text-default-700 text-xs"
+									<svg
+										className="h-4 w-4 text-primary"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
 									>
-										{tag}
-									</span>
-								))}
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth={2}
+											d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+										/>
+									</svg>
+								</motion.div>
 							</div>
-						)}
+
+							<p className="mb-4 line-clamp-3 flex-grow text-default-600 text-sm leading-relaxed">
+								{component.description}
+							</p>
+
+							{/* Tags */}
+							{component.tags && component.tags.length > 0 && (
+								<div className="mt-auto flex flex-wrap gap-2">
+									{component.tags.map((tag) => (
+										<span
+											key={tag}
+											className="rounded-full bg-default-200/50 px-3 py-1 font-medium text-default-700 text-xs"
+										>
+											{tag}
+										</span>
+									))}
+								</div>
+							)}
+						</div>
 					</div>
-				</motion.div>
-			</AnimatedDialogTrigger>
+				</AnimatedDialogTrigger>
+			</motion.div>
 
 			{/* Dialog */}
 			<AnimatedDialog

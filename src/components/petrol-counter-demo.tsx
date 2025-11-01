@@ -58,7 +58,7 @@ export function PetrolCounterDemo() {
 								<span className="text-2xl">⛽</span>
 							</div>
 							<div>
-								<h2 className="font-bold text-white text-xl">Petrol Station</h2>
+								<h2 className="font-bold text-white text-xl">Petrol Pump</h2>
 								<p className="text-sm text-zinc-400">
 									${PRICE_PER_LITRE.toFixed(2)}/L
 								</p>
