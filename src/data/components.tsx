@@ -509,7 +509,7 @@ export function ButtonToDialogDemo() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleConfirm = () => {
-    console.log("Confirmed!");
+    console.log("Account deleted!");
     setIsOpen(false);
   };
 
@@ -519,18 +519,18 @@ export function ButtonToDialogDemo() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onConfirm={handleConfirm}
-        layoutId="receive-button"
-        title="Confirm"
-        description="Are you sure you want to receive a load of money?"
-        confirmText="Receive"
+        layoutId="delete-button"
+        title="Delete Account"
+        description="This action cannot be undone. All your data will be permanently removed from our servers."
+        confirmText="Delete"
         cancelText="Cancel"
         triggerButton={
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="px-12 py-4 rounded-full bg-emerald-400 hover:bg-emerald-300 text-zinc-900 font-semibold text-lg transition-colors"
+            className="px-12 py-4 rounded-full bg-red-500 hover:bg-red-400 text-white font-semibold text-lg transition-colors"
           >
-            Receive
+            Delete Account
           </button>
         }
       />
@@ -617,8 +617,8 @@ export function ButtonToDialog({
                   className="px-8 pt-12 pb-6"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                      <span className="text-emerald-400 text-xl">?</span>
+                    <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+                      <span className="text-red-400 text-xl">⚠</span>
                     </div>
                     <h2 className="text-2xl font-semibold text-white">{title}</h2>
                   </div>
@@ -646,7 +646,7 @@ export function ButtonToDialog({
                     layoutId={layoutId}
                     type="button"
                     onClick={onConfirm}
-                    className="flex-1 px-6 py-4 rounded-full bg-emerald-400 hover:bg-emerald-300 text-zinc-900 font-medium transition-colors"
+                    className="flex-1 px-6 py-4 rounded-full bg-red-500 hover:bg-red-400 text-white font-medium transition-colors"
                     transition={{
                       type: "spring",
                       stiffness: 400,

@@ -96,8 +96,8 @@ export function ButtonToDialog({
 									className="px-8 pt-12 pb-6"
 								>
 									<div className="mb-4 flex items-center gap-3">
-										<div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/20">
-											<span className="text-emerald-400 text-xl">?</span>
+										<div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/20">
+											<span className="text-red-400 text-xl">⚠</span>
 										</div>
 										<h2 className="font-semibold text-2xl text-white">
 											{title}
@@ -131,7 +131,7 @@ export function ButtonToDialog({
 										layoutId={layoutId}
 										type="button"
 										onClick={onConfirm}
-										className="flex-1 rounded-full bg-emerald-400 px-6 py-4 font-medium text-zinc-900 transition-colors hover:bg-emerald-300"
+										className="flex-1 rounded-full bg-red-500 px-6 py-4 font-medium text-white transition-colors hover:bg-red-400"
 										transition={{
 											type: "spring",
 											stiffness: 400,
@@ -155,7 +155,7 @@ export function ButtonToDialog({
 							layoutId={layoutId}
 							type="button"
 							onClick={() => {}}
-							className="w-full rounded-full bg-emerald-400 px-12 py-4 font-semibold text-lg text-zinc-900 transition-colors hover:bg-emerald-300"
+							className="w-full rounded-full bg-red-500 px-12 py-4 font-semibold text-lg text-white transition-colors hover:bg-red-400"
 							transition={{
 								type: "spring",
 								stiffness: 400,

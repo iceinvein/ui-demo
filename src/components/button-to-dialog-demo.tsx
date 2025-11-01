@@ -5,7 +5,7 @@ export function ButtonToDialogDemo() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleConfirm = () => {
-		console.log("Confirmed!");
+		console.log("Account deleted!");
 		setIsOpen(false);
 	};
 
@@ -17,10 +17,10 @@ export function ButtonToDialogDemo() {
 						isOpen={isOpen}
 						onClose={() => setIsOpen(false)}
 						onConfirm={handleConfirm}
-						layoutId="receive-button"
-						title="Confirm"
-						description="Are you sure you want to receive a load of money?"
-						confirmText="Receive"
+						layoutId="delete-button"
+						title="Delete Account"
+						description="This action cannot be undone. All your data will be permanently removed from our servers."
+						confirmText="Delete"
 						cancelText="Cancel"
 					/>
 				</div>
