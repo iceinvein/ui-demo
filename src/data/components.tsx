@@ -5,6 +5,8 @@ import { ButtonToDialogDemo } from "@/components/button-to-dialog-demo";
 import { CardFlipDemo } from "@/components/card-flip-demo";
 import { DragDropListDemo } from "@/components/drag-drop-list-demo";
 import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
+import { ScrollParallaxDemo } from "@/components/scroll-parallax-demo";
+import { SidebarMenuDemo } from "@/components/sidebar-menu-demo";
 import { SplitTextDemo } from "@/components/split-text-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
 import type { Category, ComponentItem } from "@/types/component";
@@ -1167,6 +1169,228 @@ export function CardFlipDemo() {
   perspective: 1000px;
 }
 */`,
+			},
+		],
+	},
+	{
+		id: "sidebar-menu",
+		title: "Sidebar Menu",
+		description:
+			"Animated sidebar navigation with staggered menu items and smooth slide transitions",
+		category: "navigation",
+		component: SidebarMenuDemo,
+		tags: ["navigation", "sidebar", "menu", "stagger", "animation"],
+		code: [
+			{
+				filename: "sidebar-menu-demo.tsx",
+				language: "tsx",
+				code: `import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Calendar,
+  FileText,
+  Folder,
+  Home,
+  Menu,
+  Settings,
+  TrendingUp,
+  Users,
+  X,
+} from "lucide-react";
+
+const menuItems = [
+  { id: 1, label: "Home", icon: Home, color: "text-purple-500" },
+  { id: 2, label: "Projects", icon: Folder, color: "text-blue-500" },
+  { id: 3, label: "Team", icon: Users, color: "text-green-500" },
+  { id: 4, label: "Calendar", icon: Calendar, color: "text-orange-500" },
+  { id: 5, label: "Documents", icon: FileText, color: "text-cyan-500" },
+  { id: 6, label: "Reports", icon: TrendingUp, color: "text-pink-500" },
+  { id: 7, label: "Settings", icon: Settings, color: "text-gray-500" },
+];
+
+const sidebarVariants = {
+  closed: {
+    x: "-100%",
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 30,
+    },
+  },
+  open: {
+    x: 0,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 30,
+      staggerChildren: 0.07,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  closed: {
+    x: -20,
+    opacity: 0,
+  },
+  open: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 24,
+    },
+  },
+};
+
+export function SidebarMenuDemo() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="relative flex h-[600px] w-full overflow-hidden rounded-2xl border">
+      {/* Menu Bar */}
+      <div className="absolute top-0 z-20 flex items-center justify-between border-b bg-background/80 p-4 backdrop-blur-sm">
+        <motion.button
+          onClick={() => setIsOpen(!isOpen)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <AnimatePresence mode="wait">
+            {isOpen ? <X /> : <Menu />}
+          </AnimatePresence>
+        </motion.button>
+        <h1>Dashboard</h1>
+      </div>
+
+      {/* Backdrop */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="absolute inset-0 z-30 bg-black/20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Sidebar */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="absolute left-0 top-0 z-40 h-full w-72 bg-background shadow-2xl"
+            variants={sidebarVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+          >
+            <nav className="p-4">
+              <ul className="space-y-2">
+                {menuItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <motion.li key={item.id} variants={itemVariants}>
+                      <motion.button
+                        className="flex w-full items-center gap-3 rounded-lg p-3"
+                        whileHover={{ scale: 1.02, x: 4 }}
+                      >
+                        <Icon className={\`h-5 w-5 \${item.color}\`} />
+                        <span>{item.label}</span>
+                      </motion.button>
+                    </motion.li>
+                  );
+                })}
+              </ul>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "scroll-parallax",
+		title: "Scroll Parallax",
+		description:
+			"Multi-layer parallax effect with scroll-based animations and smooth transitions",
+		category: "animation",
+		component: ScrollParallaxDemo,
+		tags: ["animation", "scroll", "parallax", "depth", "layers"],
+		code: [
+			{
+				filename: "scroll-parallax-demo.tsx",
+				language: "tsx",
+				code: `import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowDown, Layers } from "lucide-react";
+
+export function ScrollParallaxDemo() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll progress
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Transform scroll to different values for parallax layers
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const middleY = useTransform(scrollYProgress, [0, 1], [0, -400]);
+  const foregroundY = useTransform(scrollYProgress, [0, 1], [0, -600]);
+
+  // Opacity and scale effects
+  const opacity1 = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const scale1 = useTransform(scrollYProgress, [0, 0.3], [1, 0.8]);
+
+  return (
+    <div className="relative h-[600px] w-full overflow-hidden rounded-2xl">
+      {/* Scroll Progress Indicator */}
+      <motion.div
+        className="absolute top-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"
+        style={{ scaleX: scrollYProgress, transformOrigin: "0%" }}
+      />
+
+      {/* Scrollable Container */}
+      <div ref={containerRef} className="h-full overflow-y-auto">
+        <div className="relative h-[2400px]">
+          {/* Background Layer - Slowest */}
+          <motion.div style={{ y: backgroundY }}>
+            <div className="h-64 w-64 rounded-full bg-purple-500/20 blur-3xl" />
+          </motion.div>
+
+          {/* Middle Layer - Medium Speed */}
+          <motion.div style={{ y: middleY }}>
+            <div className="h-48 w-48 rounded-full bg-cyan-500/30 blur-2xl" />
+          </motion.div>
+
+          {/* Foreground Layer - Fastest */}
+          <motion.div style={{ y: foregroundY }}>
+            <div className="h-32 w-32 rounded-full bg-pink-500/40 blur-xl" />
+          </motion.div>
+
+          {/* Content */}
+          <motion.div
+            className="flex h-[600px] items-center justify-center"
+            style={{ opacity: opacity1, scale: scale1 }}
+          >
+            <div className="text-center">
+              <Layers className="mb-6 h-20 w-20" />
+              <h2 className="text-4xl font-bold">Scroll Parallax</h2>
+              <p>Multiple layers moving at different speeds</p>
+              <ArrowDown className="mt-8 h-5 w-5" />
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}`,
 			},
 		],
 	},
