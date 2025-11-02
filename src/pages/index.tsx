@@ -85,13 +85,13 @@ export default function IndexPage() {
 				/>
 
 				{/* Floating Orbs */}
-				<div className="absolute left-[10%] top-[20%]">
+				<div className="absolute top-[20%] left-[10%]">
 					<FloatingOrb delay={0} duration={25} size={500} color="primary" />
 				</div>
-				<div className="absolute right-[15%] top-[60%]">
+				<div className="absolute top-[60%] right-[15%]">
 					<FloatingOrb delay={5} duration={30} size={400} color="secondary" />
 				</div>
-				<div className="absolute left-[60%] top-[10%]">
+				<div className="absolute top-[10%] left-[60%]">
 					<FloatingOrb delay={10} duration={28} size={350} color="success" />
 				</div>
 
@@ -104,11 +104,11 @@ export default function IndexPage() {
 					}}
 					transition={{ type: "spring", stiffness: 50, damping: 20 }}
 				>
-					<div className="absolute left-[30%] top-[40%] h-2 w-2 rounded-full bg-primary/30" />
-					<div className="absolute left-[70%] top-[30%] h-3 w-3 rounded-full bg-secondary/20" />
-					<div className="absolute left-[50%] top-[70%] h-2 w-2 rounded-full bg-success/25" />
-					<div className="absolute left-[20%] top-[80%] h-1 w-1 rounded-full bg-primary/40" />
-					<div className="absolute left-[80%] top-[50%] h-2 w-2 rounded-full bg-secondary/30" />
+					<div className="absolute top-[40%] left-[30%] h-2 w-2 rounded-full bg-primary/30" />
+					<div className="absolute top-[30%] left-[70%] h-3 w-3 rounded-full bg-secondary/20" />
+					<div className="absolute top-[70%] left-[50%] h-2 w-2 rounded-full bg-success/25" />
+					<div className="absolute top-[80%] left-[20%] h-1 w-1 rounded-full bg-primary/40" />
+					<div className="absolute top-[50%] left-[80%] h-2 w-2 rounded-full bg-secondary/30" />
 				</motion.div>
 			</div>
 
@@ -117,7 +117,7 @@ export default function IndexPage() {
 				<div className="relative mb-20 text-center">
 					{/* Animated glow behind title */}
 					<motion.div
-						className="absolute left-1/2 top-1/2 h-[300px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-primary/20 via-secondary/20 to-success/20 blur-3xl"
+						className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[300px] w-[600px] rounded-full bg-gradient-to-r from-primary/20 via-secondary/20 to-success/20 blur-3xl"
 						animate={{
 							scale: [1, 1.2, 1],
 							opacity: [0.3, 0.5, 0.3],
@@ -208,7 +208,7 @@ export default function IndexPage() {
 										{category.name}
 									</h2>
 									<motion.div
-										className="absolute -bottom-2 left-0 h-1 rounded-full bg-gradient-to-r from-primary via-secondary to-success"
+										className="-bottom-2 absolute left-0 h-1 rounded-full bg-gradient-to-r from-primary via-secondary to-success"
 										initial={{ width: 0 }}
 										whileInView={{ width: "100%" }}
 										viewport={{ once: true }}

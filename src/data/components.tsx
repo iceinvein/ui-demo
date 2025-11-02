@@ -1,7 +1,9 @@
-import { AnimatedDialogDemo } from "@/components/animated-dialog-demo";
+import { AnimatedDialogShowcase } from "@/components/animated-dialog-showcase";
 import { AnimatedListDemo } from "@/components/animated-list-demo";
 import { AnimatedTabsDemo } from "@/components/animated-tabs-demo";
 import { ButtonToDialogDemo } from "@/components/button-to-dialog-demo";
+import { CardFlipDemo } from "@/components/card-flip-demo";
+import { DragDropListDemo } from "@/components/drag-drop-list-demo";
 import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
 import { SplitTextDemo } from "@/components/split-text-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
@@ -382,7 +384,7 @@ export function AnimatedTabs({
 		description:
 			"Smooth morphing dialog that transitions from a button with shared layout animations",
 		category: "animation",
-		component: AnimatedDialogDemo,
+		component: AnimatedDialogShowcase,
 		tags: ["animation", "dialog", "modal", "layout"],
 		code: [
 			{
@@ -857,6 +859,314 @@ export function ButtonToDialog({
     </>
   );
 }`,
+			},
+		],
+	},
+	{
+		id: "drag-drop-list",
+		title: "Drag & Drop List",
+		description:
+			"Interactive reorderable list with smooth drag and drop animations and visual feedback",
+		category: "data-display",
+		component: DragDropListDemo,
+		tags: ["animation", "drag", "drop", "reorder", "list", "interactive"],
+		code: [
+			{
+				filename: "drag-drop-list-demo.tsx",
+				language: "tsx",
+				code: `import { useState } from "react";
+import { motion, Reorder, useDragControls } from "framer-motion";
+import {
+  CheckCircle,
+  Code,
+  GripVertical,
+  Palette,
+  Rocket,
+  Search,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
+
+interface Item {
+  id: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  color: string;
+}
+
+const initialItems: Item[] = [
+  {
+    id: "1",
+    title: "Design System",
+    description: "Create a comprehensive design system with components",
+    icon: Palette,
+    color: "from-purple-500/20 to-pink-500/20",
+  },
+  {
+    id: "2",
+    title: "User Research",
+    description: "Conduct user interviews and gather feedback",
+    icon: Search,
+    color: "from-blue-500/20 to-cyan-500/20",
+  },
+  {
+    id: "3",
+    title: "Prototype",
+    description: "Build interactive prototypes for testing",
+    icon: Zap,
+    color: "from-yellow-500/20 to-orange-500/20",
+  },
+  {
+    id: "4",
+    title: "Development",
+    description: "Implement features with best practices",
+    icon: Code,
+    color: "from-green-500/20 to-emerald-500/20",
+  },
+  {
+    id: "5",
+    title: "Testing",
+    description: "Write comprehensive tests and QA",
+    icon: CheckCircle,
+    color: "from-red-500/20 to-rose-500/20",
+  },
+  {
+    id: "6",
+    title: "Deployment",
+    description: "Deploy to production with CI/CD",
+    icon: Rocket,
+    color: "from-indigo-500/20 to-violet-500/20",
+  },
+];
+
+function DraggableItem({ item }: { item: Item }) {
+  const controls = useDragControls();
+  const Icon = item.icon;
+
+  return (
+    <Reorder.Item
+      value={item}
+      id={item.id}
+      dragListener={false}
+      dragControls={controls}
+    >
+      <motion.div
+        className={\`group relative flex items-start gap-4 rounded-xl border border-default-200 bg-gradient-to-br \${item.color} p-4 backdrop-blur-sm select-none\`}
+        whileHover={{
+          scale: 1.01,
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 30,
+        }}
+      >
+        {/* Drag Handle */}
+        <div
+          onPointerDown={(e) => controls.start(e)}
+          className="cursor-grab touch-none pt-1 text-default-400 active:cursor-grabbing"
+        >
+          <GripVertical className="h-5 w-5" />
+        </div>
+
+        {/* Icon */}
+        <motion.div
+          className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-background/50 shadow-sm"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        >
+          <Icon className="h-6 w-6 text-default-700" />
+        </motion.div>
+
+        {/* Content */}
+        <div className="flex-1">
+          <h3 className="mb-1 font-semibold text-default-900">{item.title}</h3>
+          <p className="text-default-600 text-sm">{item.description}</p>
+        </div>
+
+        {/* Hover indicator */}
+        <motion.div
+          className="pointer-events-none absolute inset-0 rounded-xl border-2 border-primary/0"
+          whileHover={{
+            borderColor: "rgba(99, 102, 241, 0.2)",
+          }}
+          transition={{ duration: 0.3 }}
+        />
+      </motion.div>
+    </Reorder.Item>
+  );
+}
+
+export function DragDropListDemo() {
+  const [items, setItems] = useState(initialItems);
+
+  return (
+    <div className="mx-auto w-full max-w-2xl p-6">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-6 text-center"
+      >
+        <h2 className="mb-2 bg-gradient-to-r from-primary via-secondary to-success bg-clip-text font-bold text-2xl text-transparent">
+          Project Tasks
+        </h2>
+        <p className="text-default-600 text-sm">
+          Drag and drop to reorder your tasks
+        </p>
+      </motion.div>
+
+      {/* Reorderable List */}
+      <Reorder.Group
+        axis="y"
+        values={items}
+        onReorder={setItems}
+        className="space-y-3"
+      >
+        {items.map((item) => (
+          <DraggableItem key={item.id} item={item} />
+        ))}
+      </Reorder.Group>
+
+      {/* Stats */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="mt-6 flex items-center justify-center gap-6 rounded-xl border border-default-200 bg-default-50/50 p-4 backdrop-blur-sm"
+      >
+        <div className="text-center">
+          <div className="font-bold text-2xl text-primary">{items.length}</div>
+          <div className="text-default-600 text-xs">Total Tasks</div>
+        </div>
+        <div className="h-8 w-px bg-default-200" />
+        <div className="text-center">
+          <div className="font-bold text-2xl text-success">
+            {items.filter((_, i) => i < 3).length}
+          </div>
+          <div className="text-default-600 text-xs">High Priority</div>
+        </div>
+        <div className="h-8 w-px bg-default-200" />
+        <div className="text-center">
+          <div className="font-bold text-2xl text-secondary">
+            {items.filter((_, i) => i >= 3).length}
+          </div>
+          <div className="text-default-600 text-xs">Low Priority</div>
+        </div>
+      </motion.div>
+
+      {/* Instructions */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="mt-6 rounded-lg bg-primary/5 p-4 text-center"
+      >
+        <p className="text-default-600 text-sm">
+          💡 <strong>Tip:</strong> Click and hold the drag handle to reorder tasks
+        </p>
+      </motion.div>
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "card-flip",
+		title: "3D Card Flip",
+		description:
+			"Interactive card that flips 180° to reveal content on the back with smooth 3D animation",
+		category: "animation",
+		component: CardFlipDemo,
+		tags: ["animation", "3d", "card", "flip", "transform", "interactive"],
+		code: [
+			{
+				filename: "card-flip-demo.tsx",
+				language: "tsx",
+				code: `import { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Mail,
+  MapPin,
+  Phone,
+  Briefcase,
+  Calendar,
+  Award,
+  Star,
+  RotateCcw,
+} from "lucide-react";
+
+export function CardFlipDemo() {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div className="flex min-h-[500px] items-center justify-center p-8">
+      <div className="perspective-1000 h-[400px] w-[320px]">
+        <motion.div
+          className="relative h-full w-full cursor-pointer"
+          style={{ transformStyle: "preserve-3d" }}
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+          }}
+          onClick={() => setIsFlipped(!isFlipped)}
+        >
+          {/* Front Face */}
+          <motion.div
+            className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-default-200 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-rose-500/20 p-8 shadow-xl backdrop-blur-sm"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+            }}
+          >
+            {/* Front content */}
+            <motion.div
+              className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-4xl font-bold text-white shadow-lg"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+            >
+              JD
+            </motion.div>
+            <h2 className="mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-2xl font-bold text-transparent">
+              Jane Doe
+            </h2>
+            <p className="mb-6 text-default-600">Senior Product Designer</p>
+            {/* ... more content ... */}
+          </motion.div>
+
+          {/* Back Face */}
+          <motion.div
+            className="absolute inset-0 flex flex-col rounded-2xl border border-default-200 bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-teal-500/20 p-8 shadow-xl backdrop-blur-sm"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              rotateY: 180,
+            }}
+          >
+            {/* Back content with professional details */}
+            <div className="mb-6 text-center">
+              <h3 className="mb-1 bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-xl font-bold text-transparent">
+                Professional Details
+              </h3>
+            </div>
+            {/* ... more content ... */}
+          </motion.div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+/* Add to globals.css: */
+/*
+.perspective-1000 {
+  perspective: 1000px;
+}
+*/`,
 			},
 		],
 	},

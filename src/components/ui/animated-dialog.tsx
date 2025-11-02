@@ -18,28 +18,104 @@ export function AnimatedDialog({
 		<AnimatePresence mode="wait">
 			{isOpen && (
 				<>
-					{/* Backdrop */}
+					{/* Backdrop with animated gradient */}
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
-						className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+						transition={{ duration: 0.3 }}
+						className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
 						onClick={onClose}
-					/>
+					>
+						{/* Animated gradient overlay */}
+						<motion.div
+							className="absolute inset-0"
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 0.3 }}
+							exit={{ opacity: 0 }}
+							style={{
+								background:
+									"radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(236, 72, 153, 0.15) 0%, transparent 50%)",
+							}}
+						/>
+
+						{/* Floating particles in backdrop */}
+						{[...Array(12)].map((_, i) => (
+							<motion.div
+								key={`backdrop-particle-${i}`}
+								className="absolute h-1 w-1 rounded-full bg-white/20"
+								style={{
+									left: `${5 + i * 8}%`,
+									top: `${10 + (i % 4) * 25}%`,
+								}}
+								animate={{
+									y: [0, -100, 0],
+									opacity: [0, 0.5, 0],
+									scale: [0, 1, 0],
+								}}
+								transition={{
+									duration: 4 + i * 0.3,
+									repeat: Number.POSITIVE_INFINITY,
+									delay: i * 0.2,
+									ease: "easeInOut",
+								}}
+							/>
+						))}
+					</motion.div>
 
 					{/* Dialog - morphs from button */}
 					<div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
 						<motion.div
 							layoutId={layoutId}
-							className="pointer-events-auto relative flex h-[90vh] w-full max-w-5xl flex-col rounded-3xl border border-default-200 bg-background shadow-2xl"
+							className="pointer-events-auto relative flex h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-default-200/50 bg-background shadow-2xl"
 							onClick={(e) => e.stopPropagation()}
 							transition={{
-								type: "spring",
-								stiffness: 300,
-								damping: 30,
+								layout: {
+									type: "spring",
+									stiffness: 300,
+									damping: 30,
+								},
 							}}
 						>
+							{/* Glowing border effect */}
+							<motion.div
+								className="absolute inset-0 rounded-3xl"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								style={{
+									boxShadow:
+										"0 0 0 1px rgba(99, 102, 241, 0.1), 0 0 60px rgba(99, 102, 241, 0.2), 0 0 100px rgba(236, 72, 153, 0.1)",
+								}}
+							/>
+
+							{/* Animated corner highlights */}
+							<motion.div
+								className="pointer-events-none absolute top-0 right-0 h-40 w-40 rounded-bl-full bg-gradient-to-br from-primary/20 to-transparent blur-2xl"
+								animate={{
+									opacity: [0.3, 0.6, 0.3],
+									scale: [1, 1.2, 1],
+								}}
+								transition={{
+									duration: 4,
+									repeat: Number.POSITIVE_INFINITY,
+									ease: "easeInOut",
+								}}
+							/>
+							<motion.div
+								className="pointer-events-none absolute bottom-0 left-0 h-40 w-40 rounded-tr-full bg-gradient-to-tl from-secondary/20 to-transparent blur-2xl"
+								animate={{
+									opacity: [0.3, 0.6, 0.3],
+									scale: [1, 1.2, 1],
+								}}
+								transition={{
+									duration: 4,
+									repeat: Number.POSITIVE_INFINITY,
+									ease: "easeInOut",
+									delay: 2,
+								}}
+							/>
+
 							{children}
 						</motion.div>
 					</div>
@@ -63,7 +139,7 @@ export function AnimatedDialogTrigger({
 	isOpen,
 }: AnimatedDialogTriggerProps) {
 	return (
-		<AnimatePresence mode="wait">
+		<>
 			{!isOpen && (
 				<motion.button
 					layoutId={layoutId}
@@ -130,7 +206,7 @@ export function AnimatedDialogTrigger({
 
 					{/* Corner accents */}
 					<motion.div
-						className="absolute right-0 top-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-primary/0 to-primary/0 opacity-0"
+						className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-primary/0 to-primary/0 opacity-0"
 						whileHover={{
 							opacity: 1,
 							background:
@@ -174,6 +250,12 @@ export function AnimatedDialogTrigger({
 					{children}
 				</motion.button>
 			)}
-		</AnimatePresence>
+			{isOpen && (
+				<div
+					className="pointer-events-none invisible min-h-[240px]"
+					aria-hidden="true"
+				/>
+			)}
+		</>
 	);
 }
