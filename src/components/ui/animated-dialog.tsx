@@ -68,17 +68,22 @@ export function AnimatedDialogTrigger({
 				<motion.button
 					layoutId={layoutId}
 					onClick={onClick}
-					className="group relative flex h-full min-h-[240px] flex-col overflow-hidden rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm"
+					className="group relative flex h-full min-h-[240px] flex-col overflow-hidden rounded-2xl border border-default-200/50 bg-gradient-to-br from-default-50 via-background to-default-100 p-6 shadow-lg backdrop-blur-sm"
+					style={{
+						transformStyle: "preserve-3d",
+					}}
 					whileHover={{
-						y: -8,
-						scale: 1.02,
+						y: -12,
+						scale: 1.03,
+						rotateX: 5,
+						rotateY: 5,
 						transition: {
 							type: "spring",
 							stiffness: 400,
 							damping: 25,
 						},
 					}}
-					whileTap={{ scale: 0.98 }}
+					whileTap={{ scale: 0.97 }}
 					transition={{
 						type: "spring",
 						stiffness: 300,
@@ -87,13 +92,12 @@ export function AnimatedDialogTrigger({
 				>
 					{/* Animated gradient glow on hover */}
 					<motion.div
-						className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0"
+						className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-secondary/0 to-success/0 opacity-0"
 						initial={false}
 						whileHover={{
-							background: [
-								"linear-gradient(135deg, rgba(var(--color-primary-rgb, 99, 102, 241), 0) 0%, rgba(var(--color-primary-rgb, 99, 102, 241), 0) 100%)",
-								"linear-gradient(135deg, rgba(var(--color-primary-rgb, 99, 102, 241), 0.05) 0%, rgba(var(--color-primary-rgb, 99, 102, 241), 0.1) 100%)",
-							],
+							opacity: 1,
+							background:
+								"linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.08) 50%, rgba(34, 197, 94, 0.1) 100%)",
 							transition: { duration: 0.4 },
 						}}
 					/>
@@ -103,26 +107,69 @@ export function AnimatedDialogTrigger({
 						className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
 						style={{
 							background:
-								"linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
+								"linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.6) 55%, transparent 100%)",
 						}}
-						initial={{ x: "-100%" }}
+						initial={{ x: "-150%", skewX: -20 }}
 						whileHover={{
-							x: "100%",
-							transition: { duration: 0.6, ease: "easeInOut" },
+							x: "150%",
+							transition: { duration: 0.8, ease: "easeInOut" },
 						}}
 					/>
 
-					{/* Border highlight */}
+					{/* Glowing border on hover */}
 					<motion.div
-						className="absolute inset-0 rounded-2xl border-2 border-primary/0"
+						className="absolute inset-0 rounded-2xl border-2 border-transparent"
 						initial={false}
 						whileHover={{
-							borderColor: "rgba(var(--color-primary-rgb, 99, 102, 241), 0.3)",
+							borderColor: "rgba(99, 102, 241, 0.4)",
 							boxShadow:
-								"0 8px 24px -4px rgba(var(--color-primary-rgb, 99, 102, 241), 0.2)",
+								"0 0 20px rgba(99, 102, 241, 0.3), 0 0 40px rgba(99, 102, 241, 0.1), 0 20px 40px -12px rgba(0, 0, 0, 0.25)",
 							transition: { duration: 0.3 },
 						}}
 					/>
+
+					{/* Corner accents */}
+					<motion.div
+						className="absolute right-0 top-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-primary/0 to-primary/0 opacity-0"
+						whileHover={{
+							opacity: 1,
+							background:
+								"radial-gradient(circle at top right, rgba(99, 102, 241, 0.15) 0%, transparent 70%)",
+							transition: { duration: 0.3 },
+						}}
+					/>
+					<motion.div
+						className="absolute bottom-0 left-0 h-20 w-20 rounded-tr-full bg-gradient-to-tl from-secondary/0 to-secondary/0 opacity-0"
+						whileHover={{
+							opacity: 1,
+							background:
+								"radial-gradient(circle at bottom left, rgba(236, 72, 153, 0.15) 0%, transparent 70%)",
+							transition: { duration: 0.3 },
+						}}
+					/>
+
+					{/* Floating particles on hover */}
+					{[...Array(3)].map((_, i) => (
+						<motion.div
+							key={i}
+							className="absolute h-1 w-1 rounded-full bg-primary/40"
+							style={{
+								left: `${20 + i * 30}%`,
+								top: `${30 + i * 20}%`,
+							}}
+							initial={{ opacity: 0, scale: 0 }}
+							whileHover={{
+								opacity: [0, 1, 0],
+								scale: [0, 1.5, 0],
+								y: [-20, -40, -60],
+								transition: {
+									duration: 1.5,
+									delay: i * 0.2,
+									repeat: Number.POSITIVE_INFINITY,
+								},
+							}}
+						/>
+					))}
 
 					{children}
 				</motion.button>

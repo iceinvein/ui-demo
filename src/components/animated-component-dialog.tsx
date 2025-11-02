@@ -9,21 +9,26 @@ interface AnimatedComponentDialogProps {
 	component: ComponentItem;
 }
 
-// Card flip animation variants
+// Card flip animation variants with enhanced entrance
 const cardVariants = {
 	hidden: {
 		opacity: 0,
-		rotateY: 90,
-		scale: 0.8,
+		rotateY: -90,
+		rotateX: 45,
+		scale: 0.5,
+		z: -200,
 	},
 	visible: {
 		opacity: 1,
 		rotateY: 0,
+		rotateX: 0,
 		scale: 1,
+		z: 0,
 		transition: {
 			type: "spring",
-			stiffness: 260,
-			damping: 20,
+			stiffness: 200,
+			damping: 25,
+			mass: 1,
 		},
 	},
 };
