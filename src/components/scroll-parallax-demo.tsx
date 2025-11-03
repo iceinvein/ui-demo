@@ -27,14 +27,14 @@ export function ScrollParallaxDemo() {
 
 	// Transform for opacity and scale effects
 	const opacity1 = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-	const opacity2 = useTransform(scrollYProgress, [0.15, 0.35], [0, 1]);
+	const opacity2 = useTransform(scrollYProgress, [0.1, 0.2], [0, 1]);
 	const opacity3 = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
 	const opacity4 = useTransform(scrollYProgress, [0.45, 0.65], [0, 1]);
 	const opacity5 = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
 	const opacity6 = useTransform(scrollYProgress, [0.75, 0.95], [0, 1]);
 
 	const scale1 = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
-	const scale2 = useTransform(scrollYProgress, [0.15, 0.35], [0.8, 1]);
+	const scale2 = useTransform(scrollYProgress, [0.1, 0.2], [0.8, 1]);
 	const scale3 = useTransform(scrollYProgress, [0.3, 0.5], [0.8, 1]);
 	const scale4 = useTransform(scrollYProgress, [0.45, 0.65], [0.8, 1]);
 	const scale5 = useTransform(scrollYProgress, [0.6, 0.8], [0.8, 1]);
@@ -45,8 +45,8 @@ export function ScrollParallaxDemo() {
 	const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -360]);
 
 	// Slide effects
-	const slideLeft = useTransform(scrollYProgress, [0.2, 0.4], [-200, 0]);
-	const slideRight = useTransform(scrollYProgress, [0.2, 0.4], [200, 0]);
+	const slideLeft = useTransform(scrollYProgress, [0.1, 0.2], [-200, 0]);
+	const slideRight = useTransform(scrollYProgress, [0.1, 0.2], [200, 0]);
 
 	return (
 		<div className="relative h-[600px] w-full overflow-hidden rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100">
