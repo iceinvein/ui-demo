@@ -1,6 +1,7 @@
 import { AnimatedDialogShowcase } from "@/components/animated-dialog-showcase";
 import { AnimatedListDemo } from "@/components/animated-list-demo";
 import { AnimatedTabsDemo } from "@/components/animated-tabs-demo";
+import { BokehDemo } from "@/components/bokeh-demo";
 import { ButtonToDialogDemo } from "@/components/button-to-dialog-demo";
 import { CardFlipDemo } from "@/components/card-flip-demo";
 import { DragDropListDemo } from "@/components/drag-drop-list-demo";
@@ -1386,6 +1387,99 @@ export function ScrollParallaxDemo() {
               <ArrowDown className="mt-8 h-5 w-5" />
             </div>
           </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "bokeh-effects",
+		title: "Bokeh Effects",
+		description:
+			"Soft, blurred circles with floating animations creating a beautiful bokeh aesthetic",
+		category: "animation",
+		component: BokehDemo,
+		tags: ["animation", "bokeh", "blur", "floating", "effects"],
+		code: [
+			{
+				filename: "bokeh-demo.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
+
+export function BokehDemo() {
+  // Bokeh circle configurations
+  const bokehCircles = [
+    {
+      size: 120,
+      color: "from-purple-500/40 to-pink-500/40",
+      x: "10%",
+      y: "20%",
+      delay: 0,
+      duration: 8,
+    },
+    {
+      size: 80,
+      color: "from-blue-500/40 to-cyan-500/40",
+      x: "70%",
+      y: "15%",
+      delay: 0.5,
+      duration: 10,
+    },
+    // Add more circles...
+  ];
+
+  return (
+    <div className="relative h-[600px] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800">
+      {/* Bokeh Circles */}
+      {bokehCircles.map((circle, index) => (
+        <motion.div
+          key={index}
+          className={\`absolute rounded-full bg-gradient-to-br \${circle.color} blur-2xl\`}
+          style={{
+            width: circle.size,
+            height: circle.size,
+            left: circle.x,
+            top: circle.y,
+          }}
+          animate={{
+            x: [0, 30, -20, 0],
+            y: [0, -40, 20, 0],
+            scale: [1, 1.2, 0.9, 1],
+            opacity: [0.6, 0.8, 0.5, 0.6],
+          }}
+          transition={{
+            duration: circle.duration,
+            delay: circle.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+
+      {/* Interactive Center Bokeh */}
+      <motion.div
+        className="absolute left-1/2 top-1/2 h-32 w-32 rounded-full bg-gradient-to-br from-purple-500/50 to-pink-500/50 blur-3xl"
+        whileHover={{ scale: 1.5, opacity: 0.8 }}
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.4, 0.6, 0.4],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex h-full items-center justify-center">
+        <div className="text-center">
+          <Sparkles className="mb-6 h-20 w-20 text-purple-400" />
+          <h2 className="text-4xl font-bold text-purple-400">Bokeh Effects</h2>
+          <p className="text-default-400">Soft, blurred circles floating</p>
         </div>
       </div>
     </div>
