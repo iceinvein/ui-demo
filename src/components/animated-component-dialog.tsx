@@ -118,10 +118,10 @@ export function AnimatedComponentDialog({
 				}}
 			>
 				{/* Animated background elements - behind everything */}
-				<div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-3xl">
+				<div className="-z-10 pointer-events-none absolute inset-0 overflow-hidden rounded-3xl">
 					{/* Gradient orbs */}
 					<motion.div
-						className="absolute -top-20 -right-20 h-60 w-60 rounded-full bg-primary/10 blur-3xl"
+						className="-top-20 -right-20 absolute h-60 w-60 rounded-full bg-primary/10 blur-3xl"
 						animate={{
 							scale: [1, 1.2, 1],
 							opacity: [0.3, 0.5, 0.3],
@@ -133,7 +133,7 @@ export function AnimatedComponentDialog({
 						}}
 					/>
 					<motion.div
-						className="absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-secondary/10 blur-3xl"
+						className="-bottom-20 -left-20 absolute h-60 w-60 rounded-full bg-secondary/10 blur-3xl"
 						animate={{
 							scale: [1, 1.3, 1],
 							opacity: [0.3, 0.4, 0.3],
@@ -176,7 +176,7 @@ export function AnimatedComponentDialog({
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 					transition={{ delay: 0.05, duration: 0.2 }}
-					className="relative z-20 flex items-center justify-between rounded-t-3xl border-b border-default-200 bg-gradient-to-r from-default-50/80 via-background/80 to-default-50/80 px-6 py-4 backdrop-blur-md"
+					className="relative z-20 flex items-center justify-between rounded-t-3xl border-default-200 border-b bg-gradient-to-r from-default-50/80 via-background/80 to-default-50/80 px-6 py-4 backdrop-blur-md"
 				>
 					{/* Animated gradient line */}
 					<motion.div
@@ -232,7 +232,7 @@ export function AnimatedComponentDialog({
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 					transition={{ delay: 0.1, duration: 0.2 }}
-					className="relative z-20 flex gap-1 border-b border-default-200 bg-gradient-to-r from-default-50/50 via-background/50 to-default-50/50 px-6 backdrop-blur-sm"
+					className="relative z-20 flex gap-1 border-default-200 border-b bg-gradient-to-r from-default-50/50 via-background/50 to-default-50/50 px-6 backdrop-blur-sm"
 				>
 					{/* Sliding background indicator */}
 					<motion.div
@@ -368,12 +368,12 @@ export function AnimatedComponentDialog({
 								transition={{ delay: 0.1 }}
 							>
 								{/* Decorative corner elements - behind content */}
-								<div className="pointer-events-none absolute top-0 right-0 -z-10 h-20 w-20 rounded-bl-full bg-gradient-to-br from-primary/10 to-transparent" />
-								<div className="pointer-events-none absolute bottom-0 left-0 -z-10 h-20 w-20 rounded-tr-full bg-gradient-to-tl from-secondary/10 to-transparent" />
+								<div className="-z-10 pointer-events-none absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-primary/10 to-transparent" />
+								<div className="-z-10 pointer-events-none absolute bottom-0 left-0 h-20 w-20 rounded-tr-full bg-gradient-to-tl from-secondary/10 to-transparent" />
 
 								{/* Animated border glow - behind content */}
 								<motion.div
-									className="pointer-events-none absolute inset-0 -z-10 rounded-xl border border-primary/0"
+									className="-z-10 pointer-events-none absolute inset-0 rounded-xl border border-primary/0"
 									animate={{
 										borderColor: [
 											"rgba(99, 102, 241, 0)",

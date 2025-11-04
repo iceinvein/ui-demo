@@ -100,7 +100,7 @@ export function BokehDemo() {
 
 			{/* Interactive Bokeh - follows cursor area */}
 			<motion.div
-				className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-purple-500/50 to-pink-500/50 blur-3xl"
+				className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-32 w-32 rounded-full bg-gradient-to-br from-purple-500/50 to-pink-500/50 blur-3xl"
 				whileHover={{ scale: 1.5, opacity: 0.8 }}
 				animate={{
 					scale: [1, 1.1, 1],
@@ -182,4 +182,3 @@ export function BokehDemo() {
 		</div>
 	);
 }
-

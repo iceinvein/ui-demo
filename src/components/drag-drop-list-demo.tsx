@@ -1,15 +1,15 @@
-import { useState } from "react";
 import { motion, Reorder, useDragControls } from "framer-motion";
 import {
 	CheckCircle,
 	Code,
 	GripVertical,
+	type LucideIcon,
 	Palette,
 	Rocket,
 	Search,
 	Zap,
-	type LucideIcon,
 } from "lucide-react";
+import { useState } from "react";
 
 interface Item {
 	id: string;
@@ -76,7 +76,7 @@ function DraggableItem({ item }: { item: Item }) {
 			dragControls={controls}
 		>
 			<motion.div
-				className={`group relative flex items-start gap-4 rounded-xl border border-default-200 bg-gradient-to-br ${item.color} p-4 backdrop-blur-sm select-none`}
+				className={`group relative flex items-start gap-4 rounded-xl border border-default-200 bg-gradient-to-br ${item.color} select-none p-4 backdrop-blur-sm`}
 				whileHover={{
 					scale: 1.01,
 					boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
@@ -189,10 +189,10 @@ export function DragDropListDemo() {
 				className="mt-6 rounded-lg bg-primary/5 p-4 text-center"
 			>
 				<p className="text-default-600 text-sm">
-					💡 <strong>Tip:</strong> Click and hold the drag handle to reorder tasks
+					💡 <strong>Tip:</strong> Click and hold the drag handle to reorder
+					tasks
 				</p>
 			</motion.div>
 		</div>
 	);
 }
-

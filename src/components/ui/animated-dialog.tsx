@@ -91,7 +91,7 @@ export function AnimatedDialog({
 
 							{/* Animated corner highlights */}
 							<motion.div
-								className="pointer-events-none absolute right-0 top-0 h-40 w-40 rounded-bl-full bg-gradient-to-br from-primary/20 to-transparent blur-2xl"
+								className="pointer-events-none absolute top-0 right-0 h-40 w-40 rounded-bl-full bg-gradient-to-br from-primary/20 to-transparent blur-2xl"
 								animate={{
 									opacity: [0.3, 0.6, 0.3],
 									scale: [1, 1.2, 1],
@@ -206,7 +206,7 @@ export function AnimatedDialogTrigger({
 
 					{/* Corner accents */}
 					<motion.div
-						className="absolute right-0 top-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-primary/0 to-primary/0 opacity-0"
+						className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-primary/0 to-primary/0 opacity-0"
 						whileHover={{
 							opacity: 1,
 							background:
