@@ -71,12 +71,12 @@ export function BokehDemo() {
 	];
 
 	return (
-		<div className="relative h-[600px] w-full overflow-hidden rounded-2xl border border-default-200 bg-gradient-to-br from-slate-900 to-slate-800">
+		<div className="relative h-[600px] w-full overflow-hidden rounded-2xl border border-default-200 bg-linear-to-br from-slate-900 to-slate-800">
 			{/* Bokeh Circles */}
 			{bokehCircles.map((circle, index) => (
 				<motion.div
 					key={index}
-					className={`absolute rounded-full bg-gradient-to-br ${circle.color} blur-2xl`}
+					className={`absolute rounded-full bg-linear-to-br ${circle.color} blur-2xl`}
 					style={{
 						width: circle.size,
 						height: circle.size,
@@ -100,7 +100,7 @@ export function BokehDemo() {
 
 			{/* Interactive Bokeh - follows cursor area */}
 			<motion.div
-				className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-32 w-32 rounded-full bg-gradient-to-br from-purple-500/50 to-pink-500/50 blur-3xl"
+				className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-32 w-32 rounded-full bg-linear-to-br from-purple-500/50 to-pink-500/50 blur-3xl"
 				whileHover={{ scale: 1.5, opacity: 0.8 }}
 				animate={{
 					scale: [1, 1.1, 1],
@@ -129,7 +129,7 @@ export function BokehDemo() {
 				</motion.div>
 
 				<motion.h2
-					className="mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text font-bold text-4xl text-transparent"
+					className="mb-4 bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text font-bold text-4xl text-transparent"
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.4 }}
@@ -155,7 +155,7 @@ export function BokehDemo() {
 					{[1, 2, 3].map((i) => (
 						<motion.div
 							key={i}
-							className="h-3 w-3 rounded-full bg-gradient-to-r from-purple-400 to-pink-400"
+							className="h-3 w-3 rounded-full bg-linear-to-r from-purple-400 to-pink-400"
 							animate={{
 								scale: [1, 1.5, 1],
 								opacity: [0.5, 1, 0.5],

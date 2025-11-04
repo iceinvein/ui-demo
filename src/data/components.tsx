@@ -5,10 +5,13 @@ import { BokehDemo } from "@/components/bokeh-demo";
 import { ButtonToDialogDemo } from "@/components/button-to-dialog-demo";
 import { CardFlipDemo } from "@/components/card-flip-demo";
 import { DragDropListDemo } from "@/components/drag-drop-list-demo";
+import { LoadingDemo } from "@/components/loading-demo";
 import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
 import { ScrollParallaxDemo } from "@/components/scroll-parallax-demo";
 import { SidebarMenuDemo } from "@/components/sidebar-menu-demo";
+import { SkeletonDemo } from "@/components/skeleton-demo";
 import { SplitTextDemo } from "@/components/split-text-demo";
+import { StepperDemo } from "@/components/stepper-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
 import type { Category, ComponentItem } from "@/types/component";
 
@@ -504,7 +507,7 @@ export function AnimatedDialogDemo() {
                 </ul>
               </div>
 
-              <div className="rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 p-6">
+              <div className="rounded-xl bg-linear-to-br from-primary/10 to-secondary/10 p-6">
                 <p className="text-center text-default-700">
                   This is inspired by Family's beautiful dialog animations. The
                   shared layout ID creates a seamless transition that feels
@@ -592,7 +595,7 @@ export function AnimatedDialogTrigger({
         <motion.button
           layoutId={layoutId}
           onClick={onClick}
-          className="group relative flex h-full min-h-[240px] flex-col rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm overflow-hidden"
+          className="group relative flex h-full min-h-60 flex-col rounded-2xl border border-default-200 bg-linear-to-br from-default-50 to-default-100 p-6 shadow-sm overflow-hidden"
           whileHover={{
             y: -8,
             scale: 1.02,
@@ -611,7 +614,7 @@ export function AnimatedDialogTrigger({
         >
           {/* Animated gradient glow on hover */}
           <motion.div
-            className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0"
+            className="absolute inset-0 rounded-2xl bg-linear-to-br from-primary/0 via-primary/0 to-primary/0"
             initial={false}
             whileHover={{
               background: [
@@ -752,7 +755,7 @@ export function ButtonToDialog({
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
               <motion.div
                 layoutId={\`\${layoutId}-container\`}
-                className="relative w-full max-w-md rounded-[32px] bg-zinc-900 border border-zinc-800 shadow-2xl pointer-events-auto overflow-hidden"
+                className="relative w-full max-w-md rounded-4xl bg-zinc-900 border border-zinc-800 shadow-2xl pointer-events-auto overflow-hidden"
                 transition={{
                   type: "spring",
                   stiffness: 400,
@@ -955,7 +958,7 @@ function DraggableItem({ item }: { item: Item }) {
       dragControls={controls}
     >
       <motion.div
-        className={\`group relative flex items-start gap-4 rounded-xl border border-default-200 bg-gradient-to-br \${item.color} p-4 backdrop-blur-sm select-none\`}
+        className={\`group relative flex items-start gap-4 rounded-xl border border-default-200 bg-linear-to-br \${item.color} p-4 backdrop-blur-sm select-none\`}
         whileHover={{
           scale: 1.01,
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
@@ -976,7 +979,7 @@ function DraggableItem({ item }: { item: Item }) {
 
         {/* Icon */}
         <motion.div
-          className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-background/50 shadow-sm"
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-background/50 shadow-sm"
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
@@ -1013,7 +1016,7 @@ export function DragDropListDemo() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-6 text-center"
       >
-        <h2 className="mb-2 bg-gradient-to-r from-primary via-secondary to-success bg-clip-text font-bold text-2xl text-transparent">
+        <h2 className="mb-2 bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-2xl text-transparent">
           Project Tasks
         </h2>
         <p className="text-default-600 text-sm">
@@ -1121,7 +1124,7 @@ export function CardFlipDemo() {
         >
           {/* Front Face */}
           <motion.div
-            className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-default-200 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-rose-500/20 p-8 shadow-xl backdrop-blur-sm"
+            className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-default-200 bg-linear-to-br from-purple-500/20 via-pink-500/20 to-rose-500/20 p-8 shadow-xl backdrop-blur-sm"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
@@ -1129,12 +1132,12 @@ export function CardFlipDemo() {
           >
             {/* Front content */}
             <motion.div
-              className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-4xl font-bold text-white shadow-lg"
+              className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-linear-to-br from-purple-500 to-pink-500 text-4xl font-bold text-white shadow-lg"
               whileHover={{ scale: 1.1, rotate: 5 }}
             >
               JD
             </motion.div>
-            <h2 className="mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-2xl font-bold text-transparent">
+            <h2 className="mb-2 bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-2xl font-bold text-transparent">
               Jane Doe
             </h2>
             <p className="mb-6 text-default-600">Senior Product Designer</p>
@@ -1143,7 +1146,7 @@ export function CardFlipDemo() {
 
           {/* Back Face */}
           <motion.div
-            className="absolute inset-0 flex flex-col rounded-2xl border border-default-200 bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-teal-500/20 p-8 shadow-xl backdrop-blur-sm"
+            className="absolute inset-0 flex flex-col rounded-2xl border border-default-200 bg-linear-to-br from-blue-500/20 via-cyan-500/20 to-teal-500/20 p-8 shadow-xl backdrop-blur-sm"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
@@ -1152,7 +1155,7 @@ export function CardFlipDemo() {
           >
             {/* Back content with professional details */}
             <div className="mb-6 text-center">
-              <h3 className="mb-1 bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-xl font-bold text-transparent">
+              <h3 className="mb-1 bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-xl font-bold text-transparent">
                 Professional Details
               </h3>
             </div>
@@ -1353,7 +1356,7 @@ export function ScrollParallaxDemo() {
     <div className="relative h-[600px] w-full overflow-hidden rounded-2xl">
       {/* Scroll Progress Indicator */}
       <motion.div
-        className="absolute top-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"
+        className="absolute top-0 h-1 bg-linear-to-r from-purple-500 to-pink-500"
         style={{ scaleX: scrollYProgress, transformOrigin: "0%" }}
       />
 
@@ -1433,12 +1436,12 @@ export function BokehDemo() {
   ];
 
   return (
-    <div className="relative h-[600px] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800">
+    <div className="relative h-[600px] w-full overflow-hidden rounded-2xl bg-linear-to-br from-slate-900 to-slate-800">
       {/* Bokeh Circles */}
       {bokehCircles.map((circle, index) => (
         <motion.div
           key={index}
-          className={\`absolute rounded-full bg-gradient-to-br \${circle.color} blur-2xl\`}
+          className={\`absolute rounded-full bg-linear-to-br \${circle.color} blur-2xl\`}
           style={{
             width: circle.size,
             height: circle.size,
@@ -1462,7 +1465,7 @@ export function BokehDemo() {
 
       {/* Interactive Center Bokeh */}
       <motion.div
-        className="absolute left-1/2 top-1/2 h-32 w-32 rounded-full bg-gradient-to-br from-purple-500/50 to-pink-500/50 blur-3xl"
+        className="absolute left-1/2 top-1/2 h-32 w-32 rounded-full bg-linear-to-br from-purple-500/50 to-pink-500/50 blur-3xl"
         whileHover={{ scale: 1.5, opacity: 0.8 }}
         animate={{
           scale: [1, 1.1, 1],
@@ -1718,7 +1721,7 @@ export function PetrolCounterDemo() {
     <div className="flex min-h-[400px] items-center justify-center p-8">
       <div className="w-full max-w-2xl">
         {/* Petrol Pump Display */}
-        <div className="mb-8 rounded-3xl border-2 border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950 p-8 shadow-2xl">
+        <div className="mb-8 rounded-3xl border-2 border-zinc-800 bg-linear-to-br from-zinc-900 to-zinc-950 p-8 shadow-2xl">
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -2022,7 +2025,7 @@ export function SplitTextDemo() {
       <div key={key} className="text-center">
         <SplitText
           text="Beautiful Split Text Animation"
-          className="mb-4 bg-gradient-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl text-transparent md:text-5xl"
+          className="mb-4 bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl text-transparent md:text-5xl"
           delay={0.1}
           duration={0.04}
         />
@@ -2245,7 +2248,7 @@ export function AnimatedListDemo() {
 
       <motion.div
         layout
-        className="mb-6 rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100/50 p-4"
+        className="mb-6 rounded-2xl border border-default-200 bg-linear-to-br from-default-50 to-default-100/50 p-4"
       >
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
@@ -2327,7 +2330,7 @@ export function AnimatedList({
               damping: 30,
               mass: 0.8,
             }}
-            className={\\\`group relative flex items-center justify-between gap-4 rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100/50 p-5 shadow-sm backdrop-blur-sm transition-all hover:border-default-300 hover:shadow-md \${itemClassName}\\\`}
+            className={\\\`group relative flex items-center justify-between gap-4 rounded-2xl border border-default-200 bg-linear-to-br from-default-50 to-default-100/50 p-5 shadow-sm backdrop-blur-sm transition-all hover:border-default-300 hover:shadow-md \${itemClassName}\\\`}
           >
             <div className="flex-1">{item.content}</div>
             {showRemoveButton && onRemove && (
@@ -2346,6 +2349,789 @@ export function AnimatedList({
         ))}
       </AnimatePresence>
     </ul>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "skeleton",
+		title: "Skeleton Loaders",
+		description:
+			"Placeholder components with shimmer, pulse, and wave animation variants for loading states",
+		category: "feedback",
+		component: SkeletonDemo,
+		tags: ["skeleton", "loading", "placeholder", "shimmer", "pulse", "wave"],
+		code: [
+			{
+				filename: "skeleton-demo.tsx",
+				language: "tsx",
+				code: `import { useState } from "react";
+import {
+  SkeletonAvatar,
+  SkeletonButton,
+  SkeletonCard,
+  SkeletonListItem,
+  SkeletonProfile,
+  SkeletonTable,
+  SkeletonText,
+} from "./ui/skeleton";
+
+export function SkeletonDemo() {
+  const [variant, setVariant] = useState<"shimmer" | "pulse" | "wave">("shimmer");
+
+  return (
+    <div className="w-full space-y-8 p-8">
+      {/* Variant Switcher */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="font-semibold text-xl">Skeleton Loaders</h3>
+          <p className="text-default-500 text-sm">
+            Placeholder components with multiple animation variants
+          </p>
+        </div>
+        <div className="flex gap-2">
+          {(["shimmer", "pulse", "wave"] as const).map((v) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => setVariant(v)}
+              className={\`rounded-lg px-3 py-1.5 text-sm capitalize transition-colors \${
+                variant === v
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-default-100 text-default-600 hover:bg-default-200"
+              }\`}
+            >
+              {v}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Cards */}
+      <section>
+        <h4 className="mb-4 font-medium text-lg">Cards</h4>
+        <div className="grid gap-6 md:grid-cols-2">
+          <SkeletonCard variant={variant} />
+          <SkeletonCard variant={variant} />
+        </div>
+      </section>
+
+      {/* Profile */}
+      <section>
+        <h4 className="mb-4 font-medium text-lg">Profile</h4>
+        <SkeletonProfile variant={variant} />
+      </section>
+
+      {/* List Items */}
+      <section>
+        <h4 className="mb-4 font-medium text-lg">List Items</h4>
+        <div className="space-y-3">
+          <SkeletonListItem variant={variant} />
+          <SkeletonListItem variant={variant} />
+          <SkeletonListItem variant={variant} />
+        </div>
+      </section>
+
+      {/* Table */}
+      <section>
+        <h4 className="mb-4 font-medium text-lg">Table</h4>
+        <SkeletonTable variant={variant} rows={5} />
+      </section>
+
+      {/* Text & Components */}
+      <section>
+        <h4 className="mb-4 font-medium text-lg">Text & Components</h4>
+        <div className="space-y-6">
+          <div>
+            <p className="mb-2 text-default-500 text-sm">Text Lines</p>
+            <SkeletonText variant={variant} lines={4} />
+          </div>
+          <div>
+            <p className="mb-2 text-default-500 text-sm">Avatars</p>
+            <div className="flex items-center gap-4">
+              <SkeletonAvatar variant={variant} size="sm" />
+              <SkeletonAvatar variant={variant} size="md" />
+              <SkeletonAvatar variant={variant} size="lg" />
+            </div>
+          </div>
+          <div>
+            <p className="mb-2 text-default-500 text-sm">Buttons</p>
+            <div className="flex gap-3">
+              <SkeletonButton variant={variant} size="sm" />
+              <SkeletonButton variant={variant} size="md" />
+              <SkeletonButton variant={variant} size="lg" />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/skeleton.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import type { HTMLMotionProps } from "framer-motion";
+
+interface SkeletonProps extends HTMLMotionProps<"div"> {
+  className?: string;
+  variant?: "default" | "shimmer" | "pulse" | "wave";
+}
+
+export function Skeleton({
+  className = "",
+  variant = "shimmer",
+  ...props
+}: SkeletonProps) {
+  const baseClasses = "rounded-lg bg-default-200";
+
+  const variants = {
+    pulse: {
+      animate: { opacity: [0.5, 1, 0.5] },
+      transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" },
+    },
+    shimmer: {
+      animate: { backgroundPosition: ["200% 0", "-200% 0"] },
+      transition: { duration: 2, repeat: Infinity, ease: "linear" },
+    },
+  };
+
+  const shimmerStyle = variant === "shimmer" ? {
+    backgroundImage: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)",
+    backgroundSize: "200% 100%",
+  } : {};
+
+  return (
+    <motion.div
+      className={\`\${baseClasses} \${className}\`}
+      style={shimmerStyle}
+      {...variants[variant]}
+      {...props}
+    />
+  );
+}
+
+export function SkeletonCard({ variant = "shimmer" }) {
+  return (
+    <div className="rounded-xl border border-default-200 bg-content1 p-4">
+      <Skeleton variant={variant} className="mb-4 h-48 w-full" />
+      <Skeleton variant={variant} className="mb-3 h-6 w-3/4" />
+      <div className="space-y-2">
+        <Skeleton variant={variant} className="h-4 w-full" />
+        <Skeleton variant={variant} className="h-4 w-5/6" />
+      </div>
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "loading",
+		title: "Loading States",
+		description:
+			"Spinners and progress indicators with multiple styles and animations for loading feedback",
+		category: "feedback",
+		component: LoadingDemo,
+		tags: ["loading", "spinner", "progress", "feedback", "animation"],
+		code: [
+			{
+				filename: "loading-demo.tsx",
+				language: "tsx",
+				code: `import { useEffect, useState } from "react";
+import {
+  BarsSpinner,
+  CircularSpinner,
+  DotsSpinner,
+  GridSpinner,
+  OrbitSpinner,
+  PulseSpinner,
+  RingSpinner,
+} from "./ui/spinner";
+import {
+  CircularProgress,
+  GradientProgress,
+  IndeterminateProgress,
+  LinearProgress,
+} from "./ui/progress";
+
+export function LoadingDemo() {
+  const [progress, setProgress] = useState(0);
+
+  // Simulate progress
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev >= 100 ? 0 : prev + 1));
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full space-y-12 p-8">
+      {/* Spinners */}
+      <section>
+        <div className="mb-6">
+          <h3 className="font-semibold text-xl">Spinners</h3>
+          <p className="text-default-500 text-sm">
+            Animated loading indicators in various styles
+          </p>
+        </div>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="flex flex-col items-center gap-3">
+            <CircularSpinner size="lg" color="#006FEE" />
+            <span className="text-default-500 text-sm">Circular</span>
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <DotsSpinner size="lg" color="#7828C8" />
+            <span className="text-default-500 text-sm">Dots</span>
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <BarsSpinner size="lg" color="#17C964" />
+            <span className="text-default-500 text-sm">Bars</span>
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <RingSpinner size="lg" color="#F31260" />
+            <span className="text-default-500 text-sm">Ring</span>
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <PulseSpinner size="lg" color="#F5A524" />
+            <span className="text-default-500 text-sm">Pulse</span>
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <GridSpinner size="lg" color="#0E793C" />
+            <span className="text-default-500 text-sm">Grid</span>
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <OrbitSpinner size="lg" color="#006FEE" />
+            <span className="text-default-500 text-sm">Orbit</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Progress Indicators */}
+      <section>
+        <div className="mb-6">
+          <h3 className="font-semibold text-xl">Progress Indicators</h3>
+          <p className="text-default-500 text-sm">
+            Track progress with bars, circles, and step indicators
+          </p>
+        </div>
+        <div className="space-y-8">
+          {/* Linear Progress */}
+          <div>
+            <p className="mb-3 text-default-600 text-sm font-medium">Linear Progress</p>
+            <LinearProgress value={progress} showLabel />
+          </div>
+
+          {/* Circular Progress */}
+          <div>
+            <p className="mb-3 text-default-600 text-sm font-medium">Circular Progress</p>
+            <div className="flex items-center gap-8">
+              <CircularProgress value={progress} size="sm" />
+              <CircularProgress value={progress} size="md" />
+              <CircularProgress value={progress} size="lg" />
+            </div>
+          </div>
+
+          {/* Gradient Progress */}
+          <div>
+            <p className="mb-3 text-default-600 text-sm font-medium">Gradient Progress</p>
+            <GradientProgress value={progress} />
+          </div>
+
+          {/* Indeterminate Progress */}
+          <div>
+            <p className="mb-3 text-default-600 text-sm font-medium">
+              Indeterminate Progress
+            </p>
+            <IndeterminateProgress />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/spinner.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+
+interface SpinnerProps {
+  size?: "sm" | "md" | "lg";
+  color?: string;
+}
+
+export function CircularSpinner({ size = "md", color = "currentColor" }: SpinnerProps) {
+  const sizes = { sm: 16, md: 24, lg: 32 };
+  const dimension = sizes[size];
+
+  return (
+    <motion.div
+      animate={{ rotate: 360 }}
+      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+    >
+      <svg width={dimension} height={dimension} viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke={color} strokeWidth="3" strokeOpacity="0.2" />
+        <path d="M12 2a10 10 0 0 1 10 10" stroke={color} strokeWidth="3" strokeLinecap="round" />
+      </svg>
+    </motion.div>
+  );
+}
+
+export function DotsSpinner({ size = "md", color = "currentColor" }: SpinnerProps) {
+  const sizes = { sm: 4, md: 6, lg: 8 };
+  const dotSize = sizes[size];
+
+  return (
+    <div className="flex items-center gap-1">
+      {[0, 1, 2].map((i) => (
+        <motion.div
+          key={i}
+          className="rounded-full"
+          style={{ width: dotSize, height: dotSize, backgroundColor: color }}
+          animate={{ y: [-10, 0] }}
+          transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse", delay: i * 0.15 }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ... other spinners (BarsSpinner, RingSpinner, PulseSpinner, GridSpinner, OrbitSpinner)`,
+			},
+			{
+				filename: "ui/progress.tsx",
+				language: "tsx",
+				code: `import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { useEffect } from "react";
+
+interface ProgressProps {
+  value: number; // 0-100
+  size?: "sm" | "md" | "lg";
+  showLabel?: boolean;
+}
+
+export function LinearProgress({ value, size = "md", showLabel = false }: ProgressProps) {
+  const heights = { sm: "h-1", md: "h-2", lg: "h-3" };
+  const progress = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(progress, value, { duration: 0.5, ease: "easeOut" });
+    return controls.stop;
+  }, [value, progress]);
+
+  return (
+    <div className="w-full">
+      {showLabel && (
+        <div className="mb-2 flex justify-between text-sm">
+          <span>Progress</span>
+          <span>{Math.round(value)}%</span>
+        </div>
+      )}
+      <div className={\`w-full rounded-full bg-default-200 \${heights[size]}\`}>
+        <motion.div
+          className="h-full rounded-full bg-primary"
+          style={{ width: useTransform(progress, (v) => \`\${v}%\`) }}
+        />
+      </div>
+    </div>
+  );
+}
+
+export function CircularProgress({ value, size = "md" }: ProgressProps) {
+  const sizes = { sm: { dimension: 40, strokeWidth: 3 }, md: { dimension: 60, strokeWidth: 4 }, lg: { dimension: 80, strokeWidth: 5 } };
+  const { dimension, strokeWidth } = sizes[size];
+  const radius = (dimension - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const progress = useMotionValue(0);
+  const offset = useTransform(progress, (v) => circumference - (v / 100) * circumference);
+
+  useEffect(() => {
+    const controls = animate(progress, value, { duration: 0.8, ease: "easeOut" });
+    return controls.stop;
+  }, [value, progress]);
+
+  return (
+    <div className="relative" style={{ width: dimension, height: dimension }}>
+      <svg width={dimension} height={dimension} className="-rotate-90">
+        <circle cx={dimension / 2} cy={dimension / 2} r={radius} fill="none" stroke="currentColor" strokeWidth={strokeWidth} className="text-default-200" />
+        <motion.circle cx={dimension / 2} cy={dimension / 2} r={radius} fill="none" strokeWidth={strokeWidth} strokeLinecap="round" className="stroke-primary" style={{ strokeDasharray: circumference, strokeDashoffset: offset }} />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="font-semibold text-sm">{Math.round(value)}%</span>
+      </div>
+    </div>
+  );
+}
+
+// ... other progress components (GradientProgress, IndeterminateProgress)`,
+			},
+		],
+	},
+	{
+		id: "stepper",
+		title: "Stepper",
+		description:
+			"Multi-step indicators for forms, wizards, and workflows with horizontal, vertical, and compact variants",
+		category: "navigation",
+		component: StepperDemo,
+		tags: [
+			"stepper",
+			"wizard",
+			"multi-step",
+			"form",
+			"progress",
+			"navigation",
+			"workflow",
+		],
+		code: [
+			{
+				filename: "stepper-demo.tsx",
+				language: "tsx",
+				code: `import { Lock, Package, Rocket, User } from "lucide-react";
+import { useState } from "react";
+import { NeonGlowStepper, type Step } from "./ui/stepper";
+
+export function StepperDemo() {
+  const [currentStep, setCurrentStep] = useState(1);
+
+  // Project launch steps
+  const launchSteps: Step[] = [
+    {
+      label: "Planning",
+      description: "Define goals",
+      icon: <User className="h-6 w-6" />,
+    },
+    {
+      label: "Development",
+      description: "Build features",
+      icon: <Package className="h-6 w-6" />,
+    },
+    {
+      label: "Testing",
+      description: "Quality assurance",
+      icon: <Lock className="h-6 w-6" />,
+    },
+    {
+      label: "Launch",
+      description: "Go live!",
+      icon: <Rocket className="h-6 w-6" />,
+    },
+  ];
+
+  return (
+    <div className="w-full space-y-8 p-8">
+      {/* Header */}
+      <div>
+        <h3 className="font-bold text-2xl">Neon Cyberpunk Stepper</h3>
+        <p className="mt-2 text-default-500">
+          Cyberpunk-style stepper with animated neon glows, scanlines, and
+          electric effects
+        </p>
+      </div>
+
+      {/* Neon Glow Stepper */}
+      <section className="space-y-4">
+        <div className="overflow-hidden rounded-2xl">
+          <NeonGlowStepper
+            steps={launchSteps}
+            currentStep={currentStep}
+            onStepClick={setCurrentStep}
+          />
+          <div className="flex justify-center gap-3 border-primary/20 border-t bg-black/40 p-6 backdrop-blur-md">
+            <button
+              type="button"
+              onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+              disabled={currentStep === 0}
+              className="rounded-lg border border-primary/30 bg-primary/10 px-6 py-2.5 font-medium font-mono text-primary text-sm shadow-[0_0_10px_rgba(0,111,238,0.3)] transition-all hover:bg-primary/20 hover:shadow-[0_0_20px_rgba(0,111,238,0.5)] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              PREV
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                setCurrentStep(
+                  Math.min(launchSteps.length - 1, currentStep + 1),
+                )
+              }
+              disabled={currentStep === launchSteps.length - 1}
+              className="rounded-lg border border-primary bg-primary px-6 py-2.5 font-medium font-mono text-sm text-white shadow-[0_0_20px_rgba(0,111,238,0.5)] transition-all hover:shadow-[0_0_30px_rgba(0,111,238,0.8)] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              NEXT
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/stepper.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
+
+export interface Step {
+  label: string;
+  description?: string;
+  icon?: ReactNode;
+}
+
+interface StepperProps {
+  steps: Step[];
+  currentStep: number;
+  onStepClick?: (index: number) => void;
+  className?: string;
+}
+
+/**
+ * Neon Glow Stepper - Cyberpunk-style with animated neon glows and path drawing checkmarks
+ */
+export function NeonGlowStepper({
+  steps,
+  currentStep,
+  onStepClick,
+  className = "",
+}: StepperProps) {
+  const isClickable = !!onStepClick;
+  const [prevStep, setPrevStep] = useState(currentStep);
+
+  // Track when step changes to trigger sequential animations
+  useEffect(() => {
+    setPrevStep(currentStep);
+  }, [currentStep]);
+
+  return (
+    <div
+      className={\`relative w-full overflow-hidden rounded-2xl border border-primary/20 bg-black/40 p-8 backdrop-blur-md \${className}\`}
+    >
+      {/* Animated scanlines */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 opacity-10"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, #006FEE 2px, #006FEE 4px)",
+        }}
+        animate={{ y: [0, 20, 0] }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+
+      {/* Grid background */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-5"
+        style={{
+          backgroundImage:
+            "linear-gradient(#006FEE 1px, transparent 1px), linear-gradient(90deg, #006FEE 1px, transparent 1px)",
+          backgroundSize: "50px 50px",
+        }}
+      />
+
+      <div className="relative flex items-center justify-between">
+        {steps.map((step, index) => {
+          const isCompleted = index < currentStep;
+          const isCurrent = index === currentStep;
+          const isClickableStep =
+            isClickable && (isCompleted || index <= currentStep + 1);
+
+          // Calculate animation delay: connector takes 0.6s, so step animates after
+          const wasJustCompleted =
+            index === currentStep - 1 && currentStep > prevStep;
+          const stepAnimationDelay = wasJustCompleted ? 0.6 : 0;
+
+          return (
+            <div
+              key={index}
+              className="relative flex flex-1 flex-col items-center"
+            >
+              {/* Connector */}
+              {index < steps.length - 1 && (
+                <div className="absolute top-8 left-[calc(50%+2rem)] h-1 w-[calc(100%-4rem)]">
+                  <div className="h-full bg-default-800">
+                    <motion.div
+                      className="h-full bg-linear-to-r from-primary via-secondary to-danger shadow-[0_0_10px_currentColor]"
+                      initial={{ width: "0%" }}
+                      animate={{ width: index < currentStep ? "100%" : "0%" }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="relative">
+                {/* Animated border fill effect using SVG */}
+                <svg className="absolute inset-0 h-16 w-16" viewBox="0 0 64 64">
+                  <defs>
+                    <linearGradient
+                      id={\`borderGradient-\${index}\`}
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="100%"
+                    >
+                      <stop offset="0%" stopColor="#006FEE" />
+                      <stop offset="50%" stopColor="#17C964" />
+                      <stop offset="100%" stopColor="#F31260" />
+                    </linearGradient>
+                  </defs>
+                  {/* Background border */}
+                  <rect
+                    x="1"
+                    y="1"
+                    width="62"
+                    height="62"
+                    rx="6"
+                    fill="none"
+                    stroke="#3f3f46"
+                    strokeWidth="2"
+                  />
+                  {/* Animated border that draws around */}
+                  {(isCompleted || isCurrent) && (
+                    <motion.rect
+                      x="1"
+                      y="1"
+                      width="62"
+                      height="62"
+                      rx="6"
+                      fill="none"
+                      stroke={\`url(#borderGradient-\${index})\`}
+                      strokeWidth="2"
+                      strokeDasharray="248"
+                      initial={{ strokeDashoffset: 248 }}
+                      animate={{ strokeDashoffset: 0 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: stepAnimationDelay + 0.6,
+                        ease: "easeOut",
+                      }}
+                    />
+                  )}
+                </svg>
+
+                <motion.button
+                  type="button"
+                  disabled={!isClickableStep}
+                  onClick={() => isClickableStep && onStepClick?.(index)}
+                  className={\`relative z-10 flex h-16 w-16 items-center justify-center rounded-lg font-bold text-lg \${
+                    isCompleted || isCurrent
+                      ? "bg-primary/10 text-primary shadow-[0_0_20px_currentColor]"
+                      : "bg-default-900/50 text-default-600"
+                  } \${isClickableStep ? "cursor-pointer" : "cursor-default"}\`}
+                  initial={false}
+                  animate={{
+                    scale: isCurrent ? [1, 1.1, 1] : 1,
+                    backgroundColor: isCurrent
+                      ? [
+                          "rgba(0, 111, 238, 0.1)",
+                          "rgba(0, 111, 238, 0.2)",
+                          "rgba(0, 111, 238, 0.1)",
+                        ]
+                      : isCompleted
+                        ? "rgba(0, 111, 238, 0.1)"
+                        : "rgba(24, 24, 27, 0.5)",
+                    boxShadow: isCurrent
+                      ? [
+                          "0 0 20px rgba(0, 111, 238, 0.5)",
+                          "0 0 40px rgba(0, 111, 238, 0.8)",
+                          "0 0 20px rgba(0, 111, 238, 0.5)",
+                        ]
+                      : "0 0 0px rgba(0, 111, 238, 0)",
+                  }}
+                  transition={{
+                    scale: { duration: 0.3, delay: stepAnimationDelay + 0.3 },
+                    backgroundColor: {
+                      duration: 0.4,
+                      delay: stepAnimationDelay + 0.3,
+                    },
+                    boxShadow: {
+                      duration: 2,
+                      repeat: isCurrent ? Infinity : 0,
+                      delay: stepAnimationDelay + 0.3,
+                    },
+                  }}
+                  whileHover={
+                    isClickableStep
+                      ? {
+                          scale: 1.1,
+                          boxShadow: "0 0 30px rgba(0, 111, 238, 1)",
+                        }
+                      : {}
+                  }
+                  whileTap={isClickableStep ? { scale: 0.95 } : {}}
+                >
+                  {isCompleted ? (
+                    <div className="relative h-8 w-8">
+                      {/* Animated checkmark using SVG path drawing */}
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="h-8 w-8"
+                      >
+                        <motion.path
+                          d="M5 13l4 4L19 7"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          animate={{ pathLength: 1, opacity: 1 }}
+                          transition={{
+                            pathLength: {
+                              duration: 0.4,
+                              ease: "easeOut"
+                            },
+                            opacity: {
+                              duration: 0.1,
+                            }
+                          }}
+                        />
+                      </svg>
+                    </div>
+                  ) : step.icon ? (
+                    step.icon
+                  ) : (
+                    index + 1
+                  )}
+                </motion.button>
+              </div>
+
+              {/* Label */}
+              <motion.div
+                className="mt-4 flex flex-col items-center"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.15 }}
+              >
+                <span
+                  className={\`text-center font-bold font-mono text-sm uppercase tracking-wider \${
+                    isCurrent
+                      ? "text-primary drop-shadow-[0_0_8px_rgba(0,111,238,0.8)]"
+                      : isCompleted
+                        ? "text-foreground"
+                        : "text-default-600"
+                  }\`}
+                >
+                  {step.label}
+                </span>
+                {step.description && (
+                  <span className="mt-1 text-center font-mono text-default-500 text-xs">
+                    {step.description}
+                  </span>
+                )}
+              </motion.div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }`,
 			},

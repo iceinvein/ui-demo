@@ -31,7 +31,7 @@ export function CardFlipDemo() {
 				>
 					{/* Front Face */}
 					<motion.div
-						className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-default-200 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-rose-500/20 p-6 shadow-xl backdrop-blur-sm"
+						className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-default-200 bg-linear-to-br from-purple-500/20 via-pink-500/20 to-rose-500/20 p-6 shadow-xl backdrop-blur-sm"
 						style={{
 							backfaceVisibility: "hidden",
 							WebkitBackfaceVisibility: "hidden",
@@ -52,7 +52,7 @@ export function CardFlipDemo() {
 
 						{/* Avatar */}
 						<motion.div
-							className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 font-bold text-3xl text-white shadow-lg"
+							className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-purple-500 to-pink-500 font-bold text-3xl text-white shadow-lg"
 							whileHover={{ scale: 1.1, rotate: 5 }}
 							transition={{ type: "spring", stiffness: 400, damping: 15 }}
 						>
@@ -60,7 +60,7 @@ export function CardFlipDemo() {
 						</motion.div>
 
 						{/* Name */}
-						<h2 className="mb-1 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text font-bold text-2xl text-transparent">
+						<h2 className="mb-1 bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text font-bold text-2xl text-transparent">
 							Jane Doe
 						</h2>
 
@@ -88,7 +88,7 @@ export function CardFlipDemo() {
 
 					{/* Back Face */}
 					<motion.div
-						className="absolute inset-0 flex flex-col rounded-2xl border border-default-200 bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-teal-500/20 p-6 shadow-xl backdrop-blur-sm"
+						className="absolute inset-0 flex flex-col rounded-2xl border border-default-200 bg-linear-to-br from-blue-500/20 via-cyan-500/20 to-teal-500/20 p-6 shadow-xl backdrop-blur-sm"
 						style={{
 							backfaceVisibility: "hidden",
 							WebkitBackfaceVisibility: "hidden",
@@ -110,7 +110,7 @@ export function CardFlipDemo() {
 
 						{/* Header */}
 						<div className="mb-5 text-center">
-							<h3 className="mb-1 bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text font-bold text-transparent text-xl">
+							<h3 className="mb-1 bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text font-bold text-transparent text-xl">
 								Professional Details
 							</h3>
 							<p className="text-default-500 text-xs">More about Jane</p>

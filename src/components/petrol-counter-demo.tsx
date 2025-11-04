@@ -50,7 +50,7 @@ export function PetrolCounterDemo() {
 		<div className="flex min-h-[400px] items-center justify-center p-8">
 			<div className="w-full max-w-2xl">
 				{/* Petrol Pump Display */}
-				<div className="mb-8 rounded-3xl border-2 border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950 p-8 shadow-2xl">
+				<div className="mb-8 rounded-3xl border-2 border-zinc-800 bg-linear-to-br from-zinc-900 to-zinc-950 p-8 shadow-2xl">
 					{/* Header */}
 					<div className="mb-6 flex items-center justify-between">
 						<div className="flex items-center gap-3">

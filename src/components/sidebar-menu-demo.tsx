@@ -64,11 +64,11 @@ export function SidebarMenuDemo() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<div className="relative flex h-[600px] w-full items-start overflow-hidden rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100">
+		<div className="relative flex h-[600px] w-full items-start overflow-hidden rounded-2xl border border-default-200 bg-linear-to-br from-default-50 to-default-100">
 			{/* Menu Bar */}
 			<div className="absolute top-0 right-0 left-0 z-20 flex items-center justify-between border-default-200 border-b bg-background/80 p-4 backdrop-blur-sm">
 				<motion.button
-					className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500/10 to-pink-500/10 text-default-700 transition-colors hover:from-purple-500/20 hover:to-pink-500/20"
+					className="flex h-10 w-10 items-center justify-center rounded-lg bg-linear-to-br from-purple-500/10 to-pink-500/10 text-default-700 transition-colors hover:from-purple-500/20 hover:to-pink-500/20"
 					onClick={() => setIsOpen(!isOpen)}
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}
@@ -97,7 +97,7 @@ export function SidebarMenuDemo() {
 						)}
 					</AnimatePresence>
 				</motion.button>
-				<h1 className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text font-bold text-lg text-transparent">
+				<h1 className="bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text font-bold text-lg text-transparent">
 					Dashboard
 				</h1>
 				<div className="h-10 w-10" /> {/* Spacer for centering */}
@@ -127,13 +127,13 @@ export function SidebarMenuDemo() {
 						exit="closed"
 					>
 						{/* Sidebar Header */}
-						<div className="flex-shrink-0 border-default-200 border-b p-6">
+						<div className="shrink-0 border-default-200 border-b p-6">
 							<motion.div
 								initial={{ opacity: 0, y: -10 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.1 }}
 							>
-								<h2 className="mb-1 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text font-bold text-transparent text-xl">
+								<h2 className="mb-1 bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text font-bold text-transparent text-xl">
 									Navigation
 								</h2>
 								<p className="text-default-500 text-sm">
@@ -155,7 +155,7 @@ export function SidebarMenuDemo() {
 												whileTap={{ scale: 0.98 }}
 											>
 												<div
-													className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-background shadow-sm ${item.color}`}
+													className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-background shadow-sm ${item.color}`}
 												>
 													<Icon className="h-5 w-5" />
 												</div>
@@ -171,7 +171,7 @@ export function SidebarMenuDemo() {
 
 						{/* Sidebar Footer */}
 						<motion.div
-							className="flex-shrink-0 border-default-200 border-t bg-gradient-to-br from-purple-500/5 to-pink-500/5 p-4"
+							className="shrink-0 border-default-200 border-t bg-linear-to-br from-purple-500/5 to-pink-500/5 p-4"
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.6 }}
@@ -206,7 +206,7 @@ export function SidebarMenuDemo() {
 						Click the menu button to see the staggered animation
 					</p>
 					<motion.div
-						className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 px-4 py-2 text-default-700 text-sm"
+						className="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-purple-500/10 to-pink-500/10 px-4 py-2 text-default-700 text-sm"
 						animate={{ scale: [1, 1.05, 1] }}
 						transition={{ duration: 2, repeat: Infinity }}
 					>

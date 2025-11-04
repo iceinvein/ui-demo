@@ -109,7 +109,7 @@ export function AnimatedDialogDemo() {
 								</ul>
 							</div>
 
-							<div className="rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 p-6">
+							<div className="rounded-xl bg-linear-to-br from-primary/10 to-secondary/10 p-6">
 								<p className="text-center text-default-700">
 									This is inspired by Family's beautiful dialog animations. The
 									shared layout ID creates a seamless transition that feels

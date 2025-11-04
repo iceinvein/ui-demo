@@ -29,14 +29,14 @@ export function ComponentCard({
 			onClick={onClick}
 		>
 			<motion.div
-				className="relative h-full overflow-hidden rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100 p-6 shadow-sm transition-shadow duration-300"
+				className="relative h-full overflow-hidden rounded-2xl border border-default-200 bg-linear-to-br from-default-50 to-default-100 p-6 shadow-sm transition-shadow duration-300"
 				whileHover={{
 					boxShadow: "0 20px 40px -12px rgba(0, 0, 0, 0.15)",
 				}}
 			>
 				{/* Animated gradient overlay */}
 				<motion.div
-					className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-success/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+					className="absolute inset-0 bg-linear-to-br from-primary/5 via-secondary/5 to-success/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 					initial={false}
 				/>
 

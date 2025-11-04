@@ -14,7 +14,7 @@ export function SplitTextDemo() {
 			<div key={key} className="text-center">
 				<SplitText
 					text="Beautiful Split Text Animation"
-					className="mb-4 bg-gradient-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl text-transparent md:text-5xl"
+					className="mb-4 bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl text-transparent md:text-5xl"
 					delay={0.1}
 					duration={0.04}
 				/>

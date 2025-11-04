@@ -82,7 +82,7 @@ export function AnimatedList({
 						}}
 					>
 						<div
-							className={`group relative flex items-center justify-between gap-4 rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100/50 p-5 shadow-sm backdrop-blur-sm transition-all hover:border-default-300 hover:shadow-md ${itemClassName}`}
+							className={`group relative flex items-center justify-between gap-4 rounded-2xl border border-default-200 bg-linear-to-br from-default-50 to-default-100/50 p-5 shadow-sm backdrop-blur-sm transition-all hover:border-default-300 hover:shadow-md ${itemClassName}`}
 						>
 							<div className="flex-1">{item.content}</div>
 							{showRemoveButton && onRemove && (

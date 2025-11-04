@@ -303,7 +303,7 @@ export function AnimatedListDemo() {
 				{/* Stats Banner */}
 				<motion.div
 					layout
-					className="mb-6 overflow-hidden rounded-2xl border border-default-200 bg-gradient-to-br from-default-50 to-default-100/50 backdrop-blur-sm"
+					className="mb-6 overflow-hidden rounded-2xl border border-default-200 bg-linear-to-br from-default-50 to-default-100/50 backdrop-blur-sm"
 				>
 					<div className="flex items-center justify-between p-4">
 						<div className="flex items-center gap-3">

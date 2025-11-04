@@ -76,7 +76,7 @@ function DraggableItem({ item }: { item: Item }) {
 			dragControls={controls}
 		>
 			<motion.div
-				className={`group relative flex items-start gap-4 rounded-xl border border-default-200 bg-gradient-to-br ${item.color} select-none p-4 backdrop-blur-sm`}
+				className={`group relative flex items-start gap-4 rounded-xl border border-default-200 bg-linear-to-br ${item.color} select-none p-4 backdrop-blur-sm`}
 				whileHover={{
 					scale: 1.01,
 					boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
@@ -134,7 +134,7 @@ export function DragDropListDemo() {
 				animate={{ opacity: 1, y: 0 }}
 				className="mb-6 text-center"
 			>
-				<h2 className="mb-2 bg-gradient-to-r from-primary via-secondary to-success bg-clip-text font-bold text-2xl text-transparent">
+				<h2 className="mb-2 bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-2xl text-transparent">
 					Project Tasks
 				</h2>
 				<p className="text-default-600 text-sm">

@@ -19,7 +19,7 @@ export function AnimatedDialogShowcase() {
 						stiffness: 200,
 						damping: 15,
 					}}
-					className="mb-8 inline-flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-secondary/20"
+					className="mb-8 inline-flex h-24 w-24 items-center justify-center rounded-full bg-linear-to-br from-primary/20 to-secondary/20"
 				>
 					<motion.div
 						animate={{
@@ -41,7 +41,7 @@ export function AnimatedDialogShowcase() {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.4 }}
-					className="mb-4 bg-gradient-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl text-transparent"
+					className="mb-4 bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl text-transparent"
 				>
 					Animated Dialog
 				</motion.h2>
@@ -131,7 +131,7 @@ export function AnimatedDialogShowcase() {
 					initial={{ opacity: 0, scale: 0.9 }}
 					animate={{ opacity: 1, scale: 1 }}
 					transition={{ delay: 0.7 }}
-					className="rounded-xl bg-gradient-to-br from-primary/10 via-secondary/10 to-success/10 p-6"
+					className="rounded-xl bg-linear-to-br from-primary/10 via-secondary/10 to-success/10 p-6"
 				>
 					<p className="mb-2 font-semibold text-default-900">
 						Try it yourself!

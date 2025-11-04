@@ -136,7 +136,7 @@ export default function IndexPage() {
 				{bokehCircles.map((circle, index) => (
 					<motion.div
 						key={index}
-						className={`pointer-events-none absolute rounded-full bg-gradient-to-br ${circle.color} blur-3xl`}
+						className={`pointer-events-none absolute rounded-full bg-linear-to-br ${circle.color} blur-3xl`}
 						style={{
 							width: circle.size,
 							height: circle.size,
@@ -180,7 +180,7 @@ export default function IndexPage() {
 				<div className="relative mb-20 text-center">
 					{/* Animated glow behind title */}
 					<motion.div
-						className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[300px] w-[600px] rounded-full bg-gradient-to-r from-primary/20 via-secondary/20 to-success/20 blur-3xl"
+						className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[300px] w-[600px] rounded-full bg-linear-to-r from-primary/20 via-secondary/20 to-success/20 blur-3xl"
 						animate={{
 							scale: [1, 1.2, 1],
 							opacity: [0.3, 0.5, 0.3],
@@ -200,7 +200,7 @@ export default function IndexPage() {
 					>
 						<SplitText
 							text="UI Component Showcase"
-							className="mb-6 bg-gradient-to-r from-primary via-secondary to-success bg-clip-text font-bold text-5xl text-transparent md:text-7xl"
+							className="mb-6 bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-5xl text-transparent md:text-7xl"
 							delay={0}
 							duration={0.02}
 						/>
@@ -267,11 +267,11 @@ export default function IndexPage() {
 									transition={{ duration: 0.5 }}
 									className="relative inline-block"
 								>
-									<h2 className="relative mb-3 bg-gradient-to-r from-default-900 to-default-600 bg-clip-text font-bold text-4xl text-transparent md:text-5xl">
+									<h2 className="relative mb-3 bg-linear-to-r from-default-900 to-default-600 bg-clip-text font-bold text-4xl text-transparent md:text-5xl">
 										{category.name}
 									</h2>
 									<motion.div
-										className="-bottom-2 absolute left-0 h-1 rounded-full bg-gradient-to-r from-primary via-secondary to-success"
+										className="-bottom-2 absolute left-0 h-1 rounded-full bg-linear-to-r from-primary via-secondary to-success"
 										initial={{ width: 0 }}
 										whileInView={{ width: "100%" }}
 										viewport={{ once: true }}

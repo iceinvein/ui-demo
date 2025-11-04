@@ -175,224 +175,102 @@ export function AnimatedComponentDialog({
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
-					transition={{ delay: 0.05, duration: 0.2 }}
-					className="relative z-20 flex items-center justify-between rounded-t-3xl border-default-200 border-b bg-gradient-to-r from-default-50/80 via-background/80 to-default-50/80 px-6 py-4 backdrop-blur-md"
+					transition={{ duration: 0.2 }}
+					className="relative z-20 flex items-center justify-between rounded-t-xl border-default-200/30 border-t border-b bg-background px-6 py-4"
 				>
-					{/* Animated gradient line */}
-					<motion.div
-						className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary via-secondary to-success"
-						initial={{ scaleX: 0 }}
-						animate={{ scaleX: 1 }}
-						transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
-						style={{ transformOrigin: "left" }}
-					/>
-
-					<motion.div
-						initial={{ opacity: 0, x: -20 }}
-						animate={{ opacity: 1, x: 0 }}
-						transition={{ delay: 0.2 }}
-					>
-						<h2 className="bg-gradient-to-r from-default-900 to-default-600 bg-clip-text font-bold text-2xl text-transparent">
+					<div>
+						<h2 className="font-semibold text-default-900 text-lg">
 							{component.title}
 						</h2>
-						<p className="text-default-600 text-sm">{component.description}</p>
-					</motion.div>
+						<p className="text-default-500 text-sm">{component.description}</p>
+					</div>
 
-					<motion.div
-						initial={{ opacity: 0, scale: 0.8, rotate: -90 }}
-						animate={{ opacity: 1, scale: 1, rotate: 0 }}
-						transition={{ delay: 0.3, type: "spring", stiffness: 300 }}
+					<Button
+						isIconOnly
+						variant="light"
+						onPress={() => setIsOpen(false)}
+						className="text-default-400 transition-colors hover:text-default-600"
 					>
-						<Button
-							isIconOnly
-							variant="light"
-							onPress={() => setIsOpen(false)}
-							className="text-default-500 transition-all hover:rotate-90 hover:scale-110 hover:text-default-900"
+						<svg
+							className="h-5 w-5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
 						>
-							<svg
-								className="h-5 w-5"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth={2}
-									d="M6 18L18 6M6 6l12 12"
-								/>
-							</svg>
-						</Button>
-					</motion.div>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={2}
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					</Button>
 				</motion.div>
 
 				{/* Tabs */}
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					transition={{ delay: 0.1, duration: 0.2 }}
-					className="relative z-20 flex gap-1 border-default-200 border-b bg-gradient-to-r from-default-50/50 via-background/50 to-default-50/50 px-6 backdrop-blur-sm"
-				>
-					{/* Sliding background indicator */}
-					<motion.div
-						className="absolute bottom-0 h-full rounded-t-lg bg-gradient-to-b from-primary/5 to-primary/10"
-						animate={{
-							x: activeTab === "preview" ? 0 : "100%",
-							width: activeTab === "preview" ? "80px" : "60px",
-						}}
-						transition={{ type: "spring", stiffness: 400, damping: 30 }}
-					/>
-
-					<motion.button
+				<div className="relative z-20 flex gap-1 border-default-200/50 border-b bg-background px-6">
+					<button
 						type="button"
 						onClick={() => setActiveTab("preview")}
-						className={`relative z-10 px-4 py-3 font-medium text-sm transition-all ${
+						className={`relative px-4 py-3 text-sm transition-colors ${
 							activeTab === "preview"
-								? "text-primary"
-								: "text-default-600 hover:text-default-900"
+								? "text-default-900"
+								: "text-default-500 hover:text-default-700"
 						}`}
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
 					>
-						<motion.span
-							animate={{
-								scale: activeTab === "preview" ? 1.1 : 1,
-							}}
-							transition={{ type: "spring", stiffness: 400, damping: 20 }}
-						>
-							Preview
-						</motion.span>
+						Preview
 						{activeTab === "preview" && (
-							<>
-								<motion.div
-									className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50"
-									layoutId="activeTab"
-									transition={{ type: "spring", stiffness: 400, damping: 30 }}
-								/>
-								<motion.div
-									className="absolute right-0 bottom-0 left-0 h-0.5 bg-primary blur-sm"
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 1 }}
-									exit={{ opacity: 0 }}
-								/>
-							</>
+							<motion.div
+								className="absolute right-0 bottom-0 left-0 h-0.5 bg-primary"
+								layoutId="activeTab"
+								transition={{ type: "spring", stiffness: 400, damping: 30 }}
+							/>
 						)}
-					</motion.button>
+					</button>
 
-					<motion.button
+					<button
 						type="button"
 						onClick={() => setActiveTab("code")}
-						className={`relative z-10 px-4 py-3 font-medium text-sm transition-all ${
+						className={`relative px-4 py-3 text-sm transition-colors ${
 							activeTab === "code"
-								? "text-primary"
-								: "text-default-600 hover:text-default-900"
+								? "text-default-900"
+								: "text-default-500 hover:text-default-700"
 						}`}
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
 					>
-						<motion.span
-							animate={{
-								scale: activeTab === "code" ? 1.1 : 1,
-							}}
-							transition={{ type: "spring", stiffness: 400, damping: 20 }}
-						>
-							Code
-						</motion.span>
+						Code
 						{activeTab === "code" && (
-							<>
-								<motion.div
-									className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50"
-									layoutId="activeTab"
-									transition={{ type: "spring", stiffness: 400, damping: 30 }}
-								/>
-								<motion.div
-									className="absolute right-0 bottom-0 left-0 h-0.5 bg-primary blur-sm"
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 1 }}
-									exit={{ opacity: 0 }}
-								/>
-							</>
+							<motion.div
+								className="absolute right-0 bottom-0 left-0 h-0.5 bg-primary"
+								layoutId="activeTab"
+								transition={{ type: "spring", stiffness: 400, damping: 30 }}
+							/>
 						)}
-					</motion.button>
-
-					{/* Animated sparkle on tab switch */}
-					<motion.div
-						key={activeTab}
-						className="absolute bottom-2 h-1 w-1 rounded-full bg-primary"
-						initial={{ scale: 0, x: activeTab === "preview" ? 40 : 120 }}
-						animate={{
-							scale: [0, 2, 0],
-							opacity: [0, 1, 0],
-						}}
-						transition={{ duration: 0.6 }}
-					/>
-				</motion.div>
+					</button>
+				</div>
 
 				{/* Content */}
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					transition={{ delay: 0.15, duration: 0.2 }}
-					className="relative z-10 flex-1 overflow-hidden"
-				>
-					<div className="absolute inset-0 overflow-hidden p-6">
+				<div className="relative z-10 flex-1 overflow-hidden">
+					<div className="absolute inset-0 overflow-hidden">
 						{/* Preview Tab */}
 						<motion.div
 							initial={false}
 							animate={{
 								x: activeTab === "preview" ? "0%" : "-100%",
 								opacity: activeTab === "preview" ? 1 : 0,
-								scale: activeTab === "preview" ? 1 : 0.95,
-								filter: activeTab === "preview" ? "blur(0px)" : "blur(10px)",
 							}}
 							transition={{
 								type: "spring",
 								stiffness: 300,
 								damping: 30,
 							}}
-							className="absolute inset-0 overflow-y-auto p-6"
+							className="absolute inset-0 overflow-y-auto p-8"
 							style={{
 								pointerEvents: activeTab === "preview" ? "auto" : "none",
-								willChange: "transform, opacity, filter",
 							}}
 						>
-							<motion.div
-								className="relative z-10 w-full rounded-xl border border-default-200/50 bg-gradient-to-br from-default-50/80 via-background/80 to-default-50/80 p-8 shadow-lg backdrop-blur-sm"
-								initial={{ y: 20, opacity: 0 }}
-								animate={{
-									y: activeTab === "preview" ? 0 : 20,
-									opacity: activeTab === "preview" ? 1 : 0,
-								}}
-								transition={{ delay: 0.1 }}
-							>
-								{/* Decorative corner elements - behind content */}
-								<div className="-z-10 pointer-events-none absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-primary/10 to-transparent" />
-								<div className="-z-10 pointer-events-none absolute bottom-0 left-0 h-20 w-20 rounded-tr-full bg-gradient-to-tl from-secondary/10 to-transparent" />
-
-								{/* Animated border glow - behind content */}
-								<motion.div
-									className="-z-10 pointer-events-none absolute inset-0 rounded-xl border border-primary/0"
-									animate={{
-										borderColor: [
-											"rgba(99, 102, 241, 0)",
-											"rgba(99, 102, 241, 0.2)",
-											"rgba(99, 102, 241, 0)",
-										],
-									}}
-									transition={{
-										duration: 3,
-										repeat: Number.POSITIVE_INFINITY,
-										ease: "easeInOut",
-									}}
-								/>
-
-								{/* Content with proper z-index */}
-								<div className="relative z-10">
-									<component.component />
-								</div>
-							</motion.div>
+							<div className="w-full">
+								<component.component />
+							</div>
 						</motion.div>
 
 						{/* Code Tab */}
@@ -401,34 +279,21 @@ export function AnimatedComponentDialog({
 							animate={{
 								x: activeTab === "code" ? "0%" : "100%",
 								opacity: activeTab === "code" ? 1 : 0,
-								scale: activeTab === "code" ? 1 : 0.95,
-								filter: activeTab === "code" ? "blur(0px)" : "blur(10px)",
 							}}
 							transition={{
 								type: "spring",
 								stiffness: 300,
 								damping: 30,
 							}}
-							className="absolute inset-0 z-10 overflow-y-auto p-6"
+							className="absolute inset-0 z-10 overflow-y-auto p-8"
 							style={{
 								pointerEvents: activeTab === "code" ? "auto" : "none",
-								willChange: "transform, opacity, filter",
 							}}
 						>
-							<motion.div
-								className="relative z-10"
-								initial={{ y: 20, opacity: 0 }}
-								animate={{
-									y: activeTab === "code" ? 0 : 20,
-									opacity: activeTab === "code" ? 1 : 0,
-								}}
-								transition={{ delay: 0.1 }}
-							>
-								<CodeViewer code={component.code} />
-							</motion.div>
+							<CodeViewer code={component.code} />
 						</motion.div>
 					</div>
-				</motion.div>
+				</div>
 			</AnimatedDialog>
 		</>
 	);
