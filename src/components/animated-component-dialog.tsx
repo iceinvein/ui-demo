@@ -352,7 +352,7 @@ export function AnimatedComponentDialog({
 								stiffness: 300,
 								damping: 30,
 							}}
-							className="absolute inset-0 flex items-center justify-center overflow-y-auto p-6"
+							className="absolute inset-0 overflow-y-auto p-6"
 							style={{
 								pointerEvents: activeTab === "preview" ? "auto" : "none",
 								willChange: "transform, opacity, filter",
