@@ -265,8 +265,16 @@ export function SkeletonAvatar({
  */
 export function SkeletonButton({
 	variant = "shimmer",
+	size = "md",
 }: {
 	variant?: SkeletonProps["variant"];
+	size?: "sm" | "md" | "lg";
 }) {
-	return <Skeleton variant={variant} className="h-10 w-24 rounded-lg" />;
+	const sizeClasses = {
+		sm: "h-8 w-20",
+		md: "h-10 w-24",
+		lg: "h-12 w-28",
+	};
+
+	return <Skeleton variant={variant} className={`${sizeClasses[size]} rounded-lg`} />;
 }

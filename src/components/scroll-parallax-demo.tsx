@@ -34,7 +34,6 @@ export function ScrollParallaxDemo() {
 	// Track scroll progress within the dialog's scroll container
 	const { scrollYProgress } = useScroll({
 		container: scrollContainerRef,
-		layoutEffect: false,
 	});
 
 	// Transform scroll progress to different values for parallax layers
