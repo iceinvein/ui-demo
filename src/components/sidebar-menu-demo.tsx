@@ -64,7 +64,7 @@ export function SidebarMenuDemo() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<div className="relative flex h-[600px] w-full items-start overflow-hidden rounded-2xl border border-default-200 bg-linear-to-br from-default-50 to-default-100">
+		<div className="absolute inset-0 flex items-start overflow-hidden bg-linear-to-br from-default-50 to-default-100">
 			{/* Menu Bar */}
 			<div className="absolute top-0 right-0 left-0 z-20 flex items-center justify-between border-default-200 border-b bg-background/80 p-4 backdrop-blur-sm">
 				<motion.button

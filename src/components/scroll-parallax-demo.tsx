@@ -66,14 +66,13 @@ export function ScrollParallaxDemo() {
 
 	return (
 		<div ref={contentRef} className="relative w-full">
-			{/* Scroll Progress Indicator - Sticky at top */}
-			<motion.div
-				className="sticky top-0 z-60 h-1 bg-linear-to-r from-purple-500 via-pink-500 to-rose-500"
-				style={{ scaleX: scrollYProgress, transformOrigin: "0%" }}
-			/>
-
 			{/* Parallax Content - No nested scroll container */}
 			<div className="relative min-h-[3600px]">
+				{/* Scroll Progress Indicator - Sticky below header */}
+				<motion.div
+					className="sticky top-0 z-60 h-1 bg-linear-to-r from-purple-500 via-pink-500 to-rose-500"
+					style={{ scaleX: scrollYProgress, transformOrigin: "0%" }}
+				/>
 				{/* Background Layer - Slowest */}
 				<motion.div
 					className="absolute inset-x-0 top-0"

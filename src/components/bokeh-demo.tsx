@@ -71,7 +71,7 @@ export function BokehDemo() {
 	];
 
 	return (
-		<div className="relative h-[600px] w-full overflow-hidden rounded-2xl border border-default-200 bg-linear-to-br from-slate-900 to-slate-800">
+		<div className="absolute inset-0 overflow-hidden bg-linear-to-br from-slate-900 to-slate-800">
 			{/* Bokeh Circles */}
 			{bokehCircles.map((circle, index) => (
 				<motion.div
