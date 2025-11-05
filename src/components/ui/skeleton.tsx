@@ -276,5 +276,7 @@ export function SkeletonButton({
 		lg: "h-12 w-28",
 	};
 
-	return <Skeleton variant={variant} className={`${sizeClasses[size]} rounded-lg`} />;
+	return (
+		<Skeleton variant={variant} className={`${sizeClasses[size]} rounded-lg`} />
+	);
 }

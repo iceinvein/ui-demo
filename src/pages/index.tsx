@@ -267,7 +267,7 @@ export default function IndexPage() {
 									transition={{ duration: 0.5 }}
 									className="relative inline-block"
 								>
-									<h2 className="relative mb-3 bg-linear-to-r from-default-900 to-default-600 bg-clip-text font-bold text-4xl text-transparent md:text-5xl">
+									<h2 className="relative bg-linear-to-r from-default-900 to-default-600 bg-clip-text font-bold text-4xl text-transparent leading-snug md:text-5xl">
 										{category.name}
 									</h2>
 									<motion.div

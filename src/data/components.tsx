@@ -1,18 +1,24 @@
+import { AccordionDemo } from "@/components/accordion-demo";
 import { AnimatedDialogShowcase } from "@/components/animated-dialog-showcase";
 import { AnimatedListDemo } from "@/components/animated-list-demo";
 import { AnimatedTabsDemo } from "@/components/animated-tabs-demo";
 import { BokehDemo } from "@/components/bokeh-demo";
 import { ButtonToDialogDemo } from "@/components/button-to-dialog-demo";
 import { CardFlipDemo } from "@/components/card-flip-demo";
+import { CounterDemo } from "@/components/counter-demo";
 import { DragDropListDemo } from "@/components/drag-drop-list-demo";
+import { ImageGalleryDemo } from "@/components/image-gallery-demo";
 import { LoadingDemo } from "@/components/loading-demo";
+import { MultiStepFormDemo } from "@/components/multi-step-form-demo";
 import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
 import { ScrollParallaxDemo } from "@/components/scroll-parallax-demo";
 import { SidebarMenuDemo } from "@/components/sidebar-menu-demo";
 import { SkeletonDemo } from "@/components/skeleton-demo";
 import { SplitTextDemo } from "@/components/split-text-demo";
+import { StaggeredGridDemo } from "@/components/staggered-grid-demo";
 import { StepperDemo } from "@/components/stepper-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
+import { TimelineDemo } from "@/components/timeline-demo";
 import type { Category, ComponentItem } from "@/types/component";
 
 export const categories: Category[] = [
@@ -3132,6 +3138,1276 @@ export function NeonGlowStepper({
         })}
       </div>
     </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "timeline",
+		title: "Timeline",
+		description:
+			"Vertical timeline with progressive reveal animation, connecting lines, and milestone markers",
+		category: "data-display",
+		component: TimelineDemo,
+		tags: ["animation", "timeline", "progress", "milestones"],
+		code: [
+			{
+				filename: "timeline-demo.tsx",
+				language: "tsx",
+				code: `import {
+  Briefcase,
+  GraduationCap,
+  Rocket,
+  Trophy,
+  Zap,
+} from "lucide-react";
+import { Timeline, type TimelineItem } from "./ui/timeline";
+
+export function TimelineDemo() {
+  const timelineItems: TimelineItem[] = [
+    {
+      id: "1",
+      title: "Project Kickoff",
+      description:
+        "Initiated the new product development cycle with stakeholder alignment and resource planning.",
+      date: "January 2024",
+      icon: <Rocket className="h-5 w-5" />,
+      color: "#3b82f6",
+    },
+    {
+      id: "2",
+      title: "Design Phase Complete",
+      description:
+        "Finalized UI/UX designs, created design system, and completed user research with 50+ participants.",
+      date: "February 2024",
+      icon: <Zap className="h-5 w-5" />,
+      color: "#8b5cf6",
+    },
+    {
+      id: "3",
+      title: "Development Milestone",
+      description:
+        "Reached 80% code completion with all core features implemented and initial testing completed.",
+      date: "March 2024",
+      icon: <Briefcase className="h-5 w-5" />,
+      color: "#ec4899",
+    },
+    {
+      id: "4",
+      title: "Beta Launch",
+      description:
+        "Released beta version to 1,000 early adopters and gathered valuable feedback for improvements.",
+      date: "April 2024",
+      icon: <GraduationCap className="h-5 w-5" />,
+      color: "#f59e0b",
+    },
+    {
+      id: "5",
+      title: "Public Release",
+      description:
+        "Successfully launched to the public with 10,000+ users in the first week and 4.8★ rating.",
+      date: "May 2024",
+      icon: <Trophy className="h-5 w-5" />,
+      color: "#10b981",
+    },
+  ];
+
+  return (
+    <div className="flex min-h-[600px] items-center justify-center p-8">
+      <div className="w-full max-w-3xl">
+        <Timeline items={timelineItems} />
+      </div>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/timeline.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import type { ReactNode } from "react";
+
+export interface TimelineItem {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  icon?: ReactNode;
+  color?: string;
+}
+
+interface TimelineProps {
+  items: TimelineItem[];
+  className?: string;
+}
+
+export function Timeline({ items, className = "" }: TimelineProps) {
+  return (
+    <div className={\`relative \${className}\`}>
+      {/* Vertical connecting line */}
+      <div className="absolute top-0 bottom-0 left-6 w-0.5 bg-default-200" />
+
+      {/* Animated progress line */}
+      <motion.div
+        className="absolute top-0 left-6 w-0.5 bg-primary"
+        initial={{ height: 0 }}
+        animate={{ height: "100%" }}
+        transition={{
+          duration: 1.5,
+          ease: "easeInOut",
+          delay: 0.3,
+        }}
+      />
+
+      {/* Timeline items */}
+      <div className="space-y-8">
+        {items.map((item, index) => (
+          <motion.div
+            key={item.id}
+            className="relative flex gap-6"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: 0.5,
+              delay: index * 0.2,
+              ease: "easeOut",
+            }}
+          >
+            {/* Icon/Dot */}
+            <motion.div
+              className="relative z-10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-4 border-background bg-primary shadow-lg"
+              style={{
+                backgroundColor: item.color || "var(--nextui-primary)",
+              }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 15,
+                delay: index * 0.2 + 0.3,
+              }}
+            >
+              {item.icon ? (
+                <div className="text-white">{item.icon}</div>
+              ) : (
+                <motion.div
+                  className="h-3 w-3 rounded-full bg-white"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{
+                    delay: index * 0.2 + 0.5,
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20,
+                  }}
+                />
+              )}
+            </motion.div>
+
+            {/* Content */}
+            <motion.div
+              className="flex-1 rounded-xl border border-default-200 bg-default-50/50 p-6 backdrop-blur-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.4,
+                delay: index * 0.2 + 0.2,
+                ease: "easeOut",
+              }}
+              whileHover={{
+                y: -4,
+                transition: { duration: 0.2 },
+              }}
+            >
+              {/* Date */}
+              <motion.p
+                className="mb-2 font-medium text-primary text-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.2 + 0.4 }}
+              >
+                {item.date}
+              </motion.p>
+
+              {/* Title */}
+              <motion.h3
+                className="mb-2 font-semibold text-default-900 text-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.2 + 0.5 }}
+              >
+                {item.title}
+              </motion.h3>
+
+              {/* Description */}
+              <motion.p
+                className="text-default-600 text-sm leading-relaxed"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.2 + 0.6 }}
+              >
+                {item.description}
+              </motion.p>
+            </motion.div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "counter-stats",
+		title: "Counter & Stats",
+		description:
+			"Animated counter with smooth count-up animation and stat cards with icons and hover effects",
+		category: "animation",
+		component: CounterDemo,
+		tags: ["animation", "counter", "stats", "numbers", "dashboard"],
+		code: [
+			{
+				filename: "counter-demo.tsx",
+				language: "tsx",
+				code: `import {
+  DollarSign,
+  TrendingUp,
+  Users,
+  Zap,
+} from "lucide-react";
+import { StatCard } from "./ui/counter";
+
+export function CounterDemo() {
+  return (
+    <div className="flex min-h-[500px] items-center justify-center p-8">
+      <div className="grid w-full max-w-5xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <StatCard
+          label="Total Revenue"
+          value={1234567}
+          prefix="$"
+          decimals={0}
+          icon={<DollarSign className="h-6 w-6" />}
+          color="#10b981"
+          delay={0}
+        />
+        <StatCard
+          label="Active Users"
+          value={45678}
+          suffix="+"
+          decimals={0}
+          icon={<Users className="h-6 w-6" />}
+          color="#3b82f6"
+          delay={0.1}
+        />
+        <StatCard
+          label="Growth Rate"
+          value={23.5}
+          suffix="%"
+          decimals={1}
+          icon={<TrendingUp className="h-6 w-6" />}
+          color="#f59e0b"
+          delay={0.2}
+        />
+        <StatCard
+          label="Performance"
+          value={98.7}
+          suffix="%"
+          decimals={1}
+          icon={<Zap className="h-6 w-6" />}
+          color="#8b5cf6"
+          delay={0.3}
+        />
+      </div>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/counter.tsx",
+				language: "tsx",
+				code: `import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { useEffect } from "react";
+
+interface CounterProps {
+  value: number;
+  duration?: number;
+  className?: string;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  delay?: number;
+}
+
+export function Counter({
+  value,
+  duration = 2,
+  className = "",
+  prefix = "",
+  suffix = "",
+  decimals = 0,
+  delay = 0,
+}: CounterProps) {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => {
+    return latest.toFixed(decimals);
+  });
+
+  useEffect(() => {
+    const controls = animate(count, value, {
+      duration,
+      delay,
+      ease: "easeOut",
+    });
+
+    return controls.stop;
+  }, [count, value, duration, delay]);
+
+  return (
+    <motion.span
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+    >
+      {prefix}
+      <motion.span>{rounded}</motion.span>
+      {suffix}
+    </motion.span>
+  );
+}
+
+interface StatCardProps {
+  label: string;
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  icon?: React.ReactNode;
+  color?: string;
+  delay?: number;
+}
+
+export function StatCard({
+  label,
+  value,
+  prefix = "",
+  suffix = "",
+  decimals = 0,
+  icon,
+  color = "var(--nextui-primary)",
+  delay = 0,
+}: StatCardProps) {
+  return (
+    <motion.div
+      className="group relative overflow-hidden rounded-2xl border border-default-200 bg-default-50/50 p-6 backdrop-blur-sm"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+      whileHover={{
+        y: -4,
+        transition: { duration: 0.2 },
+      }}
+    >
+      {/* Animated gradient background on hover */}
+      <motion.div
+        className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: \`linear-gradient(135deg, \${color}10 0%, \${color}05 100%)\`,
+        }}
+      />
+
+      <div className="relative z-10">
+        {/* Icon */}
+        {icon && (
+          <motion.div
+            className="mb-4 inline-flex rounded-xl p-3"
+            style={{
+              backgroundColor: \`\${color}20\`,
+              color: color,
+            }}
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 200,
+              damping: 15,
+              delay: delay + 0.2,
+            }}
+          >
+            {icon}
+          </motion.div>
+        )}
+
+        {/* Value */}
+        <Counter
+          value={value}
+          prefix={prefix}
+          suffix={suffix}
+          decimals={decimals}
+          duration={2}
+          delay={delay + 0.3}
+          className="mb-2 block font-bold text-4xl text-default-900"
+        />
+
+        {/* Label */}
+        <motion.p
+          className="text-default-600 text-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: delay + 0.5 }}
+        >
+          {label}
+        </motion.p>
+      </div>
+
+      {/* Decorative corner accent */}
+      <motion.div
+        className="absolute top-0 right-0 h-20 w-20 rounded-bl-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: \`radial-gradient(circle at top right, \${color}15, transparent)\`,
+        }}
+      />
+    </motion.div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "accordion",
+		title: "Accordion",
+		description:
+			"Collapsible accordion with smooth height animations, icon rotation, and single or multiple open items",
+		category: "data-display",
+		component: AccordionDemo,
+		tags: ["animation", "accordion", "collapse", "expand", "faq"],
+		code: [
+			{
+				filename: "accordion-demo.tsx",
+				language: "tsx",
+				code: `import { Code, Palette, Rocket, Settings } from "lucide-react";
+import { Accordion, type AccordionItem } from "./ui/accordion";
+
+export function AccordionDemo() {
+  const accordionItems: AccordionItem[] = [
+    {
+      id: "1",
+      title: "Getting Started",
+      icon: <Rocket className="h-5 w-5" />,
+      content: (
+        <div className="space-y-3">
+          <p>Welcome to our platform! Getting started is easy.</p>
+          <ol className="ml-4 list-decimal space-y-2">
+            <li>Create your account with email or social login</li>
+            <li>Complete your profile with basic information</li>
+            <li>Explore the dashboard and available features</li>
+          </ol>
+        </div>
+      ),
+    },
+    {
+      id: "2",
+      title: "Customization Options",
+      icon: <Palette className="h-5 w-5" />,
+      content: (
+        <div className="space-y-3">
+          <p>Personalize your experience with extensive options:</p>
+          <ul className="ml-4 list-disc space-y-2">
+            <li><strong>Themes:</strong> Light, dark, or auto mode</li>
+            <li><strong>Colors:</strong> Customize accent colors</li>
+            <li><strong>Layout:</strong> Adjust sidebar and density</li>
+          </ul>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div className="flex min-h-[600px] items-center justify-center p-8">
+      <div className="w-full max-w-3xl">
+        <Accordion items={accordionItems} allowMultiple={false} />
+      </div>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/accordion.tsx",
+				language: "tsx",
+				code: `import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
+import type { ReactNode } from "react";
+
+export interface AccordionItem {
+  id: string;
+  title: string;
+  content: ReactNode;
+  icon?: ReactNode;
+}
+
+interface AccordionProps {
+  items: AccordionItem[];
+  allowMultiple?: boolean;
+  className?: string;
+}
+
+export function Accordion({
+  items,
+  allowMultiple = false,
+  className = "",
+}: AccordionProps) {
+  const [openItems, setOpenItems] = useState<string[]>([]);
+
+  const toggleItem = (id: string) => {
+    if (allowMultiple) {
+      setOpenItems((prev) =>
+        prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+      );
+    } else {
+      setOpenItems((prev) => (prev.includes(id) ? [] : [id]));
+    }
+  };
+
+  return (
+    <div className={\`space-y-3 \${className}\`}>
+      {items.map((item, index) => {
+        const isOpen = openItems.includes(item.id);
+
+        return (
+          <motion.div
+            key={item.id}
+            className="overflow-hidden rounded-xl border border-default-200 bg-default-50/50 backdrop-blur-sm"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+          >
+            {/* Header */}
+            <motion.button
+              type="button"
+              onClick={() => toggleItem(item.id)}
+              className="flex w-full items-center justify-between gap-4 p-5 text-left"
+              whileTap={{ scale: 0.99 }}
+            >
+              <div className="flex items-center gap-3">
+                {item.icon && (
+                  <motion.div
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary"
+                    animate={{ rotate: isOpen ? 360 : 0 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                  >
+                    {item.icon}
+                  </motion.div>
+                )}
+                <h3 className="font-semibold text-default-900 text-lg">
+                  {item.title}
+                </h3>
+              </div>
+
+              <motion.div
+                animate={{ rotate: isOpen ? 180 : 0 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              >
+                <ChevronDown className="h-5 w-5 text-default-500" />
+              </motion.div>
+            </motion.button>
+
+            {/* Content */}
+            <AnimatePresence initial={false}>
+              {isOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{
+                    height: "auto",
+                    opacity: 1,
+                    transition: {
+                      height: { type: "spring", stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.2, delay: 0.1 },
+                    },
+                  }}
+                  exit={{
+                    height: 0,
+                    opacity: 0,
+                    transition: {
+                      height: { type: "spring", stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.15 },
+                    },
+                  }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <motion.div
+                    className="border-t border-default-200 p-5 text-default-600"
+                    initial={{ y: -10 }}
+                    animate={{ y: 0 }}
+                    exit={{ y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {item.content}
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "image-gallery",
+		title: "Image Gallery",
+		description:
+			"Interactive image gallery with shared layout transitions, expandable lightbox view, and smooth morphing animations",
+		category: "data-display",
+		component: ImageGalleryDemo,
+		tags: ["animation", "gallery", "images", "lightbox", "layout", "shared"],
+		code: [
+			{
+				filename: "image-gallery-demo.tsx",
+				language: "tsx",
+				code: `import { ImageGallery, type GalleryImage } from "./ui/image-gallery";
+
+export function ImageGalleryDemo() {
+  const images: GalleryImage[] = [
+    {
+      id: "1",
+      src: "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800",
+      alt: "Abstract gradient 1",
+      title: "Cosmic Waves",
+      description: "A mesmerizing blend of purple and blue hues",
+    },
+    {
+      id: "2",
+      src: "https://images.unsplash.com/photo-1682687221038-404cb8830901?w=800",
+      alt: "Abstract gradient 2",
+      title: "Ocean Depths",
+      description: "Deep blue gradients reminiscent of ocean waters",
+    },
+    {
+      id: "3",
+      src: "https://images.unsplash.com/photo-1682687220063-4742bd7fd538?w=800",
+      alt: "Abstract gradient 3",
+      title: "Sunset Glow",
+      description: "Warm orange and pink tones of a summer sunset",
+    },
+  ];
+
+  return (
+    <div className="flex min-h-[600px] items-center justify-center p-8">
+      <div className="w-full max-w-5xl">
+        <ImageGallery images={images} columns={3} />
+      </div>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/image-gallery.tsx",
+				language: "tsx",
+				code: `import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
+import { useState } from "react";
+import { createPortal } from "react-dom";
+
+export interface GalleryImage {
+  id: string;
+  src: string;
+  alt: string;
+  title?: string;
+  description?: string;
+}
+
+interface ImageGalleryProps {
+  images: GalleryImage[];
+  columns?: number;
+  className?: string;
+}
+
+export function ImageGallery({
+  images,
+  columns = 3,
+  className = "",
+}: ImageGalleryProps) {
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+
+  return (
+    <div>
+      {/* Gallery Grid */}
+      <div
+        className={\`grid gap-4 \${className}\`}
+        style={{ gridTemplateColumns: \`repeat(\${columns}, minmax(0, 1fr))\` }}
+      >
+        {images.map((image, index) => (
+          <motion.div
+            key={image.id}
+            layoutId={\`image-\${image.id}\`}
+            onClick={() => setSelectedImage(image)}
+            className="group relative aspect-square cursor-pointer overflow-hidden rounded-xl"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.4,
+              delay: index * 0.05,
+              ease: "easeOut",
+            }}
+            whileHover={{
+              scale: 1.05,
+              transition: { duration: 0.2 },
+            }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <motion.img
+              src={image.src}
+              alt={image.alt}
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+
+            {/* Overlay on hover */}
+            <motion.div
+              className="absolute inset-0 flex items-end bg-linear-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              initial={false}
+            >
+              {image.title && (
+                <p className="font-semibold text-sm text-white">
+                  {image.title}
+                </p>
+              )}
+            </motion.div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Expanded View - Rendered via Portal to escape stacking context */}
+      {createPortal(
+        <AnimatePresence>
+          {selectedImage && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 bg-black/95 backdrop-blur-lg"
+                style={{ zIndex: 99999 }}
+                onClick={() => setSelectedImage(null)}
+              />
+
+              {/* Expanded Image Container */}
+              <div
+                className="pointer-events-none fixed inset-0 flex items-center justify-center p-8 md:p-12"
+                style={{ zIndex: 99999 }}
+              >
+                {/* Image */}
+                <motion.div
+                  layoutId={\`image-\${selectedImage.id}\`}
+                  className="pointer-events-auto relative"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <img
+                    src={selectedImage.src}
+                    alt={selectedImage.alt}
+                    className="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
+                  />
+                </motion.div>
+
+                {/* Close Button - Fixed to viewport */}
+                <motion.button
+                  type="button"
+                  onClick={() => setSelectedImage(null)}
+                  className="pointer-events-auto fixed top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-black/70 text-white backdrop-blur-md transition-colors hover:bg-black/90"
+                  style={{ zIndex: 100000 }}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 25,
+                    delay: 0.2,
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <X className="h-6 w-6" />
+                </motion.button>
+
+                {/* Image Info - Fixed to bottom */}
+                {(selectedImage.title || selectedImage.description) && (
+                  <motion.div
+                    className="pointer-events-auto fixed inset-x-0 bottom-0 bg-linear-to-t from-black via-black/95 to-transparent px-6 pb-10 pt-24 sm:px-10 sm:pb-12 md:px-16 md:pb-16 md:pt-32"
+                    style={{ zIndex: 100000 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.3 }}
+                  >
+                    <div className="mx-auto max-w-3xl">
+                      {selectedImage.title && (
+                        <h3 className="mb-3 font-bold leading-tight text-white text-xl sm:text-2xl md:mb-4 md:text-3xl">
+                          {selectedImage.title}
+                        </h3>
+                      )}
+                      {selectedImage.description && (
+                        <p className="leading-relaxed text-sm text-white/90 sm:text-base md:text-lg">
+                          {selectedImage.description}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+          </>
+        )}
+      </AnimatePresence>,
+      document.body
+    )}
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "multi-step-form",
+		title: "Multi-Step Form",
+		description:
+			"Enhanced multi-step form with horizontal/vertical layouts, custom icons, gradient progress bars, and smooth animations",
+		category: "navigation",
+		component: MultiStepFormDemo,
+		tags: ["form", "stepper", "navigation", "animation"],
+		code: [
+			{
+				filename: "multi-step-form.tsx",
+				language: "tsx",
+				code: `import { AnimatePresence, motion } from "framer-motion";
+import { Check } from "lucide-react";
+import { type ReactNode, useState } from "react";
+
+export interface FormStep {
+  id: string;
+  title: string;
+  description?: string;
+  content: ReactNode;
+  icon?: ReactNode;
+}
+
+interface MultiStepFormProps {
+  steps: FormStep[];
+  onComplete?: () => void;
+  onStepChange?: (stepIndex: number) => void;
+  className?: string;
+  orientation?: "horizontal" | "vertical";
+}
+
+export function MultiStepForm({
+  steps,
+  onComplete,
+  onStepChange,
+  className = "",
+  orientation = "horizontal",
+}: MultiStepFormProps) {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const isVertical = orientation === "vertical";
+
+  const handleNext = () => {
+    if (currentStep < steps.length - 1) {
+      setDirection(1);
+      setCurrentStep(currentStep + 1);
+      onStepChange?.(currentStep + 1);
+    } else {
+      onComplete?.();
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setDirection(-1);
+      setCurrentStep(currentStep - 1);
+      onStepChange?.(currentStep - 1);
+    }
+  };
+
+  const handleStepClick = (index: number) => {
+    if (index < currentStep) {
+      setDirection(-1);
+      setCurrentStep(index);
+      onStepChange?.(index);
+    }
+  };
+
+  const progress = ((currentStep + 1) / steps.length) * 100;
+
+  // Horizontal Layout (default)
+  return (
+    <div className={\`w-full \${className}\`}>
+      {/* Progress Bar with Gradient */}
+      <div className="mb-8">
+        <div className="mb-3 flex items-center justify-between">
+          <span className="font-semibold text-sm text-default-600">
+            Step {currentStep + 1} of {steps.length}
+          </span>
+          <motion.span
+            key={progress}
+            initial={{ scale: 1.2, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="font-bold text-sm text-primary"
+          >
+            {Math.round(progress)}%
+          </motion.span>
+        </div>
+        <div className="relative h-3 overflow-hidden rounded-full bg-default-200 shadow-inner">
+          <motion.div
+            className="absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-primary via-primary to-primary/80 shadow-lg shadow-primary/20"
+            initial={{ width: 0 }}
+            animate={{ width: \`\${progress}%\` }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          />
+          <motion.div
+            className="absolute inset-y-0 left-0 rounded-full bg-white/20"
+            initial={{ width: 0 }}
+            animate={{ width: \`\${progress}%\` }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+          />
+        </div>
+      </div>
+
+      {/* Step Indicators with Icons */}
+      <div className="mb-10 flex items-start justify-between">
+        {steps.map((step, index) => {
+          const isCompleted = index < currentStep;
+          const isCurrent = index === currentStep;
+          const isClickable = index < currentStep;
+
+          return (
+            <div key={step.id} className="flex flex-1 items-start">
+              <div className="flex w-full flex-col items-center">
+                {/* Step Circle */}
+                <motion.button
+                  type="button"
+                  onClick={() => isClickable && handleStepClick(index)}
+                  className={\`group relative mb-3 flex h-16 w-16 items-center justify-center rounded-2xl border-2 shadow-lg transition-all \${
+                    isCompleted
+                      ? "border-primary bg-primary text-white shadow-primary/25"
+                      : isCurrent
+                        ? "border-primary bg-linear-to-br from-primary/10 to-primary/5 text-primary shadow-primary/20"
+                        : "border-default-300 bg-background text-default-400 shadow-default-200"
+                  } \${isClickable ? "cursor-pointer" : "cursor-default"}\`}
+                  whileHover={isClickable ? { scale: 1.1, y: -2 } : {}}
+                  whileTap={isClickable ? { scale: 0.95 } : {}}
+                  disabled={!isClickable}
+                  animate={{
+                    scale: isCurrent ? [1, 1.05, 1] : 1,
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: isCurrent ? Infinity : 0,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <AnimatePresence mode="wait">
+                    {isCompleted ? (
+                      <motion.div
+                        key="check"
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        exit={{ scale: 0, rotate: 180 }}
+                        transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
+                      >
+                        <Check className="h-7 w-7" strokeWidth={3} />
+                      </motion.div>
+                    ) : step.icon ? (
+                      <motion.div
+                        key="icon"
+                        initial={{ scale: 0, rotate: -90 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        exit={{ scale: 0, rotate: 90 }}
+                        transition={{ duration: 0.2 }}
+                        className="flex items-center justify-center"
+                      >
+                        {step.icon}
+                      </motion.div>
+                    ) : (
+                      <motion.span
+                        key="number"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="font-bold text-xl"
+                      >
+                        {index + 1}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Glow effect for current step */}
+                  {isCurrent && (
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl bg-primary/20 blur-xl"
+                      animate={{
+                        scale: [1, 1.3, 1],
+                        opacity: [0.5, 0.8, 0.5],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    />
+                  )}
+                </motion.button>
+
+                {/* Step Label */}
+                <div className="text-center">
+                  <motion.p
+                    className={\`mb-1 font-semibold text-xs transition-colors \${
+                      isCurrent
+                        ? "text-foreground"
+                        : isCompleted
+                          ? "text-foreground"
+                          : "text-default-500"
+                    }\`}
+                    animate={{
+                      y: isCurrent ? [0, -2, 0] : 0,
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: isCurrent ? Infinity : 0,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    {step.title}
+                  </motion.p>
+                  {step.description && (
+                    <p className="text-default-400 text-xs">
+                      {step.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Connector Line */}
+              {index < steps.length - 1 && (
+                <div className="relative mx-3 mt-8 h-1 flex-1 rounded-full bg-default-200">
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-linear-to-r from-primary to-primary/80 shadow-sm shadow-primary/20"
+                    initial={{ scaleX: 0 }}
+                    animate={{
+                      scaleX: index < currentStep ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    style={{ originX: 0 }}
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Step Content Card */}
+      <motion.div
+        className="mb-8 overflow-hidden rounded-2xl border border-default-200 bg-linear-to-br from-default-50/50 to-background shadow-lg"
+        layout
+      >
+        <div className="relative min-h-[350px] p-8">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentStep}
+              custom={direction}
+              initial={{ opacity: 0, x: direction * 30, scale: 0.98 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: direction * -30, scale: 0.98 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              {steps[currentStep].content}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </motion.div>
+
+      {/* Navigation Buttons */}
+      <div className="flex items-center justify-between">
+        <motion.button
+          type="button"
+          onClick={handlePrevious}
+          disabled={currentStep === 0}
+          className="rounded-xl border-2 border-default-300 bg-background px-6 py-3 font-semibold text-sm transition-all hover:border-default-400 hover:bg-default-100 disabled:cursor-not-allowed disabled:opacity-40"
+          whileHover={currentStep > 0 ? { scale: 1.02, x: -2 } : {}}
+          whileTap={currentStep > 0 ? { scale: 0.98 } : {}}
+        >
+          ← Previous
+        </motion.button>
+
+        <motion.button
+          type="button"
+          onClick={handleNext}
+          className="rounded-xl bg-linear-to-r from-primary to-primary/90 px-8 py-3 font-semibold text-sm text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
+          whileHover={{ scale: 1.02, x: 2 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          {currentStep === steps.length - 1 ? "Complete ✓" : "Next →"}
+        </motion.button>
+      </div>
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "staggered-grid",
+		title: "Staggered Grid",
+		description:
+			"Grid with staggered animations, masonry layout, filtering, sorting, and category tags",
+		category: "data-display",
+		component: StaggeredGridDemo,
+		tags: ["grid", "masonry", "filter", "sort", "animation"],
+		code: [
+			{
+				filename: "staggered-grid-demo.tsx",
+				language: "tsx",
+				code: `import { AnimatePresence, motion } from "framer-motion";
+import { type ReactNode } from "react";
+
+export interface GridItem {
+  id: string;
+  content: ReactNode;
+  height?: number; // For masonry layout
+}
+
+interface StaggeredGridProps {
+  items: GridItem[];
+  columns?: number;
+  gap?: number;
+  staggerDelay?: number;
+  animationDuration?: number;
+  className?: string;
+  masonry?: boolean; // Enable masonry layout
+}
+
+export function StaggeredGrid({
+  items,
+  columns = 3,
+  gap = 4,
+  staggerDelay = 0.1,
+  animationDuration = 0.5,
+  className = "",
+  masonry = false,
+}: StaggeredGridProps) {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: staggerDelay,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: animationDuration,
+        ease: [0.0, 0.0, 0.2, 1.0],
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.9,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
+  if (masonry) {
+    return (
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className={className}
+        style={{
+          columnCount: columns,
+          columnGap: \`\${gap * 0.25}rem\`,
+        }}
+      >
+        <AnimatePresence mode="popLayout">
+          {items.map((item) => (
+            <motion.div
+              key={item.id}
+              layout
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              whileHover={{
+                scale: 1.02,
+                transition: { duration: 0.2 },
+              }}
+              className="cursor-pointer break-inside-avoid"
+              style={{
+                marginBottom: \`\${gap * 0.25}rem\`,
+              }}
+            >
+              {item.content}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className={className}
+      style={{
+        display: "grid",
+        gridTemplateColumns: \`repeat(\${columns}, minmax(0, 1fr))\`,
+        gap: \`\${gap * 0.25}rem\`,
+      }}
+    >
+      <AnimatePresence mode="popLayout">
+        {items.map((item) => (
+          <motion.div
+            key={item.id}
+            layout
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            whileHover={{
+              scale: 1.05,
+              transition: { duration: 0.2 },
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="cursor-pointer"
+          >
+            {item.content}
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </motion.div>
   );
 }`,
 			},
