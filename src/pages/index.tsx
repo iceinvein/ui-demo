@@ -122,16 +122,6 @@ export default function IndexPage() {
 		<DefaultLayout>
 			{/* Animated Background */}
 			<div className="pointer-events-none fixed inset-0 overflow-hidden">
-				{/* Gradient Mesh */}
-				<motion.div
-					className="absolute inset-0 opacity-40"
-					style={{
-						y: backgroundY,
-						background:
-							"radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%), radial-gradient(circle at 40% 20%, rgba(34, 197, 94, 0.15) 0%, transparent 50%)",
-					}}
-				/>
-
 				{/* Bokeh Circles */}
 				{bokehCircles.map((circle, index) => (
 					<motion.div
