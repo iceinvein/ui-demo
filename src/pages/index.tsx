@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { AnimatedComponentDialog } from "@/components/animated-component-dialog";
 import { SplitText } from "@/components/ui/split-text";
@@ -102,8 +102,6 @@ const bokehCircles = [
 ];
 
 export default function IndexPage() {
-	const { scrollYProgress } = useScroll();
-	const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
 	useEffect(() => {
