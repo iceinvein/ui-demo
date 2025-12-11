@@ -1,6 +1,7 @@
 import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import type { ComponentItem } from "@/types/component";
 import { CodeViewer } from "./code-viewer";
 import { AnimatedDialog, AnimatedDialogTrigger } from "./ui/animated-dialog";
@@ -36,8 +37,25 @@ const cardVariants = {
 export function AnimatedComponentDialog({
 	component,
 }: AnimatedComponentDialogProps) {
-	const [isOpen, setIsOpen] = useState(false);
+	const navigate = useNavigate();
+	const { componentId } = useParams<{ componentId: string }>();
+	const isOpen = componentId === component.id;
 	const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
+
+	// Reset tab when dialog closes
+	useEffect(() => {
+		if (!isOpen) {
+			setActiveTab("preview");
+		}
+	}, [isOpen]);
+
+	const handleOpen = () => {
+		navigate(`/component/${component.id}`);
+	};
+
+	const handleClose = () => {
+		navigate("/");
+	};
 	const layoutId = `component-dialog-${component.title}`;
 
 	return (
@@ -52,7 +70,7 @@ export function AnimatedComponentDialog({
 				<AnimatedDialogTrigger
 					layoutId={layoutId}
 					isOpen={isOpen}
-					onClick={() => setIsOpen(true)}
+					onClick={handleOpen}
 				>
 					<div
 						className="flex h-full flex-col text-left"
@@ -65,7 +83,7 @@ export function AnimatedComponentDialog({
 									{component.title}
 								</h3>
 								<motion.div
-									className="flex-shrink-0 rounded-full bg-primary/10 p-2"
+									className="shrink-0 rounded-full bg-primary/10 p-2"
 									whileHover={{ scale: 1.1, rotate: 5 }}
 									transition={{ duration: 0.2 }}
 								>
@@ -85,7 +103,7 @@ export function AnimatedComponentDialog({
 								</motion.div>
 							</div>
 
-							<p className="mb-4 line-clamp-3 flex-grow text-default-600 text-sm leading-relaxed">
+							<p className="mb-4 line-clamp-3 grow text-default-600 text-sm leading-relaxed">
 								{component.description}
 							</p>
 
@@ -112,10 +130,7 @@ export function AnimatedComponentDialog({
 				key={`${layoutId}-${isOpen}`}
 				layoutId={layoutId}
 				isOpen={isOpen}
-				onClose={() => {
-					setIsOpen(false);
-					setActiveTab("preview");
-				}}
+				onClose={handleClose}
 			>
 				{/* Animated background elements - behind everything */}
 				<div className="-z-10 pointer-events-none absolute inset-0 overflow-hidden rounded-3xl">
@@ -188,7 +203,7 @@ export function AnimatedComponentDialog({
 					<Button
 						isIconOnly
 						variant="light"
-						onPress={() => setIsOpen(false)}
+						onPress={handleClose}
 						className="text-default-400 transition-colors hover:text-default-600"
 					>
 						<svg
