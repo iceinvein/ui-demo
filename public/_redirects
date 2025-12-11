@@ -1,0 +1,5 @@
+# Static assets - serve directly or 404 if missing
+/assets/*  /assets/:splat  404
+
+# SPA client-side routes - serve index.html
+/*    /index.html   200
