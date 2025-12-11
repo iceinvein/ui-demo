@@ -19,6 +19,7 @@ import { StaggeredGridDemo } from "@/components/staggered-grid-demo";
 import { StepperDemo } from "@/components/stepper-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
 import { TimelineDemo } from "@/components/timeline-demo";
+import { TreeViewDemo } from "@/components/tree-view-demo";
 import type { Category, ComponentItem } from "@/types/component";
 
 export const categories: Category[] = [
@@ -4408,6 +4409,258 @@ export function StaggeredGrid({
         ))}
       </AnimatePresence>
     </motion.div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "tree-view",
+		title: "Tree View",
+		description:
+			"Customizable hierarchical tree component with expandable nodes, icons, and checkbox selection",
+		category: "data-display",
+		component: TreeViewDemo,
+		tags: ["tree", "hierarchy", "navigation", "checkbox", "icons"],
+		code: [
+			{
+				filename: "tree-view-demo.tsx",
+				language: "tsx",
+				code: `import { Folder, Image, Video } from "lucide-react";
+import { useMemo, useState } from "react";
+import { type TreeNode, TreeView } from "./ui/tree-view";
+
+// Helper to collect default checked nodes
+function collectDefaultChecked(nodes: TreeNode[]): string[] {
+  const result: string[] = [];
+  const traverse = (nodeList: TreeNode[]) => {
+    for (const node of nodeList) {
+      if (node.defaultChecked) result.push(node.id);
+      if (node.children) traverse(node.children);
+    }
+  };
+  traverse(nodes);
+  return result;
+}
+
+// Helper to build id -> label lookup
+function buildLabelMap(nodes: TreeNode[]): Map<string, string> {
+  const map = new Map<string, string>();
+  const traverse = (nodeList: TreeNode[]) => {
+    for (const node of nodeList) {
+      map.set(node.id, node.label);
+      if (node.children) traverse(node.children);
+    }
+  };
+  traverse(nodes);
+  return map;
+}
+
+export function TreeViewDemo() {
+  const [showIcons, setShowIcons] = useState(true);
+  const [showCheckboxes, setShowCheckboxes] = useState(false);
+
+  const fileSystemData: TreeNode[] = useMemo(() => [
+    {
+      id: "1",
+      label: "A parent",
+      icon: <Folder className="h-4 w-4 text-blue-500" />,
+      children: [
+        { id: "1-1", label: "A child", icon: <Folder className="h-4 w-4 text-blue-400" /> },
+        { id: "1-2", label: "B child", icon: <Folder className="h-4 w-4 text-blue-400" /> },
+        { id: "1-3", label: "C child", icon: <Folder className="h-4 w-4 text-blue-400" /> },
+      ],
+    },
+    { id: "2", label: "B parent", icon: <Folder className="h-4 w-4 text-blue-500" /> },
+    { id: "3", label: "C parent", icon: <Folder className="h-4 w-4 text-blue-500" /> },
+  ], []);
+
+  const mediaLibraryData: TreeNode[] = useMemo(() => [
+    {
+      id: "illustrations",
+      label: "Illustrations",
+      icon: <Folder className="h-4 w-4 text-purple-500" />,
+      defaultChecked: true,
+      children: [
+        { id: "vector", label: "Vector", icon: <Image className="h-4 w-4 text-blue-500" />, defaultChecked: true },
+        { id: "raster", label: "Raster", icon: <Image className="h-4 w-4 text-green-500" /> },
+      ],
+    },
+    { id: "photography", label: "Photography", icon: <Folder className="h-4 w-4 text-purple-500" /> },
+    { id: "video", label: "Video", icon: <Video className="h-4 w-4 text-red-500" /> },
+  ], []);
+
+  const labelMap = useMemo(() => {
+    const map = buildLabelMap(fileSystemData);
+    for (const [k, v] of buildLabelMap(mediaLibraryData)) map.set(k, v);
+    return map;
+  }, [fileSystemData, mediaLibraryData]);
+
+  const [checkedNodes, setCheckedNodes] = useState<string[]>(() => [
+    ...collectDefaultChecked(fileSystemData),
+    ...collectDefaultChecked(mediaLibraryData),
+  ]);
+
+  const handleCheck = (nodeId: string, checked: boolean) => {
+    setCheckedNodes((prev) =>
+      checked ? [...prev, nodeId] : prev.filter((id) => id !== nodeId),
+    );
+  };
+
+  return (
+    <div className="w-full space-y-6 p-8">
+      <div className="flex flex-wrap gap-4">
+        <label className="flex cursor-pointer items-center gap-2">
+          <input type="checkbox" checked={showIcons} onChange={(e) => setShowIcons(e.target.checked)} />
+          <span className="text-sm text-default-700">Show Icons</span>
+        </label>
+        <label className="flex cursor-pointer items-center gap-2">
+          <input type="checkbox" checked={showCheckboxes} onChange={(e) => setShowCheckboxes(e.target.checked)} />
+          <span className="text-sm text-default-700">Show Checkboxes</span>
+        </label>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <div>
+          <h3 className="mb-3 text-sm font-semibold text-default-900">File System</h3>
+          <TreeView data={fileSystemData} showIcons={showIcons} showCheckboxes={showCheckboxes} onCheck={handleCheck} />
+        </div>
+        <div>
+          <h3 className="mb-3 text-sm font-semibold text-default-900">Media Library</h3>
+          <TreeView data={mediaLibraryData} showIcons={showIcons} showCheckboxes={showCheckboxes} onCheck={handleCheck} />
+        </div>
+      </div>
+
+      {showCheckboxes && checkedNodes.length > 0 && (
+        <div className="rounded-lg border border-default-200 bg-default-50 p-4">
+          <p className="mb-2 font-medium text-default-700 text-sm">Checked nodes: {checkedNodes.length}</p>
+          <div className="flex flex-wrap gap-2">
+            {checkedNodes.map((nodeId) => (
+              <span key={nodeId} className="rounded-full bg-primary/10 px-3 py-1 text-primary text-xs">
+                {labelMap.get(nodeId) ?? nodeId}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "tree-view.tsx",
+				language: "tsx",
+				code: `import { AnimatePresence, motion } from "framer-motion";
+import { Check, ChevronRight, File, Folder } from "lucide-react";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+
+export interface TreeNode {
+  id: string;
+  label: string;
+  icon?: React.ReactNode;
+  children?: TreeNode[];
+  checkable?: boolean;
+  defaultChecked?: boolean;
+}
+
+interface TreeViewProps {
+  data: TreeNode[];
+  showIcons?: boolean;
+  showCheckboxes?: boolean;
+  onCheck?: (nodeId: string, checked: boolean) => void;
+  className?: string;
+}
+
+function TreeNodeComponent({ node, level, showIcons, showCheckboxes, onCheck }: {
+  node: TreeNode; level: number; showIcons: boolean; showCheckboxes: boolean;
+  onCheck?: (nodeId: string, checked: boolean) => void;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isChecked, setIsChecked] = useState(node.defaultChecked || false);
+  const hasChildren = node.children && node.children.length > 0;
+
+  const handleCheck = () => {
+    const newChecked = !isChecked;
+    setIsChecked(newChecked);
+    onCheck?.(node.id, newChecked);
+  };
+
+  const toggleExpand = () => hasChildren && setIsExpanded(!isExpanded);
+
+  return (
+    <div className="relative">
+      <motion.div
+        initial={{ opacity: 0, x: -8 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.15 }}
+        className="group relative flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 transition-colors hover:bg-default-100/50"
+        style={{ paddingLeft: \`\${level * 24 + 12}px\` }}
+        onClick={hasChildren ? toggleExpand : undefined}
+      >
+        {hasChildren ? (
+          <button type="button" aria-label={isExpanded ? "Collapse" : "Expand"}
+            onClick={(e) => { e.stopPropagation(); toggleExpand(); }}
+            className="flex h-5 w-5 items-center justify-center rounded-sm transition-colors hover:bg-default-200">
+            <motion.div animate={{ rotate: isExpanded ? 90 : 0 }} transition={{ duration: 0.15, ease: "easeOut" }}>
+              <ChevronRight className="h-3.5 w-3.5 text-default-500" />
+            </motion.div>
+          </button>
+        ) : <div className="w-5" />}
+
+        {showCheckboxes && node.checkable !== false && (
+          <button type="button" onClick={(e) => { e.stopPropagation(); handleCheck(); }}
+            className={cn(
+              "flex h-4 w-4 items-center justify-center rounded border transition-all",
+              isChecked ? "border-primary bg-primary" : "border-default-400 hover:border-default-500",
+            )}>
+            {isChecked && (
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: 0.1 }}>
+                <Check className="h-3 w-3 text-white" />
+              </motion.div>
+            )}
+          </button>
+        )}
+
+        {showIcons && (
+          <span className="shrink-0">
+            {node.icon || (hasChildren ? <Folder className="h-4 w-4 text-default-500" /> : <File className="h-4 w-4 text-default-400" />)}
+          </span>
+        )}
+
+        <span className={cn(
+          "select-none text-sm transition-colors",
+          hasChildren ? "font-medium text-default-800" : "text-default-600",
+          isChecked && "font-medium text-primary",
+        )}>
+          {node.label}
+        </span>
+      </motion.div>
+
+      <AnimatePresence initial={false}>
+        {isExpanded && hasChildren && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2, ease: "easeInOut" }} className="overflow-hidden">
+            {node.children?.map((child) => (
+              <TreeNodeComponent key={child.id} node={child} level={level + 1}
+                showIcons={showIcons} showCheckboxes={showCheckboxes} onCheck={onCheck} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export function TreeView({ data, showIcons = true, showCheckboxes = false, onCheck, className }: TreeViewProps) {
+  return (
+    <div className={cn("rounded-xl border border-default-200 bg-default-50/50 p-3", className)}>
+      <div className="space-y-0.5">
+        {data.map((node) => (
+          <TreeNodeComponent key={node.id} node={node} level={0} showIcons={showIcons} showCheckboxes={showCheckboxes} onCheck={onCheck} />
+        ))}
+      </div>
+    </div>
   );
 }`,
 			},

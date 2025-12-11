@@ -446,29 +446,28 @@ export function PetrolCounterDemo() {
 								}
 							>
 								{/* Speed lines when active */}
-								{isDraining && (
+								{isDraining &&
 									[...Array(6)].map((_, i) => (
-											<motion.div
-												key={`speed-${i}`}
-												className="absolute h-0.5 bg-white/40"
-												style={{
-													top: `${20 + i * 12}%`,
-													right: "100%",
-													width: `${30 + i * 10}px`,
-												}}
-												animate={{
-													x: ["0%", "400%"],
-													opacity: [0, 1, 0],
-												}}
-												transition={{
-													duration: 0.8,
-													repeat: Number.POSITIVE_INFINITY,
-													delay: i * 0.1,
-													ease: "easeOut",
-												}}
-											/>
-										))
-								)}
+										<motion.div
+											key={`speed-${i}`}
+											className="absolute h-0.5 bg-white/40"
+											style={{
+												top: `${20 + i * 12}%`,
+												right: "100%",
+												width: `${30 + i * 10}px`,
+											}}
+											animate={{
+												x: ["0%", "400%"],
+												opacity: [0, 1, 0],
+											}}
+											transition={{
+												duration: 0.8,
+												repeat: Number.POSITIVE_INFINITY,
+												delay: i * 0.1,
+												ease: "easeOut",
+											}}
+										/>
+									))}
 
 								{/* Animated background when active */}
 								{isDraining && (
