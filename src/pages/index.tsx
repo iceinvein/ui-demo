@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { AnimatedComponentDialog } from "@/components/animated-component-dialog";
+import { DirectOpenDialog } from "@/components/direct-open-dialog";
 import { SplitText } from "@/components/ui/split-text";
 import { categories, components } from "@/data/components";
 import DefaultLayout from "@/layouts/default";
@@ -102,7 +104,13 @@ const bokehCircles = [
 ];
 
 export default function IndexPage() {
+	const { componentId } = useParams<{ componentId: string }>();
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+	// Find the component for direct URL access
+	const directOpenComponent = componentId
+		? components.find((c) => c.id === componentId)
+		: null;
 
 	useEffect(() => {
 		const handleMouseMove = (e: MouseEvent) => {
@@ -118,6 +126,10 @@ export default function IndexPage() {
 
 	return (
 		<DefaultLayout>
+			{/* Direct open dialog for URL-based access */}
+			{directOpenComponent && (
+				<DirectOpenDialog component={directOpenComponent} />
+			)}
 			{/* Animated Background */}
 			<div className="pointer-events-none fixed inset-0 overflow-hidden">
 				{/* Bokeh Circles */}

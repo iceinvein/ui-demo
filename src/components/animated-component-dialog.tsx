@@ -39,24 +39,32 @@ export function AnimatedComponentDialog({
 }: AnimatedComponentDialogProps) {
 	const navigate = useNavigate();
 	const { componentId } = useParams<{ componentId: string }>();
-	const isOpen = componentId === component.id;
+	// Only use local state for click-triggered opens (enables layout animation)
+	// URL-based opens are handled by DirectOpenDialog at the page level
+	const [isClickOpen, setIsClickOpen] = useState(false);
 	const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
 
-	// Reset tab when dialog closes
+	// Close dialog when URL changes away from this component
 	useEffect(() => {
-		if (!isOpen) {
+		if (componentId !== component.id && isClickOpen) {
+			setIsClickOpen(false);
 			setActiveTab("preview");
 		}
-	}, [isOpen]);
+	}, [componentId, component.id, isClickOpen]);
 
 	const handleOpen = () => {
+		setIsClickOpen(true);
 		navigate(`/component/${component.id}`);
 	};
 
 	const handleClose = () => {
+		setIsClickOpen(false);
 		navigate("/");
 	};
+
 	const layoutId = `component-dialog-${component.title}`;
+	// Only show dialog if opened via click (not direct URL)
+	const isOpen = isClickOpen;
 
 	return (
 		<>
