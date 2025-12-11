@@ -38,76 +38,145 @@ export function TreeViewDemo() {
 	const [showIcons, setShowIcons] = useState(true);
 	const [showCheckboxes, setShowCheckboxes] = useState(false);
 
-	// File system tree data
+	// File system tree data with deep nesting
 	const fileSystemData: TreeNode[] = useMemo(
 		() => [
 			{
-				id: "1",
-				label: "A parent",
+				id: "src",
+				label: "src",
 				icon: <Folder className="h-4 w-4 text-blue-500" />,
 				children: [
 					{
-						id: "1-1",
-						label: "A child",
+						id: "components",
+						label: "components",
 						icon: <Folder className="h-4 w-4 text-blue-400" />,
+						children: [
+							{
+								id: "ui",
+								label: "ui",
+								icon: <Folder className="h-4 w-4 text-blue-300" />,
+								children: [
+									{
+										id: "button.tsx",
+										label: "button.tsx",
+										icon: <Image className="h-4 w-4 text-emerald-500" />,
+									},
+									{
+										id: "input.tsx",
+										label: "input.tsx",
+										icon: <Image className="h-4 w-4 text-emerald-500" />,
+									},
+								],
+							},
+							{
+								id: "layout.tsx",
+								label: "layout.tsx",
+								icon: <Image className="h-4 w-4 text-emerald-500" />,
+							},
+						],
 					},
 					{
-						id: "1-2",
-						label: "B child",
+						id: "lib",
+						label: "lib",
 						icon: <Folder className="h-4 w-4 text-blue-400" />,
+						children: [
+							{
+								id: "utils.ts",
+								label: "utils.ts",
+								icon: <Image className="h-4 w-4 text-amber-500" />,
+							},
+						],
 					},
 					{
-						id: "1-3",
-						label: "C child",
-						icon: <Folder className="h-4 w-4 text-blue-400" />,
+						id: "app.tsx",
+						label: "app.tsx",
+						icon: <Image className="h-4 w-4 text-emerald-500" />,
 					},
 				],
 			},
 			{
-				id: "2",
-				label: "B parent",
+				id: "public",
+				label: "public",
 				icon: <Folder className="h-4 w-4 text-blue-500" />,
+				children: [
+					{
+						id: "favicon.ico",
+						label: "favicon.ico",
+						icon: <Image className="h-4 w-4 text-purple-500" />,
+					},
+				],
 			},
 			{
-				id: "3",
-				label: "C parent",
-				icon: <Folder className="h-4 w-4 text-blue-500" />,
+				id: "package.json",
+				label: "package.json",
+				icon: <Image className="h-4 w-4 text-red-500" />,
 			},
 		],
 		[],
 	);
 
-	// Media library tree data with checkboxes
+	// Media library tree data with checkboxes and deep nesting
 	const mediaLibraryData: TreeNode[] = useMemo(
 		() => [
 			{
-				id: "illustrations",
-				label: "Illustrations",
+				id: "images",
+				label: "Images",
 				icon: <Folder className="h-4 w-4 text-purple-500" />,
-				defaultChecked: true,
 				children: [
 					{
-						id: "vector",
-						label: "Vector",
-						icon: <Image className="h-4 w-4 text-blue-500" />,
+						id: "illustrations",
+						label: "Illustrations",
+						icon: <Folder className="h-4 w-4 text-purple-400" />,
 						defaultChecked: true,
+						children: [
+							{
+								id: "vector",
+								label: "Vector",
+								icon: <Image className="h-4 w-4 text-blue-500" />,
+								defaultChecked: true,
+							},
+							{
+								id: "raster",
+								label: "Raster",
+								icon: <Image className="h-4 w-4 text-green-500" />,
+							},
+						],
 					},
 					{
-						id: "raster",
-						label: "Raster",
-						icon: <Image className="h-4 w-4 text-green-500" />,
+						id: "photography",
+						label: "Photography",
+						icon: <Folder className="h-4 w-4 text-purple-400" />,
+						children: [
+							{
+								id: "portraits",
+								label: "Portraits",
+								icon: <Image className="h-4 w-4 text-pink-500" />,
+							},
+							{
+								id: "landscapes",
+								label: "Landscapes",
+								icon: <Image className="h-4 w-4 text-teal-500" />,
+							},
+						],
 					},
 				],
 			},
 			{
-				id: "photography",
-				label: "Photography",
+				id: "videos",
+				label: "Videos",
 				icon: <Folder className="h-4 w-4 text-purple-500" />,
-			},
-			{
-				id: "video",
-				label: "Video",
-				icon: <Video className="h-4 w-4 text-red-500" />,
+				children: [
+					{
+						id: "tutorials",
+						label: "Tutorials",
+						icon: <Video className="h-4 w-4 text-red-500" />,
+					},
+					{
+						id: "demos",
+						label: "Demos",
+						icon: <Video className="h-4 w-4 text-orange-500" />,
+					},
+				],
 			},
 		],
 		[],
