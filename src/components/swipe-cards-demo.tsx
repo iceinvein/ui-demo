@@ -1,12 +1,13 @@
 import {
 	AnimatePresence,
-	motion,
 	type PanInfo,
+	type Variants,
+	motion,
 	useMotionValue,
 	useTransform,
 } from "framer-motion";
 import { Heart, RotateCcw, X } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Card = {
 	id: number;
@@ -62,17 +63,25 @@ const cardData: Card[] = [
 
 const SWIPE_THRESHOLD = 120;
 
+const cardVariants: Variants = {
+	initial: { scale: 0.9, y: 30, opacity: 0 },
+	exit: (direction: "left" | "right") => ({
+		x: direction === "right" ? 400 : -400,
+		rotate: direction === "right" ? 20 : -20,
+		opacity: 0,
+		transition: { duration: 0.3 },
+	}),
+};
+
 function SwipeCard({
 	card,
 	isTop,
 	stackIndex,
-	exitDirection,
 	onSwipe,
 }: {
 	card: Card;
 	isTop: boolean;
 	stackIndex: number;
-	exitDirection: "left" | "right";
 	onSwipe: (direction: "left" | "right") => void;
 }) {
 	const x = useMotionValue(0);
@@ -85,8 +94,6 @@ function SwipeCard({
 		else if (info.offset.x < -SWIPE_THRESHOLD) onSwipe("left");
 	};
 
-	const exitX = exitDirection === "right" ? 400 : -400;
-
 	return (
 		<motion.div
 			className="absolute h-[380px] w-[300px] cursor-grab active:cursor-grabbing"
@@ -95,18 +102,14 @@ function SwipeCard({
 				rotate: isTop ? rotate : 0,
 				zIndex: 10 - stackIndex,
 			}}
-			initial={{ scale: 0.9, y: 30, opacity: 0 }}
+			variants={cardVariants}
+			initial="initial"
 			animate={{
 				scale: 1 - stackIndex * 0.05,
 				y: stackIndex * 12,
 				opacity: stackIndex > 2 ? 0 : 1,
 			}}
-			exit={{
-				x: exitX,
-				rotate: exitDirection === "right" ? 20 : -20,
-				opacity: 0,
-				transition: { duration: 0.3 },
-			}}
+			exit="exit"
 			transition={{ type: "spring", stiffness: 300, damping: 25 }}
 			drag={isTop ? "x" : false}
 			dragConstraints={{ left: 0, right: 0 }}
@@ -161,10 +164,10 @@ function SwipeCard({
 
 export function SwipeCardsDemo() {
 	const [cards, setCards] = useState(cardData);
-	const [lastDirection, setLastDirection] = useState<"left" | "right">("left");
+	const directionRef = useRef<"left" | "right">("left");
 
 	const handleSwipe = (direction: "left" | "right") => {
-		setLastDirection(direction);
+		directionRef.current = direction;
 		setCards((prev) => prev.slice(1));
 	};
 	const resetCards = () => {
@@ -185,14 +188,13 @@ export function SwipeCardsDemo() {
 			</motion.div>
 
 			<div className="relative h-[380px] w-[300px]">
-				<AnimatePresence>
+				<AnimatePresence custom={directionRef.current}>
 					{cards.map((card, i) => (
 						<SwipeCard
 							key={card.id}
 							card={card}
 							isTop={i === 0}
 							stackIndex={i}
-							exitDirection={lastDirection}
 							onSwipe={handleSwipe}
 						/>
 					))}
