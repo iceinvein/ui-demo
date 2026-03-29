@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { AnimatedComponentDialog } from "@/components/animated-component-dialog";
@@ -51,24 +51,31 @@ const categoryLayout: Record<
 	},
 };
 
-const staggerContainer = {
+const staggerContainer = (reduced: boolean) => ({
 	hidden: {},
 	visible: {
-		transition: { staggerChildren: 0.06 },
+		transition: { staggerChildren: reduced ? 0 : 0.06 },
 	},
-};
+});
 
-const cardItem = {
-	hidden: { opacity: 0, y: 16 },
+const cardItem = (reduced: boolean) => ({
+	hidden: reduced ? {} : { opacity: 0, y: 16 },
 	visible: {
 		opacity: 1,
 		y: 0,
-		transition: {
-			duration: 0.4,
-			ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-		},
+		transition: reduced
+			? { duration: 0 }
+			: {
+					duration: 0.4,
+					ease: [0.25, 0.46, 0.45, 0.94] as [
+						number,
+						number,
+						number,
+						number,
+					],
+				},
 	},
-};
+});
 
 export default function IndexPage() {
 	const componentMatch = useMatch("/component/:componentId");
@@ -76,6 +83,7 @@ export default function IndexPage() {
 	const [search, setSearch] = useState("");
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
 	const [clickedCardId, setClickedCardId] = useState<string | null>(null);
+	const prefersReducedMotion = useReducedMotion();
 
 	// Reset card click tracking when navigating away from a component
 	useEffect(() => {
@@ -123,9 +131,9 @@ export default function IndexPage() {
 				{/* Hero */}
 				<motion.div
 					className="mb-16 md:mb-20"
-					initial={{ opacity: 0 }}
+					initial={prefersReducedMotion ? false : { opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: 0.5 }}
+					transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
 				>
 					<h1 className="mb-6 font-['Instrument_Serif'] text-[clamp(4.5rem,3rem+7.5vw,9rem)] leading-[0.92] tracking-tight text-default-900">
 						UI
@@ -141,9 +149,9 @@ export default function IndexPage() {
 					</div>
 				</motion.div>
 
-				{/* Filter Bar */}
+				{/* Filter Bar — shadow appears when stuck via [:stuck] pseudo-class workaround */}
 				<motion.div
-					className="sticky top-16 z-40 -mx-4 mb-16 border-default-200/40 border-b bg-background/80 px-4 py-4 backdrop-blur-xl md:mb-20"
+					className="sticky top-16 z-40 -mx-4 mb-16 border-default-200/40 border-b bg-background/80 px-4 py-4 shadow-[0_0_0_0_transparent] backdrop-blur-xl transition-shadow [&:not(:hover)]:supports-[position:sticky]:shadow-sm md:mb-20"
 					initial={{ opacity: 0, y: -8 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.4, delay: 0.2 }}
@@ -323,7 +331,7 @@ export default function IndexPage() {
 
 									{/* Component Grid */}
 									<motion.div
-										variants={staggerContainer}
+										variants={staggerContainer(!!prefersReducedMotion)}
 										initial="hidden"
 										whileInView="visible"
 										viewport={{
@@ -339,7 +347,7 @@ export default function IndexPage() {
 											(component, idx) => (
 												<motion.div
 													key={component.id}
-													variants={cardItem}
+													variants={cardItem(!!prefersReducedMotion)}
 													className={
 														layout?.featureFirst &&
 														idx === 0

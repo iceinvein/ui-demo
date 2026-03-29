@@ -5,8 +5,8 @@ function App() {
 	return (
 		<Routes>
 			<Route element={<IndexPage />}>
-				<Route index />
-				<Route path="component/:componentId" />
+				<Route index element={null} />
+				<Route path="component/:componentId" element={null} />
 			</Route>
 		</Routes>
 	);

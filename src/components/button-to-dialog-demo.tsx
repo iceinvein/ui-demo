@@ -11,7 +11,13 @@ export function ButtonToDialogDemo() {
 
 	return (
 		<div className="flex min-h-[400px] w-full items-center justify-center px-4">
-			<div className="w-full max-w-md">
+			<div className="w-full max-w-md space-y-3">
+				<div className="rounded-lg border border-default-200/60 bg-default-50/50 p-4">
+					<p className="mb-1 font-medium text-default-700 text-sm">Danger Zone</p>
+					<p className="text-default-500 text-xs">
+						Once you delete your account, there is no going back.
+					</p>
+				</div>
 				<div onClick={() => !isOpen && setIsOpen(true)}>
 					<ButtonToDialog
 						isOpen={isOpen}

@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useState } from "react";
 
@@ -15,6 +15,7 @@ export function AnimatedDialog({
 	children,
 	layoutId,
 }: AnimatedDialogProps) {
+	const prefersReducedMotion = useReducedMotion();
 	// Keep dialog in DOM briefly after close so layoutId can morph back to card
 	const [isPresent, setIsPresent] = useState(false);
 
@@ -75,14 +76,18 @@ export function AnimatedDialog({
 						animate={{ opacity: isOpen ? 1 : 0 }}
 						style={{ pointerEvents: isOpen ? "auto" : "none" }}
 						onClick={(e) => e.stopPropagation()}
-						transition={{
-							opacity: { duration: 0.15 },
-							layout: {
-								type: "spring",
-								stiffness: 300,
-								damping: 30,
-							},
-						}}
+						transition={
+							prefersReducedMotion
+								? { duration: 0.01 }
+								: {
+										opacity: { duration: 0.15 },
+										layout: {
+											type: "spring",
+											stiffness: 300,
+											damping: 30,
+										},
+									}
+						}
 					>
 						{children}
 					</motion.div>
@@ -99,6 +104,7 @@ interface AnimatedDialogTriggerProps {
 	isOpen: boolean;
 	className?: string;
 	style?: CSSProperties;
+	reducedMotion?: boolean;
 }
 
 export function AnimatedDialogTrigger({
@@ -108,6 +114,7 @@ export function AnimatedDialogTrigger({
 	isOpen,
 	className,
 	style,
+	reducedMotion,
 }: AnimatedDialogTriggerProps) {
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === "Enter" || e.key === " ") {
@@ -130,11 +137,11 @@ export function AnimatedDialogTrigger({
 						"group relative flex h-full min-h-44 cursor-pointer flex-col overflow-hidden rounded-lg border border-default-200/40 bg-default-50 p-5 text-left transition-all duration-200 hover:border-default-300/60 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-400 focus-visible:ring-offset-2"
 					}
 					style={style}
-					transition={{
-						type: "spring",
-						stiffness: 300,
-						damping: 30,
-					}}
+					transition={
+						reducedMotion
+							? { duration: 0.01 }
+							: { type: "spring", stiffness: 300, damping: 30 }
+					}
 				>
 					{children}
 				</motion.div>
