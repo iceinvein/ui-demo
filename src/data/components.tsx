@@ -517,134 +517,124 @@ export function AnimatedDialogDemo() {
 				filename: "animated-dialog.tsx",
 				language: "tsx",
 				code: `import { AnimatePresence, motion } from "framer-motion";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { useCallback, useEffect } from "react";
 
 interface AnimatedDialogProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
-  layoutId: string;
+  originRef: React.RefObject<HTMLElement | null>;
 }
 
 export function AnimatedDialog({
   isOpen,
   onClose,
   children,
-  layoutId,
+  originRef,
 }: AnimatedDialogProps) {
+  const getMorphTransform = useCallback(() => {
+    const rect = originRef.current?.getBoundingClientRect();
+    if (!rect) return { scale: 0.9, opacity: 0 };
+    const vpCenterX = window.innerWidth / 2;
+    const vpCenterY = window.innerHeight / 2;
+    const dialogWidth = Math.min(window.innerWidth - 32, 1280);
+    return {
+      x: rect.left + rect.width / 2 - vpCenterX,
+      y: rect.top + rect.height / 2 - vpCenterY,
+      scale: rect.width / dialogWidth,
+      borderRadius: "12px",
+      opacity: 0,
+    };
+  }, [originRef]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") onClose();
+      };
+      document.addEventListener("keydown", handleEscape);
+      return () => {
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", handleEscape);
+      };
+    }
+  }, [isOpen, onClose]);
+
   return (
-    <AnimatePresence mode="wait">
-      {isOpen && (
-        <>
-          {/* Backdrop */}
+    <>
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
             onClick={onClose}
           />
+        )}
+      </AnimatePresence>
 
-          {/* Dialog - morphs from button */}
+      <AnimatePresence>
+        {isOpen && (
           <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
-              layoutId={layoutId}
-              className="pointer-events-auto relative flex h-[90vh] w-full max-w-5xl flex-col rounded-3xl border border-default-200 bg-background shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
+              initial={getMorphTransform()}
+              animate={{ x: 0, y: 0, scale: 1, opacity: 1, borderRadius: "12px" }}
+              exit={getMorphTransform()}
               transition={{
                 type: "spring",
                 stiffness: 300,
                 damping: 30,
+                opacity: { duration: 0.15 },
               }}
+              className="pointer-events-auto relative flex h-[80vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl border border-default-200 bg-background shadow-lg"
+              onClick={(e) => e.stopPropagation()}
             >
               {children}
             </motion.div>
           </div>
-        </>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
 interface AnimatedDialogTriggerProps {
   onClick: () => void;
   children: ReactNode;
-  layoutId: string;
   isOpen: boolean;
+  triggerRef: React.RefObject<HTMLDivElement | null>;
+  className?: string;
+  style?: CSSProperties;
 }
 
 export function AnimatedDialogTrigger({
   onClick,
   children,
-  layoutId,
   isOpen,
+  triggerRef,
+  className,
+  style,
 }: AnimatedDialogTriggerProps) {
   return (
-    <AnimatePresence mode="wait">
-      {!isOpen && (
-        <motion.button
-          layoutId={layoutId}
-          onClick={onClick}
-          className="group relative flex h-full min-h-60 flex-col rounded-2xl border border-default-200 bg-linear-to-br from-default-50 to-default-100 p-6 shadow-sm overflow-hidden"
-          whileHover={{
-            y: -8,
-            scale: 1.02,
-            transition: {
-              type: "spring",
-              stiffness: 400,
-              damping: 25,
-            },
-          }}
-          whileTap={{ scale: 0.98 }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-          }}
-        >
-          {/* Animated gradient glow on hover */}
-          <motion.div
-            className="absolute inset-0 rounded-2xl bg-linear-to-br from-primary/0 via-primary/0 to-primary/0"
-            initial={false}
-            whileHover={{
-              background: [
-                "linear-gradient(135deg, rgba(var(--color-primary-rgb, 99, 102, 241), 0) 0%, rgba(var(--color-primary-rgb, 99, 102, 241), 0) 100%)",
-                "linear-gradient(135deg, rgba(var(--color-primary-rgb, 99, 102, 241), 0.05) 0%, rgba(var(--color-primary-rgb, 99, 102, 241), 0.1) 100%)",
-              ],
-              transition: { duration: 0.4 },
-            }}
-          />
-
-          {/* Shimmer effect on hover */}
-          <motion.div
-            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
-            }}
-            initial={{ x: "-100%" }}
-            whileHover={{
-              x: "100%",
-              transition: { duration: 0.6, ease: "easeInOut" },
-            }}
-          />
-
-          {/* Border highlight */}
-          <motion.div
-            className="absolute inset-0 rounded-2xl border-2 border-primary/0"
-            initial={false}
-            whileHover={{
-              borderColor: "rgba(var(--color-primary-rgb, 99, 102, 241), 0.3)",
-              boxShadow: "0 8px 24px -4px rgba(var(--color-primary-rgb, 99, 102, 241), 0.2)",
-              transition: { duration: 0.3 },
-            }}
-          />
-
-          {children}
-        </motion.button>
-      )}
-    </AnimatePresence>
+    <div
+      ref={triggerRef}
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      className={className}
+      style={{ ...style, opacity: isOpen ? 0 : 1, transition: "opacity 0.15s" }}
+    >
+      {children}
+    </div>
   );
 }`,
 			},
@@ -674,26 +664,27 @@ export function ButtonToDialogDemo() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[400px]">
-      <ButtonToDialog
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        onConfirm={handleConfirm}
-        layoutId="delete-button"
-        title="Delete Account"
-        description="This action cannot be undone. All your data will be permanently removed from our servers."
-        confirmText="Delete"
-        cancelText="Cancel"
-        triggerButton={
-          <button
-            type="button"
-            onClick={() => setIsOpen(true)}
-            className="px-12 py-4 rounded-full bg-red-500 hover:bg-red-400 text-white font-semibold text-lg transition-colors"
-          >
-            Delete Account
-          </button>
-        }
-      />
+    <div className="flex min-h-[400px] w-full items-center justify-center px-4">
+      <div className="w-full max-w-md space-y-3">
+        <div className="rounded-lg border border-default-200/60 bg-default-50/50 p-4">
+          <p className="mb-1 font-medium text-default-700 text-sm">Danger Zone</p>
+          <p className="text-default-500 text-xs">
+            Once you delete your account, there is no going back.
+          </p>
+        </div>
+        <div onClick={() => !isOpen && setIsOpen(true)}>
+          <ButtonToDialog
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            onConfirm={handleConfirm}
+            layoutId="delete-button"
+            title="Delete Account"
+            description="This action cannot be undone. All your data will be permanently removed from our servers."
+            confirmText="Delete"
+            cancelText="Cancel"
+          />
+        </div>
+      </div>
     </div>
   );
 }`,
@@ -3797,7 +3788,7 @@ export function ImageGalleryDemo() {
 				language: "tsx",
 				code: `import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 export interface GalleryImage {
@@ -3820,10 +3811,41 @@ export function ImageGallery({
   className = "",
 }: ImageGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const originRef = useRef<DOMRect | null>(null);
+  const clipRef = useRef<string>("inset(0% round 12px)");
+
+  const handleSelect = (image: GalleryImage, e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    originRef.current = rect;
+    // Calculate clipPath to crop to square (matching grid thumbnail)
+    const imgEl = e.currentTarget.querySelector("img");
+    if (imgEl?.naturalWidth && imgEl?.naturalHeight) {
+      const aspect = imgEl.naturalWidth / imgEl.naturalHeight;
+      const scale = rect.width / Math.min(window.innerWidth * 0.85, 900);
+      const radius = Math.round(12 / scale);
+      if (aspect > 1) {
+        const clipX = (((aspect - 1) / aspect) * 50).toFixed(1);
+        clipRef.current = \`inset(0% \${clipX}% 0% \${clipX}% round \${radius}px)\`;
+      } else if (aspect < 1) {
+        const clipY = (((1 - aspect) / 1) * 50).toFixed(1);
+        clipRef.current = \`inset(\${clipY}% 0% \${clipY}% 0% round \${radius}px)\`;
+      }
+    }
+    setSelectedImage(image);
+  };
+
+  const getMorphTransform = () => {
+    const rect = originRef.current;
+    if (!rect) return { scale: 0.85, opacity: 0 };
+    return {
+      x: rect.left + rect.width / 2 - window.innerWidth / 2,
+      y: rect.top + rect.height / 2 - window.innerHeight / 2,
+      scale: rect.width / Math.min(window.innerWidth * 0.85, 900),
+    };
+  };
 
   return (
     <div>
-      {/* Gallery Grid */}
       <div
         className={\`grid gap-4 \${className}\`}
         style={{ gridTemplateColumns: \`repeat(\${columns}, minmax(0, 1fr))\` }}
@@ -3831,128 +3853,77 @@ export function ImageGallery({
         {images.map((image, index) => (
           <motion.div
             key={image.id}
-            layoutId={\`image-\${image.id}\`}
-            onClick={() => setSelectedImage(image)}
+            onClick={(e) => handleSelect(image, e)}
             className="group relative aspect-square cursor-pointer overflow-hidden rounded-xl"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.4,
-              delay: index * 0.05,
-              ease: "easeOut",
-            }}
-            whileHover={{
-              scale: 1.05,
-              transition: { duration: 0.2 },
-            }}
+            transition={{ duration: 0.4, delay: index * 0.05 }}
+            whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
             whileTap={{ scale: 0.95 }}
           >
-            <motion.img
-              src={image.src}
-              alt={image.alt}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-
-            {/* Overlay on hover */}
-            <motion.div
-              className="absolute inset-0 flex items-end bg-linear-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-              initial={false}
-            >
-              {image.title && (
-                <p className="font-semibold text-sm text-white">
-                  {image.title}
-                </p>
-              )}
-            </motion.div>
+            <img src={image.src} alt={image.alt}
+              className="h-full w-full object-cover" loading="lazy" />
+            <div className="absolute inset-0 flex items-end bg-linear-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity group-hover:opacity-100">
+              {image.title && <p className="font-semibold text-sm text-white">{image.title}</p>}
+            </div>
           </motion.div>
         ))}
       </div>
 
-      {/* Expanded View - Rendered via Portal to escape stacking context */}
       {createPortal(
         <AnimatePresence>
           {selectedImage && (
             <>
-              {/* Backdrop */}
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                 className="fixed inset-0 bg-black/95 backdrop-blur-lg"
                 style={{ zIndex: 99999 }}
                 onClick={() => setSelectedImage(null)}
               />
-
-              {/* Expanded Image Container */}
-              <div
-                className="pointer-events-none fixed inset-0 flex items-center justify-center p-8 md:p-12"
-                style={{ zIndex: 99999 }}
-              >
-                {/* Image */}
+              <div className="pointer-events-none fixed inset-0 flex items-center justify-center p-8 md:p-12"
+                style={{ zIndex: 99999 }}>
                 <motion.div
-                  layoutId={\`image-\${selectedImage.id}\`}
-                  className="pointer-events-auto relative"
+                  className="pointer-events-auto relative overflow-hidden"
+                  initial={{ ...getMorphTransform(), clipPath: clipRef.current }}
+                  animate={{ x: 0, y: 0, scale: 1, opacity: 1, clipPath: "inset(0% round 16px)" }}
+                  exit={{ ...getMorphTransform(), clipPath: clipRef.current, opacity: 0 }}
+                  transition={{
+                    type: "spring", stiffness: 300, damping: 30,
+                    opacity: { delay: 0.22, duration: 0.1 },
+                  }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <img
-                    src={selectedImage.src}
-                    alt={selectedImage.alt}
-                    className="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
-                  />
+                  <img src={selectedImage.src} alt={selectedImage.alt}
+                    className="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl" />
                 </motion.div>
-
-                {/* Close Button - Fixed to viewport */}
-                <motion.button
-                  type="button"
-                  onClick={() => setSelectedImage(null)}
-                  className="pointer-events-auto fixed top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-black/70 text-white backdrop-blur-md transition-colors hover:bg-black/90"
+                <motion.button type="button" onClick={() => setSelectedImage(null)}
+                  className="pointer-events-auto fixed top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-black/70 text-white"
                   style={{ zIndex: 100000 }}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 25,
-                    delay: 0.2,
-                  }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25, delay: 0.2 }}
                 >
                   <X className="h-6 w-6" />
                 </motion.button>
-
-                {/* Image Info - Fixed to bottom */}
                 {(selectedImage.title || selectedImage.description) && (
                   <motion.div
-                    className="pointer-events-auto fixed inset-x-0 bottom-0 bg-linear-to-t from-black via-black/95 to-transparent px-6 pb-10 pt-24 sm:px-10 sm:pb-12 md:px-16 md:pb-16 md:pt-32"
+                    className="pointer-events-auto fixed inset-x-0 bottom-0 bg-linear-to-t from-black via-black/95 to-transparent px-6 pt-24 pb-10"
                     style={{ zIndex: 100000 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 0.3 }}
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }} transition={{ duration: 0.3, delay: 0.3 }}
                   >
                     <div className="mx-auto max-w-3xl">
-                      {selectedImage.title && (
-                        <h3 className="mb-3 font-bold leading-tight text-white text-xl sm:text-2xl md:mb-4 md:text-3xl">
-                          {selectedImage.title}
-                        </h3>
-                      )}
-                      {selectedImage.description && (
-                        <p className="leading-relaxed text-sm text-white/90 sm:text-base md:text-lg">
-                          {selectedImage.description}
-                        </p>
-                      )}
+                      {selectedImage.title && <h3 className="mb-3 font-bold text-white text-xl">{selectedImage.title}</h3>}
+                      {selectedImage.description && <p className="text-sm text-white/90">{selectedImage.description}</p>}
                     </div>
                   </motion.div>
                 )}
               </div>
-          </>
-        )}
-      </AnimatePresence>,
-      document.body
-    )}
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 }`,
