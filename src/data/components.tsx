@@ -397,12 +397,11 @@ export function AnimatedDialogDemo() {
   return (
     <div className="flex min-h-[400px] items-center justify-center">
       <AnimatedDialogTrigger
-        layoutId="demo-dialog"
+        dialogId="demo-dialog"
         isOpen={isOpen}
         onClick={() => setIsOpen(true)}
       >
         <div className="text-center">
-          <div className="mb-2 text-2xl">✨</div>
           <h3 className="mb-2 font-semibold text-lg">Click to Open</h3>
           <p className="text-default-600 text-sm">
             Watch the button morph into a dialog
@@ -411,7 +410,7 @@ export function AnimatedDialogDemo() {
       </AnimatedDialogTrigger>
 
       <AnimatedDialog
-        layoutId="demo-dialog"
+        dialogId="demo-dialog"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       >
@@ -419,94 +418,13 @@ export function AnimatedDialogDemo() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="flex h-full flex-col"
+          className="flex h-full flex-col p-8"
         >
-          {/* Header */}
-          <div className="flex items-center justify-between rounded-t-3xl border-default-200 border-b bg-default-50/50 px-6 py-4">
-            <div>
-              <h2 className="font-bold text-2xl text-default-900">
-                Animated Dialog
-              </h2>
-              <p className="text-default-600 text-sm">
-                Smooth morphing transition from button to dialog
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="rounded-full p-2 transition-colors hover:bg-default-100"
-              aria-label="Close dialog"
-            >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto p-8">
-            <div className="mx-auto max-w-2xl space-y-6">
-              <div>
-                <h3 className="mb-3 font-semibold text-xl">How it works</h3>
-                <p className="text-default-600 leading-relaxed">
-                  This dialog uses Framer Motion's layout animations with a
-                  shared{" "}
-                  <code className="rounded bg-default-100 px-2 py-1 text-sm">
-                    layoutId
-                  </code>
-                  . When the trigger button unmounts and the dialog mounts,
-                  Framer Motion automatically animates the position, size, and
-                  border radius between them.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="mb-3 font-semibold text-xl">Key Features</h3>
-                <ul className="space-y-2 text-default-600">
-                  <li className="flex items-start gap-2">
-                    <span className="mt-1 text-primary">•</span>
-                    <span>
-                      Smooth morphing animation from trigger to dialog
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-1 text-primary">•</span>
-                    <span>Spring-based physics for natural movement</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-1 text-primary">•</span>
-                    <span>Backdrop blur and fade effects</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-1 text-primary">•</span>
-                    <span>Staggered content animations</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="mt-1 text-primary">•</span>
-                    <span>Fully accessible with keyboard support</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="rounded-xl bg-linear-to-br from-primary/10 to-secondary/10 p-6">
-                <p className="text-center text-default-700">
-                  This is inspired by Family's beautiful dialog animations. The
-                  shared layout ID creates a seamless transition that feels
-                  magical! ✨
-                </p>
-              </div>
-            </div>
-          </div>
+          <h2 className="font-bold text-2xl">Animated Dialog</h2>
+          <p className="mt-2 text-default-600">
+            Uses layoutId for native FLIP animation — no manual
+            measurement needed.
+          </p>
         </motion.div>
       </AnimatedDialog>
     </div>
@@ -516,37 +434,22 @@ export function AnimatedDialogDemo() {
 			{
 				filename: "animated-dialog.tsx",
 				language: "tsx",
-				code: `import { AnimatePresence, motion } from "framer-motion";
+				code: `import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { CSSProperties, ReactNode } from "react";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
+
+const spring = { type: "spring" as const, stiffness: 400, damping: 30 };
 
 interface AnimatedDialogProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
-  originRef: React.RefObject<HTMLElement | null>;
+  dialogId: string;
 }
 
-export function AnimatedDialog({
-  isOpen,
-  onClose,
-  children,
-  originRef,
-}: AnimatedDialogProps) {
-  const getMorphTransform = useCallback(() => {
-    const rect = originRef.current?.getBoundingClientRect();
-    if (!rect) return { scale: 0.9, opacity: 0 };
-    const vpCenterX = window.innerWidth / 2;
-    const vpCenterY = window.innerHeight / 2;
-    const dialogWidth = Math.min(window.innerWidth - 32, 1280);
-    return {
-      x: rect.left + rect.width / 2 - vpCenterX,
-      y: rect.top + rect.height / 2 - vpCenterY,
-      scale: rect.width / dialogWidth,
-      borderRadius: "12px",
-      opacity: 0,
-    };
-  }, [originRef]);
+export function AnimatedDialog({ isOpen, onClose, children, dialogId }: AnimatedDialogProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const transition = prefersReducedMotion ? { duration: 0.01 } : spring;
 
   useEffect(() => {
     if (isOpen) {
@@ -580,16 +483,10 @@ export function AnimatedDialog({
         {isOpen && (
           <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
-              initial={getMorphTransform()}
-              animate={{ x: 0, y: 0, scale: 1, opacity: 1, borderRadius: "12px" }}
-              exit={getMorphTransform()}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 30,
-                opacity: { duration: 0.15 },
-              }}
-              className="pointer-events-auto relative flex h-[80vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl border border-default-200 bg-background shadow-lg"
+              layoutId={\`dialog-\${dialogId}\`}
+              className="pointer-events-auto relative flex h-[80vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl border bg-background shadow-lg"
+              style={{ borderRadius: 12 }}
+              transition={transition}
               onClick={(e) => e.stopPropagation()}
             >
               {children}
@@ -605,36 +502,29 @@ interface AnimatedDialogTriggerProps {
   onClick: () => void;
   children: ReactNode;
   isOpen: boolean;
-  triggerRef: React.RefObject<HTMLDivElement | null>;
+  dialogId: string;
   className?: string;
   style?: CSSProperties;
 }
 
 export function AnimatedDialogTrigger({
-  onClick,
-  children,
-  isOpen,
-  triggerRef,
-  className,
-  style,
+  onClick, children, isOpen, dialogId, className, style,
 }: AnimatedDialogTriggerProps) {
   return (
-    <div
-      ref={triggerRef}
+    <motion.div
+      layoutId={\`dialog-\${dialogId}\`}
       role="button"
-      tabIndex={0}
-      onClick={onClick}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onClick();
-        }
+      tabIndex={isOpen ? -1 : 0}
+      onClick={isOpen ? undefined : onClick}
+      onKeyDown={isOpen ? undefined : (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); }
       }}
       className={className}
-      style={{ ...style, opacity: isOpen ? 0 : 1, transition: "opacity 0.15s" }}
+      style={{ ...style, borderRadius: 12 }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }`,
 			},

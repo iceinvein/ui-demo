@@ -8,7 +8,7 @@ export function AnimatedDialogDemo() {
 	return (
 		<div className="flex min-h-[400px] items-center justify-center">
 			<AnimatedDialogTrigger
-				layoutId="demo-dialog"
+				dialogId="demo-dialog"
 				isOpen={isOpen}
 				onClick={() => setIsOpen(true)}
 			>
@@ -22,7 +22,7 @@ export function AnimatedDialogDemo() {
 			</AnimatedDialogTrigger>
 
 			<AnimatedDialog
-				layoutId="demo-dialog"
+				dialogId="demo-dialog"
 				isOpen={isOpen}
 				onClose={() => setIsOpen(false)}
 			>

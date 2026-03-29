@@ -6,6 +6,9 @@ import type { ComponentItem } from "@/types/component";
 import { CodeViewer } from "./code-viewer";
 import { AnimatedDialog, AnimatedDialogTrigger } from "./ui/animated-dialog";
 
+// Unique dialogId per component to scope layoutId animations
+const toDialogId = (id: string) => `component-${id}`;
+
 class PreviewErrorBoundary extends Component<
 	{ children: ReactNode; accentColor: string },
 	{ hasError: boolean }
@@ -78,8 +81,8 @@ export function AnimatedComponentDialog({
 	const [isClickOpen, setIsClickOpen] = useState(false);
 	const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
 	const previewRef = useRef<HTMLDivElement>(null);
-	const triggerRef = useRef<HTMLDivElement>(null);
 	const shouldRenderPreview = useInView(previewRef);
+	const dialogId = toDialogId(component.id);
 
 	// Close this dialog if a *different* component was opened via URL
 	useEffect(() => {
@@ -115,8 +118,8 @@ export function AnimatedComponentDialog({
 			<AnimatedDialogTrigger
 				isOpen={isOpen}
 				onClick={handleOpen}
-				triggerRef={triggerRef}
-				className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-default-200/40 bg-default-50 text-left transition-all duration-300 hover:border-default-300/60 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-400 focus-visible:ring-offset-2"
+				dialogId={dialogId}
+				className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-default-200/40 bg-default-50 text-left transition-shadow duration-300 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-400 focus-visible:ring-offset-2"
 			>
 				{/* Live Preview Area */}
 				<div
@@ -195,7 +198,7 @@ export function AnimatedComponentDialog({
 			<AnimatedDialog
 				isOpen={isOpen}
 				onClose={handleClose}
-				originRef={triggerRef}
+				dialogId={dialogId}
 			>
 				{/* Header */}
 				<motion.div
