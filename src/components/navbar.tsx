@@ -9,7 +9,11 @@ import { ThemeSwitch } from "@/components/theme-switch";
 
 export const Navbar = () => {
 	return (
-		<HeroUINavbar maxWidth="xl" position="sticky" className="backdrop-saturate-150">
+		<HeroUINavbar
+			maxWidth="xl"
+			position="sticky"
+			className="backdrop-saturate-150"
+		>
 			<NavbarContent justify="start">
 				<NavbarBrand className="max-w-fit gap-3">
 					<Link
@@ -17,7 +21,7 @@ export const Navbar = () => {
 						color="foreground"
 						href="/"
 					>
-						<span className="font-['Instrument_Serif'] text-xl italic tracking-tight text-inherit">
+						<span className="font-['Instrument_Serif'] text-inherit text-xl italic tracking-tight">
 							UI Showcase
 						</span>
 					</Link>

@@ -2,8 +2,10 @@ import { useTheme } from "@heroui/use-theme";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import {
+	oneLight,
+	vscDarkPlus,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
 import type { CodeFile } from "@/types/component";
 
 interface CodeViewerProps {

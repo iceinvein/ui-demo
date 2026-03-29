@@ -13,14 +13,14 @@ export default function DefaultLayout({
 				<div className="h-px bg-default-200/40" />
 				<div className="mt-10 flex items-baseline justify-between">
 					<div>
-						<p className="font-['Instrument_Serif'] text-lg italic text-default-400">
+						<p className="font-['Instrument_Serif'] text-default-400 text-lg italic">
 							UI Showcase
 						</p>
 						<p className="mt-1 text-default-400/60 text-xs">
 							Hand-crafted React components with Framer Motion
 						</p>
 					</div>
-					<p className="text-default-400/60 text-xs tracking-widest uppercase">
+					<p className="text-default-400/60 text-xs uppercase tracking-widest">
 						{new Date().getFullYear()}
 					</p>
 				</div>

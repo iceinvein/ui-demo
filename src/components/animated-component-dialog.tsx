@@ -1,6 +1,13 @@
 import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
-import { Component, type ErrorInfo, type ReactNode, useEffect, useRef, useState } from "react";
+import {
+	Component,
+	type ErrorInfo,
+	type ReactNode,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import type { ComponentItem } from "@/types/component";
 import { CodeViewer } from "./code-viewer";
@@ -18,18 +25,41 @@ class PreviewErrorBoundary extends Component<
 		return { hasError: true };
 	}
 	componentDidCatch(error: Error, info: ErrorInfo) {
-		console.warn("Preview render failed:", error.message, info.componentStack?.slice(0, 200));
+		console.warn(
+			"Preview render failed:",
+			error.message,
+			info.componentStack?.slice(0, 200),
+		);
 	}
 	render() {
 		if (this.state.hasError) {
 			return (
 				<div className="flex h-full flex-col items-center justify-center gap-3 p-8">
 					<div className="flex items-center gap-2 opacity-40">
-						<svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: this.props.accentColor }}>
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+						<svg
+							className="h-5 w-5"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							style={{ color: this.props.accentColor }}
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={1.5}
+								d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+							/>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={1.5}
+								d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+							/>
 						</svg>
-						<p className="text-xs font-medium" style={{ color: this.props.accentColor }}>
+						<p
+							className="font-medium text-xs"
+							style={{ color: this.props.accentColor }}
+						>
 							Open to preview
 						</p>
 					</div>
@@ -86,7 +116,11 @@ export function AnimatedComponentDialog({
 
 	// Close this dialog if a *different* component was opened via URL
 	useEffect(() => {
-		if (currentComponentId && currentComponentId !== component.id && isClickOpen) {
+		if (
+			currentComponentId &&
+			currentComponentId !== component.id &&
+			isClickOpen
+		) {
 			setIsClickOpen(false);
 			setActiveTab("preview");
 		}
@@ -161,7 +195,7 @@ export function AnimatedComponentDialog({
 						className={`mb-1.5 text-default-900 leading-tight ${
 							featured
 								? "font-['Instrument_Serif'] text-2xl italic"
-								: "text-[15px] font-semibold"
+								: "font-semibold text-[15px]"
 						}`}
 					>
 						{component.title}
@@ -195,11 +229,7 @@ export function AnimatedComponentDialog({
 			</AnimatedDialogTrigger>
 
 			{/* Dialog — morph from/to card position */}
-			<AnimatedDialog
-				isOpen={isOpen}
-				onClose={handleClose}
-				dialogId={dialogId}
-			>
+			<AnimatedDialog isOpen={isOpen} onClose={handleClose} dialogId={dialogId}>
 				{/* Header */}
 				<motion.div
 					initial={{ opacity: 0 }}
@@ -312,8 +342,7 @@ export function AnimatedComponentDialog({
 							}}
 							className="absolute inset-0 overflow-y-auto"
 							style={{
-								pointerEvents:
-									activeTab === "preview" ? "auto" : "none",
+								pointerEvents: activeTab === "preview" ? "auto" : "none",
 							}}
 						>
 							<div className="w-full">
@@ -334,8 +363,7 @@ export function AnimatedComponentDialog({
 							}}
 							className="absolute inset-0 overflow-y-auto p-8"
 							style={{
-								pointerEvents:
-									activeTab === "code" ? "auto" : "none",
+								pointerEvents: activeTab === "code" ? "auto" : "none",
 							}}
 						>
 							<CodeViewer code={component.code} />

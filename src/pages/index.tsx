@@ -10,10 +10,26 @@ const categoryStyle: Record<
 	string,
 	{ accent: string; bg: string; line: string }
 > = {
-	animation: { accent: "#c96b4f", bg: "bg-[#c96b4f]/[0.04]", line: "bg-[#c96b4f]/20" },
-	"data-display": { accent: "#5f9a7e", bg: "bg-[#5f9a7e]/[0.04]", line: "bg-[#5f9a7e]/20" },
-	navigation: { accent: "#7c8a9e", bg: "bg-[#7c8a9e]/[0.04]", line: "bg-[#7c8a9e]/20" },
-	feedback: { accent: "#c9a44e", bg: "bg-[#c9a44e]/[0.04]", line: "bg-[#c9a44e]/20" },
+	animation: {
+		accent: "#c96b4f",
+		bg: "bg-[#c96b4f]/[0.04]",
+		line: "bg-[#c96b4f]/20",
+	},
+	"data-display": {
+		accent: "#5f9a7e",
+		bg: "bg-[#5f9a7e]/[0.04]",
+		line: "bg-[#5f9a7e]/20",
+	},
+	navigation: {
+		accent: "#7c8a9e",
+		bg: "bg-[#7c8a9e]/[0.04]",
+		line: "bg-[#7c8a9e]/20",
+	},
+	feedback: {
+		accent: "#c9a44e",
+		bg: "bg-[#c9a44e]/[0.04]",
+		line: "bg-[#c9a44e]/20",
+	},
 };
 
 const categoryLayout: Record<
@@ -67,12 +83,7 @@ const cardItem = (reduced: boolean) => ({
 			? { duration: 0 }
 			: {
 					duration: 0.4,
-					ease: [0.25, 0.46, 0.45, 0.94] as [
-						number,
-						number,
-						number,
-						number,
-					],
+					ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
 				},
 	},
 });
@@ -135,23 +146,22 @@ export default function IndexPage() {
 					animate={{ opacity: 1 }}
 					transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
 				>
-					<h1 className="mb-6 font-['Instrument_Serif'] text-[clamp(4.5rem,3rem+7.5vw,9rem)] leading-[0.92] tracking-tight text-default-900">
+					<h1 className="mb-6 font-['Instrument_Serif'] text-[clamp(4.5rem,3rem+7.5vw,9rem)] text-default-900 leading-[0.92] tracking-tight">
 						UI
 						<br />
 						<em>Showcase</em>
 					</h1>
 					<div className="flex items-center gap-4">
 						<div className="h-px w-12 bg-[#c96b4f]/35" />
-						<p className="text-default-500 text-base tracking-wide">
-							{components.length} animated React components,
-							built by hand.
+						<p className="text-base text-default-500 tracking-wide">
+							{components.length} animated React components, built by hand.
 						</p>
 					</div>
 				</motion.div>
 
 				{/* Filter Bar — shadow appears when stuck via [:stuck] pseudo-class workaround */}
 				<motion.div
-					className="sticky top-16 z-40 -mx-4 mb-16 border-default-200/40 border-b bg-background/80 px-4 py-4 shadow-[0_0_0_0_transparent] backdrop-blur-xl transition-shadow [&:not(:hover)]:supports-[position:sticky]:shadow-sm md:mb-20"
+					className="-mx-4 sticky top-16 z-40 mb-16 border-default-200/40 border-b bg-background/80 px-4 py-4 shadow-[0_0_0_0_transparent] backdrop-blur-xl transition-shadow md:mb-20 [&:not(:hover)]:supports-[position:sticky]:shadow-sm"
 					initial={{ opacity: 0, y: -8 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.4, delay: 0.2 }}
@@ -160,7 +170,7 @@ export default function IndexPage() {
 						{/* Search */}
 						<div className="relative max-w-xs flex-1">
 							<svg
-								className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-default-400"
+								className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 text-default-400"
 								fill="none"
 								viewBox="0 0 24 24"
 								stroke="currentColor"
@@ -177,16 +187,26 @@ export default function IndexPage() {
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
 								placeholder="Search components..."
-								className="w-full rounded-lg border border-default-200/60 bg-default-50 py-2.5 pr-3 pl-9 text-sm text-default-900 placeholder:text-default-400 transition-colors focus:border-default-400 focus:outline-none"
+								className="w-full rounded-lg border border-default-200/60 bg-default-50 py-2.5 pr-3 pl-9 text-default-900 text-sm transition-colors placeholder:text-default-400 focus:border-default-400 focus:outline-none"
 							/>
 							{search && (
 								<button
 									type="button"
 									onClick={() => setSearch("")}
-									className="absolute top-1/2 right-3 -translate-y-1/2 text-default-400 hover:text-default-600"
+									className="-translate-y-1/2 absolute top-1/2 right-3 text-default-400 hover:text-default-600"
 								>
-									<svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-										<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+									<svg
+										className="h-3.5 w-3.5"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										strokeWidth={2}
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M6 18L18 6M6 6l12 12"
+										/>
 									</svg>
 								</button>
 							)}
@@ -197,16 +217,14 @@ export default function IndexPage() {
 							<button
 								type="button"
 								onClick={() => setActiveCategory(null)}
-								className={`rounded-full px-4 py-1.5 text-xs font-medium tracking-wide transition-all ${
+								className={`rounded-full px-4 py-1.5 font-medium text-xs tracking-wide transition-all ${
 									activeCategory === null
 										? "bg-default-900 text-default-50"
 										: "bg-default-100 text-default-600 hover:bg-default-200"
 								}`}
 							>
 								All
-								<span className="ml-1.5 opacity-60">
-									{components.length}
-								</span>
+								<span className="ml-1.5 opacity-60">{components.length}</span>
 							</button>
 							{[...categories]
 								.sort((a, b) => {
@@ -229,11 +247,9 @@ export default function IndexPage() {
 											key={cat.id}
 											type="button"
 											onClick={() =>
-												setActiveCategory(
-													isActive ? null : cat.id,
-												)
+												setActiveCategory(isActive ? null : cat.id)
 											}
-											className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide transition-all"
+											className="rounded-full px-4 py-1.5 font-medium text-xs tracking-wide transition-all"
 											style={
 												isActive
 													? {
@@ -247,9 +263,7 @@ export default function IndexPage() {
 											}
 										>
 											{cat.name}
-											<span className="ml-1.5 opacity-60">
-												{count}
-											</span>
+											<span className="ml-1.5 opacity-60">{count}</span>
 										</button>
 									);
 								})}
@@ -264,7 +278,7 @@ export default function IndexPage() {
 						animate={{ opacity: 1 }}
 						className="py-20 text-center"
 					>
-						<p className="font-['Instrument_Serif'] text-2xl italic text-default-400">
+						<p className="font-['Instrument_Serif'] text-2xl text-default-400 italic">
 							No components found
 						</p>
 						<p className="mt-2 text-default-400 text-sm">
@@ -312,20 +326,17 @@ export default function IndexPage() {
 										<div
 											className="h-2.5 w-2.5 translate-y-[-1px] rounded-full"
 											style={{
-												backgroundColor:
-													style?.accent || "#888",
+												backgroundColor: style?.accent || "#888",
 											}}
 										/>
-										<h2 className="font-['Instrument_Serif'] text-2xl leading-tight italic text-default-900">
+										<h2 className="font-['Instrument_Serif'] text-2xl text-default-900 italic leading-tight">
 											{category.name}
 										</h2>
 										<div
 											className={`h-px flex-1 ${style?.line || "bg-default-200"}`}
 										/>
 										<span className="text-default-400 text-xs">
-											{String(
-												category.items.length,
-											).padStart(2, "0")}
+											{String(category.items.length).padStart(2, "0")}
 										</span>
 									</div>
 
@@ -343,33 +354,25 @@ export default function IndexPage() {
 											"grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
 										}
 									>
-										{category.items.map(
-											(component, idx) => (
-												<motion.div
-													key={component.id}
-													variants={cardItem(!!prefersReducedMotion)}
-													className={
-														layout?.featureFirst &&
-														idx === 0
-															? "sm:col-span-2"
-															: ""
-													}
-												>
-													<AnimatedComponentDialog
-														component={component}
-														featured={
-															layout?.featureFirst &&
-															idx === 0
-														}
-														accentColor={
-															style?.accent
-														}
-														currentComponentId={componentId}
-														onCardClick={setClickedCardId}
-													/>
-												</motion.div>
-											),
-										)}
+										{category.items.map((component, idx) => (
+											<motion.div
+												key={component.id}
+												variants={cardItem(!!prefersReducedMotion)}
+												className={
+													layout?.featureFirst && idx === 0
+														? "sm:col-span-2"
+														: ""
+												}
+											>
+												<AnimatedComponentDialog
+													component={component}
+													featured={layout?.featureFirst && idx === 0}
+													accentColor={style?.accent}
+													currentComponentId={componentId}
+													onCardClick={setClickedCardId}
+												/>
+											</motion.div>
+										))}
 									</motion.div>
 								</motion.div>
 							);
