@@ -20,6 +20,11 @@ import { StepperDemo } from "@/components/stepper-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
 import { TimelineDemo } from "@/components/timeline-demo";
 import { TreeViewDemo } from "@/components/tree-view-demo";
+import { MagneticDockDemo } from "@/components/magnetic-dock-demo";
+import { CommandPaletteDemo } from "@/components/command-palette-demo";
+import { SwipeCardsDemo } from "@/components/swipe-cards-demo";
+import { ToastDemo } from "@/components/toast-demo";
+import { GravityDemo } from "@/components/gravity-demo";
 import type { Category, ComponentItem } from "@/types/component";
 
 export const categories: Category[] = [
@@ -4460,6 +4465,235 @@ export function TreeView({ data, showIcons = true, showCheckboxes = false, onChe
       </div>
     </div>
   );
+}`,
+			},
+		],
+	},
+	{
+		id: "magnetic-dock",
+		title: "Magnetic Dock",
+		description:
+			"macOS-style dock with magnification effect — icons scale up with spring physics as cursor approaches",
+		category: "animation",
+		component: MagneticDockDemo,
+		tags: ["animation", "dock", "hover", "spring", "mouse"],
+		code: [
+			{
+				filename: "magnetic-dock-demo.tsx",
+				language: "tsx",
+				code: `import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  Calendar, Camera, Globe, Mail, Music, Palette, Settings, Terminal,
+} from "lucide-react";
+import { type LucideIcon } from "lucide-react";
+import { useRef } from "react";
+
+const dockItems: { icon: LucideIcon; label: string; color: string }[] = [
+  { icon: Music, label: "Music", color: "from-pink-500 to-rose-500" },
+  { icon: Camera, label: "Photos", color: "from-purple-500 to-indigo-500" },
+  { icon: Mail, label: "Mail", color: "from-blue-500 to-cyan-500" },
+  { icon: Calendar, label: "Calendar", color: "from-red-500 to-orange-500" },
+  { icon: Globe, label: "Safari", color: "from-cyan-500 to-blue-500" },
+  { icon: Settings, label: "Settings", color: "from-gray-500 to-zinc-600" },
+  { icon: Terminal, label: "Terminal", color: "from-green-500 to-emerald-600" },
+  { icon: Palette, label: "Design", color: "from-amber-500 to-yellow-500" },
+];
+
+function DockIcon({
+  icon: Icon, label, color, mouseX,
+}: {
+  icon: LucideIcon; label: string; color: string;
+  mouseX: ReturnType<typeof useMotionValue<number>>;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const distance = useTransform(mouseX, (val: number) => {
+    const el = ref.current;
+    if (!el) return 150;
+    const rect = el.getBoundingClientRect();
+    return Math.abs(val - (rect.left + rect.width / 2));
+  });
+  const size = useTransform(distance, [0, 100, 200], [72, 56, 48]);
+  const springSize = useSpring(size, { mass: 0.1, stiffness: 200, damping: 15 });
+
+  return (
+    <motion.div ref={ref} className="group relative flex flex-col items-center"
+      style={{ width: springSize, height: springSize }}>
+      <div className="pointer-events-none absolute -top-10 rounded-md bg-default-900/90 px-2.5 py-1 text-default-50 text-xs opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+        {label}
+      </div>
+      <motion.div
+        className={\\\`flex h-full w-full cursor-pointer items-center justify-center rounded-2xl bg-gradient-to-br \\\${color} shadow-lg\\\`}
+        style={{ width: springSize, height: springSize }}
+        whileTap={{ scale: 0.85 }}>
+        <Icon className="h-1/2 w-1/2 text-white" />
+      </motion.div>
+    </motion.div>
+  );
+}
+
+export function MagneticDockDemo() {
+  const mouseX = useMotionValue(Infinity);
+  return (
+    <div className="flex min-h-[500px] flex-col items-center justify-center gap-8 p-8"
+      onMouseLeave={() => mouseX.set(Infinity)}>
+      <motion.div onMouseMove={(e) => mouseX.set(e.clientX)}
+        className="flex items-end gap-2 rounded-2xl border border-default-200/60 bg-default-100/50 px-4 pb-2 pt-2 shadow-xl backdrop-blur-xl">
+        {dockItems.map((item) => (
+          <DockIcon key={item.label} {...item} mouseX={mouseX} />
+        ))}
+      </motion.div>
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "command-palette",
+		title: "Command Palette",
+		description:
+			"Spotlight-style command palette with fuzzy search, keyboard navigation, and animated transitions",
+		category: "navigation",
+		component: CommandPaletteDemo,
+		tags: ["search", "keyboard", "overlay", "navigation", "spotlight"],
+		code: [
+			{
+				filename: "command-palette-demo.tsx",
+				language: "tsx",
+				code: `import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, FileText, Globe, Home, type LucideIcon, Moon, Palette, Search, Settings, Sun, Users, Zap } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+type PaletteItem = { id: string; label: string; icon: LucideIcon; group: string; shortcut?: string; };
+
+const items: PaletteItem[] = [
+  { id: "home", label: "Go to Home", icon: Home, group: "Navigation", shortcut: "G H" },
+  { id: "docs", label: "Go to Documentation", icon: FileText, group: "Navigation", shortcut: "G D" },
+  // ... more items across Navigation, Actions, Settings groups
+];
+
+export function CommandPaletteDemo() {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Fuzzy filtering, grouped results, keyboard nav (Arrow keys + Enter + Esc)
+  // AnimatePresence for backdrop + modal + per-item transitions
+  // Last action confirmation feedback
+}`,
+			},
+		],
+	},
+	{
+		id: "swipe-cards",
+		title: "Swipeable Card Stack",
+		description:
+			"Tinder-style card stack with drag-to-swipe gestures, rotation physics, like/nope stamps, and velocity-based dismissal",
+		category: "data-display",
+		component: SwipeCardsDemo,
+		tags: ["gesture", "drag", "cards", "spring", "swipe"],
+		code: [
+			{
+				filename: "swipe-cards-demo.tsx",
+				language: "tsx",
+				code: `import { type PanInfo, AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion";
+import { Heart, RotateCcw, X } from "lucide-react";
+import { useState } from "react";
+
+const SWIPE_THRESHOLD = 120;
+
+function SwipeCard({ card, isTop, stackIndex, onSwipe }) {
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-200, 0, 200], [-15, 0, 15]);
+  const likeOpacity = useTransform(x, [0, 80], [0, 1]);
+  const nopeOpacity = useTransform(x, [-80, 0], [1, 0]);
+
+  // Drag with threshold, spring-back, LIKE/NOPE stamps
+  // Exit animation flies card in drag direction
+}
+
+export function SwipeCardsDemo() {
+  const [cards, setCards] = useState(cardData);
+  // Stack rendering with scale/offset per index
+  // Like, Nope, Reset control buttons
+}`,
+			},
+		],
+	},
+	{
+		id: "toast-notifications",
+		title: "Toast Notifications",
+		description:
+			"Stackable toast system with slide-in animation, auto-dismiss progress bar, swipe-to-dismiss, and 4 variants",
+		category: "feedback",
+		component: ToastDemo,
+		tags: ["notification", "toast", "animation", "feedback", "alert"],
+		code: [
+			{
+				filename: "toast-demo.tsx",
+				language: "tsx",
+				code: `import { AlertTriangle, CheckCircle2, Info, XCircle } from "lucide-react";
+import { ToastProvider, useToast } from "./ui/toast";
+
+function ToastControls() {
+  const { addToast } = useToast();
+  // 4 variant trigger buttons: success, error, warning, info
+}
+
+export function ToastDemo() {
+  return (
+    <ToastProvider>
+      <ToastControls />
+    </ToastProvider>
+  );
+}`,
+			},
+			{
+				filename: "ui/toast.tsx",
+				language: "tsx",
+				code: `import { AnimatePresence, type PanInfo, motion } from "framer-motion";
+import { AlertTriangle, CheckCircle2, Info, type LucideIcon, X, XCircle } from "lucide-react";
+import { type ReactNode, createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+
+// ToastProvider + useToast hook
+// ToastItem with rAF progress bar, drag-to-dismiss
+// 4 variants: success (emerald), error (red), warning (amber), info (blue)
+// Max 4 visible, layout animations, popLayout mode`,
+			},
+		],
+	},
+	{
+		id: "gravity-simulation",
+		title: "Gravity Simulation",
+		description:
+			"Interactive canvas-based physics with spawnable orbs, gravity, wall bouncing, mouse attraction, and glow trails",
+		category: "animation",
+		component: GravityDemo,
+		tags: ["canvas", "physics", "interactive", "gravity", "particles"],
+		code: [
+			{
+				filename: "gravity-demo.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import { RotateCcw } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+const GRAVITY = 0.3;
+const DAMPING = 0.7;
+const MAX_ORBS = 50;
+
+export function GravityDemo() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const orbsRef = useRef<Orb[]>([]);
+  const mouseRef = useRef({ x: 0, y: 0, down: false });
+
+  // Click to spawn colorful orbs with random velocity
+  // requestAnimationFrame physics loop:
+  //   - Gravity acceleration
+  //   - Mouse attraction when held
+  //   - Wall bounce with damping
+  //   - Radial gradient + shadowBlur glow
+  //   - Semi-transparent clear for motion trails
 }`,
 			},
 		],
