@@ -1,5 +1,5 @@
 import { Button } from "@heroui/button";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Component, type ErrorInfo, type ReactNode, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ComponentItem } from "@/types/component";
@@ -75,14 +75,13 @@ export function AnimatedComponentDialog({
 	onCardClick,
 }: AnimatedComponentDialogProps) {
 	const navigate = useNavigate();
-	const prefersReducedMotion = useReducedMotion();
 	const [isClickOpen, setIsClickOpen] = useState(false);
 	const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
 	const previewRef = useRef<HTMLDivElement>(null);
+	const triggerRef = useRef<HTMLDivElement>(null);
 	const shouldRenderPreview = useInView(previewRef);
 
 	// Close this dialog if a *different* component was opened via URL
-	// Guard: only act when currentComponentId is defined (URL has resolved)
 	useEffect(() => {
 		if (currentComponentId && currentComponentId !== component.id && isClickOpen) {
 			setIsClickOpen(false);
@@ -102,7 +101,6 @@ export function AnimatedComponentDialog({
 		navigate("/");
 	};
 
-	const layoutId = `component-dialog-${component.id}`;
 	const isOpen = isClickOpen;
 	const PreviewComponent = component.component;
 	const tags = component.tags || [];
@@ -111,19 +109,13 @@ export function AnimatedComponentDialog({
 	const previewScale = featured ? 0.38 : 0.3;
 	const previewInverseScale = Math.round((1 / previewScale) * 100);
 
-	// When reduced motion is preferred, use instant transitions
-	const springTransition = prefersReducedMotion
-		? { type: "tween" as const, duration: 0.01 }
-		: { type: "spring" as const, stiffness: 300, damping: 30 };
-
 	return (
 		<>
-			{/* Card trigger with live preview */}
+			{/* Card trigger — stays in DOM, fades to opacity 0 when open */}
 			<AnimatedDialogTrigger
-				layoutId={layoutId}
 				isOpen={isOpen}
 				onClick={handleOpen}
-				reducedMotion={!!prefersReducedMotion}
+				triggerRef={triggerRef}
 				className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-default-200/40 bg-default-50 text-left transition-all duration-300 hover:border-default-300/60 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-400 focus-visible:ring-offset-2"
 			>
 				{/* Live Preview Area */}
@@ -199,11 +191,11 @@ export function AnimatedComponentDialog({
 				</div>
 			</AnimatedDialogTrigger>
 
-			{/* Dialog */}
+			{/* Dialog — morph from/to card position */}
 			<AnimatedDialog
-				layoutId={layoutId}
 				isOpen={isOpen}
 				onClose={handleClose}
+				originRef={triggerRef}
 			>
 				{/* Header */}
 				<motion.div
