@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import type { ReactNode } from "react";
-import { useEffect } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 interface AnimatedDialogProps {
 	isOpen: boolean;
@@ -15,54 +15,80 @@ export function AnimatedDialog({
 	children,
 	layoutId,
 }: AnimatedDialogProps) {
-	// Lock body scroll when dialog is open
+	// Keep dialog in DOM briefly after close so layoutId can morph back to card
+	const [isPresent, setIsPresent] = useState(false);
+
 	useEffect(() => {
 		if (isOpen) {
-			// Prevent body scroll but allow dialog content to scroll
-			const originalOverflow = document.body.style.overflow;
-			document.body.style.overflow = "hidden";
-
-			return () => {
-				// Restore original overflow
-				document.body.style.overflow = originalOverflow;
-			};
+			setIsPresent(true);
+		} else {
+			const timer = setTimeout(() => setIsPresent(false), 500);
+			return () => clearTimeout(timer);
 		}
 	}, [isOpen]);
 
+	useEffect(() => {
+		if (isOpen) {
+			const originalOverflow = document.body.style.overflow;
+			document.body.style.overflow = "hidden";
+
+			const handleEscape = (e: KeyboardEvent) => {
+				if (e.key === "Escape") onClose();
+			};
+			document.addEventListener("keydown", handleEscape);
+
+			return () => {
+				document.body.style.overflow = originalOverflow;
+				document.removeEventListener("keydown", handleEscape);
+			};
+		}
+	}, [isOpen, onClose]);
+
 	return (
-		<AnimatePresence mode="wait">
-			{isOpen && (
-				<>
-					{/* Simple clean backdrop */}
+		<>
+			{/* Backdrop — fades independently */}
+			<AnimatePresence>
+				{isOpen && (
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.2 }}
-						className="fixed inset-0 z-999 bg-black/80 backdrop-blur-sm"
+						className="fixed inset-0 z-999 bg-background/80 backdrop-blur-sm"
 						onClick={onClose}
+						aria-hidden="true"
 					/>
+				)}
+			</AnimatePresence>
 
-					{/* Dialog - morphs from button */}
-					<div className="pointer-events-none fixed inset-0 z-999 flex items-center justify-center p-4">
-						<motion.div
-							layoutId={layoutId}
-							className="pointer-events-auto relative flex h-[80vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl border border-default-200/30 bg-background shadow-xl"
-							onClick={(e) => e.stopPropagation()}
-							transition={{
-								layout: {
-									type: "spring",
-									stiffness: 300,
-									damping: 30,
-								},
-							}}
-						>
-							{children}
-						</motion.div>
-					</div>
-				</>
+			{/* Dialog panel — isOpen gives instant show (no frame gap for opening morph),
+			    isPresent keeps it alive briefly after close for morph-back. */}
+			{(isOpen || isPresent) && (
+				<div
+					className="pointer-events-none fixed inset-0 z-999 flex items-center justify-center p-4"
+					role="dialog"
+					aria-modal="true"
+				>
+					<motion.div
+						layoutId={layoutId}
+						className="relative flex h-[80vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl border border-default-200 bg-background shadow-lg"
+						animate={{ opacity: isOpen ? 1 : 0 }}
+						style={{ pointerEvents: isOpen ? "auto" : "none" }}
+						onClick={(e) => e.stopPropagation()}
+						transition={{
+							opacity: { duration: 0.15 },
+							layout: {
+								type: "spring",
+								stiffness: 300,
+								damping: 30,
+							},
+						}}
+					>
+						{children}
+					</motion.div>
+				</div>
 			)}
-		</AnimatePresence>
+		</>
 	);
 }
 
@@ -71,6 +97,8 @@ interface AnimatedDialogTriggerProps {
 	children: ReactNode;
 	layoutId: string;
 	isOpen: boolean;
+	className?: string;
+	style?: CSSProperties;
 }
 
 export function AnimatedDialogTrigger({
@@ -78,23 +106,30 @@ export function AnimatedDialogTrigger({
 	children,
 	layoutId,
 	isOpen,
+	className,
+	style,
 }: AnimatedDialogTriggerProps) {
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		if (e.key === "Enter" || e.key === " ") {
+			e.preventDefault();
+			onClick();
+		}
+	};
+
 	return (
 		<>
 			{!isOpen && (
-				<motion.button
+				<motion.div
+					role="button"
+					tabIndex={0}
 					layoutId={layoutId}
 					onClick={onClick}
-					className="group relative flex h-full min-h-60 flex-col overflow-hidden rounded-xl border border-default-200/50 bg-linear-to-br from-default-50 via-background to-default-100 p-6 shadow-md backdrop-blur-sm transition-colors hover:border-default-300"
-					whileHover={{
-						y: -4,
-						transition: {
-							type: "spring",
-							stiffness: 400,
-							damping: 25,
-						},
-					}}
-					whileTap={{ scale: 0.98 }}
+					onKeyDown={handleKeyDown}
+					className={
+						className ||
+						"group relative flex h-full min-h-44 cursor-pointer flex-col overflow-hidden rounded-lg border border-default-200/40 bg-default-50 p-5 text-left transition-all duration-200 hover:border-default-300/60 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-400 focus-visible:ring-offset-2"
+					}
+					style={style}
 					transition={{
 						type: "spring",
 						stiffness: 300,
@@ -102,7 +137,7 @@ export function AnimatedDialogTrigger({
 					}}
 				>
 					{children}
-				</motion.button>
+				</motion.div>
 			)}
 			{isOpen && (
 				<div

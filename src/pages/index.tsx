@@ -1,312 +1,373 @@
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { useMatch } from "react-router-dom";
 import { AnimatedComponentDialog } from "@/components/animated-component-dialog";
 import { DirectOpenDialog } from "@/components/direct-open-dialog";
-import { SplitText } from "@/components/ui/split-text";
 import { categories, components } from "@/data/components";
 import DefaultLayout from "@/layouts/default";
 
-// Container variant for staggered children animation
-const containerVariants = {
-	hidden: { opacity: 0 },
+const categoryStyle: Record<
+	string,
+	{ accent: string; bg: string; line: string }
+> = {
+	animation: { accent: "#c96b4f", bg: "bg-[#c96b4f]/[0.04]", line: "bg-[#c96b4f]/20" },
+	"data-display": { accent: "#5f9a7e", bg: "bg-[#5f9a7e]/[0.04]", line: "bg-[#5f9a7e]/20" },
+	navigation: { accent: "#7c8a9e", bg: "bg-[#7c8a9e]/[0.04]", line: "bg-[#7c8a9e]/20" },
+	feedback: { accent: "#c9a44e", bg: "bg-[#c9a44e]/[0.04]", line: "bg-[#c9a44e]/20" },
+};
+
+const categoryLayout: Record<
+	string,
+	{
+		grid: string;
+		featureFirst: boolean;
+		headerGap: string;
+		sectionGap: string;
+	}
+> = {
+	animation: {
+		grid: "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3",
+		featureFirst: true,
+		headerGap: "mb-8",
+		sectionGap: "mb-28 md:mb-36",
+	},
+	"data-display": {
+		grid: "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3",
+		featureFirst: true,
+		headerGap: "mb-8",
+		sectionGap: "mb-24 md:mb-32",
+	},
+	navigation: {
+		grid: "grid grid-cols-1 gap-5 md:grid-cols-2",
+		featureFirst: false,
+		headerGap: "mb-10",
+		sectionGap: "mb-28 md:mb-36",
+	},
+	feedback: {
+		grid: "grid grid-cols-1 gap-5 md:grid-cols-2",
+		featureFirst: false,
+		headerGap: "mb-10",
+		sectionGap: "mb-20",
+	},
+};
+
+const staggerContainer = {
+	hidden: {},
+	visible: {
+		transition: { staggerChildren: 0.06 },
+	},
+};
+
+const cardItem = {
+	hidden: { opacity: 0, y: 16 },
 	visible: {
 		opacity: 1,
+		y: 0,
 		transition: {
-			staggerChildren: 0.08,
-			delayChildren: 0.6,
+			duration: 0.4,
+			ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
 		},
 	},
 };
 
-// Bokeh circle configurations for landing page
-const bokehCircles = [
-	{
-		size: 150,
-		color: "from-purple-500/30 to-pink-500/30",
-		x: "8%",
-		y: "15%",
-		delay: 0,
-		duration: 12,
-	},
-	{
-		size: 100,
-		color: "from-blue-500/25 to-cyan-500/25",
-		x: "75%",
-		y: "10%",
-		delay: 1,
-		duration: 15,
-	},
-	{
-		size: 130,
-		color: "from-pink-500/30 to-rose-500/30",
-		x: "90%",
-		y: "65%",
-		delay: 2,
-		duration: 14,
-	},
-	{
-		size: 80,
-		color: "from-yellow-500/20 to-orange-500/20",
-		x: "12%",
-		y: "75%",
-		delay: 3,
-		duration: 11,
-	},
-	{
-		size: 120,
-		color: "from-green-500/25 to-teal-500/25",
-		x: "50%",
-		y: "50%",
-		delay: 4,
-		duration: 16,
-	},
-	{
-		size: 90,
-		color: "from-indigo-500/30 to-purple-500/30",
-		x: "28%",
-		y: "35%",
-		delay: 5,
-		duration: 13,
-	},
-	{
-		size: 140,
-		color: "from-rose-500/25 to-pink-500/25",
-		x: "65%",
-		y: "85%",
-		delay: 6,
-		duration: 15,
-	},
-	{
-		size: 70,
-		color: "from-cyan-500/20 to-blue-500/20",
-		x: "85%",
-		y: "25%",
-		delay: 7,
-		duration: 14,
-	},
-	{
-		size: 110,
-		color: "from-purple-500/25 to-indigo-500/25",
-		x: "40%",
-		y: "20%",
-		delay: 8,
-		duration: 17,
-	},
-	{
-		size: 95,
-		color: "from-pink-500/20 to-purple-500/20",
-		x: "20%",
-		y: "60%",
-		delay: 9,
-		duration: 13,
-	},
-];
-
 export default function IndexPage() {
-	const { componentId } = useParams<{ componentId: string }>();
-	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+	const componentMatch = useMatch("/component/:componentId");
+	const componentId = componentMatch?.params.componentId;
+	const [search, setSearch] = useState("");
+	const [activeCategory, setActiveCategory] = useState<string | null>(null);
+	const [clickedCardId, setClickedCardId] = useState<string | null>(null);
 
-	// Find the component for direct URL access
-	const directOpenComponent = componentId
-		? components.find((c) => c.id === componentId)
-		: null;
-
+	// Reset card click tracking when navigating away from a component
 	useEffect(() => {
-		const handleMouseMove = (e: MouseEvent) => {
-			setMousePosition({
-				x: (e.clientX / window.innerWidth - 0.5) * 20,
-				y: (e.clientY / window.innerHeight - 0.5) * 20,
-			});
-		};
+		if (!componentId) setClickedCardId(null);
+	}, [componentId]);
 
-		window.addEventListener("mousemove", handleMouseMove);
-		return () => window.removeEventListener("mousemove", handleMouseMove);
-	}, []);
+	// Only show DirectOpenDialog for direct URL access (no card morph source)
+	const directOpenComponent =
+		componentId && clickedCardId !== componentId
+			? components.find((c) => c.id === componentId)
+			: null;
+
+	const filtered = useMemo(() => {
+		return components.filter((c) => {
+			if (activeCategory && c.category !== activeCategory) return false;
+			if (search) {
+				const q = search.toLowerCase();
+				return (
+					c.title.toLowerCase().includes(q) ||
+					c.description.toLowerCase().includes(q) ||
+					c.tags?.some((t) => t.toLowerCase().includes(q))
+				);
+			}
+			return true;
+		});
+	}, [search, activeCategory]);
+
+	const grouped = useMemo(() => {
+		return [...categories]
+			.map((cat) => ({
+				...cat,
+				items: filtered.filter((c) => c.category === cat.id),
+			}))
+			.filter((cat) => cat.items.length > 0)
+			.sort((a, b) => b.items.length - a.items.length);
+	}, [filtered]);
 
 	return (
 		<DefaultLayout>
-			{/* Direct open dialog for URL-based access */}
 			{directOpenComponent && (
 				<DirectOpenDialog component={directOpenComponent} />
 			)}
-			{/* Animated Background */}
-			<div className="pointer-events-none fixed inset-0 overflow-hidden">
-				{/* Bokeh Circles */}
-				{bokehCircles.map((circle, index) => (
-					<motion.div
-						key={index}
-						className={`pointer-events-none absolute rounded-full bg-linear-to-br ${circle.color} blur-3xl`}
-						style={{
-							width: circle.size,
-							height: circle.size,
-							left: circle.x,
-							top: circle.y,
-						}}
-						animate={{
-							x: [0, 40, -30, 0],
-							y: [0, -50, 30, 0],
-							scale: [1, 1.3, 0.9, 1],
-							opacity: [0.4, 0.7, 0.3, 0.4],
-						}}
-						transition={{
-							duration: circle.duration,
-							delay: circle.delay,
-							repeat: Infinity,
-							ease: "easeInOut",
-						}}
-					/>
-				))}
 
-				{/* Parallax effect on mouse move */}
+			<section className="relative z-10 mx-auto max-w-6xl px-4 py-16 md:py-24">
+				{/* Hero */}
 				<motion.div
-					className="absolute inset-0"
-					animate={{
-						x: mousePosition.x,
-						y: mousePosition.y,
-					}}
-					transition={{ type: "spring", stiffness: 50, damping: 20 }}
+					className="mb-16 md:mb-20"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.5 }}
 				>
-					<div className="absolute top-[40%] left-[30%] h-2 w-2 rounded-full bg-primary/30" />
-					<div className="absolute top-[30%] left-[70%] h-3 w-3 rounded-full bg-secondary/20" />
-					<div className="absolute top-[70%] left-[50%] h-2 w-2 rounded-full bg-success/25" />
-					<div className="absolute top-[80%] left-[20%] h-1 w-1 rounded-full bg-primary/40" />
-					<div className="absolute top-[50%] left-[80%] h-2 w-2 rounded-full bg-secondary/30" />
+					<h1 className="mb-6 font-['Instrument_Serif'] text-[clamp(4.5rem,3rem+7.5vw,9rem)] leading-[0.92] tracking-tight text-default-900">
+						UI
+						<br />
+						<em>Showcase</em>
+					</h1>
+					<div className="flex items-center gap-4">
+						<div className="h-px w-12 bg-[#c96b4f]/35" />
+						<p className="text-default-500 text-base tracking-wide">
+							{components.length} animated React components,
+							built by hand.
+						</p>
+					</div>
 				</motion.div>
-			</div>
 
-			<section className="container relative z-10 mx-auto px-4 py-12">
-				{/* Hero Section */}
-				<div className="relative mb-20 text-center">
-					{/* Animated glow behind title */}
-					<motion.div
-						className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-[300px] w-[600px] rounded-full bg-linear-to-r from-primary/20 via-secondary/20 to-success/20 blur-3xl"
-						animate={{
-							scale: [1, 1.2, 1],
-							opacity: [0.3, 0.5, 0.3],
-						}}
-						transition={{
-							duration: 4,
-							repeat: Number.POSITIVE_INFINITY,
-							ease: "easeInOut",
-						}}
-					/>
-
-					<motion.div
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ duration: 0.5 }}
-						className="relative"
-					>
-						<SplitText
-							text="UI Component Showcase"
-							className="mb-6 bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-5xl text-transparent md:text-7xl"
-							delay={0}
-							duration={0.02}
-						/>
-					</motion.div>
-
-					<motion.p
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5, delay: 0.3 }}
-						className="mx-auto max-w-2xl text-default-600 text-lg md:text-xl"
-					>
-						Explore my collection of beautifully crafted, animated UI
-						components. Click any card to see the component in action and view
-						the code.
-					</motion.p>
-
-					{/* Floating badges */}
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5, delay: 0.5 }}
-						className="mt-8 flex flex-wrap items-center justify-center gap-3"
-					>
-						{["Framer Motion", "TypeScript", "React", "Tailwind"].map(
-							(tech, i) => (
-								<motion.span
-									key={tech}
-									initial={{ opacity: 0, scale: 0.8 }}
-									animate={{ opacity: 1, scale: 1 }}
-									transition={{ delay: 0.7 + i * 0.1 }}
-									whileHover={{ scale: 1.1, y: -2 }}
-									className="rounded-full border border-default-200 bg-default-50/50 px-4 py-2 font-medium text-default-700 text-sm backdrop-blur-sm"
+				{/* Filter Bar */}
+				<motion.div
+					className="sticky top-16 z-40 -mx-4 mb-16 border-default-200/40 border-b bg-background/80 px-4 py-4 backdrop-blur-xl md:mb-20"
+					initial={{ opacity: 0, y: -8 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.4, delay: 0.2 }}
+				>
+					<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+						{/* Search */}
+						<div className="relative max-w-xs flex-1">
+							<svg
+								className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-default-400"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+								strokeWidth={2}
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+								/>
+							</svg>
+							<input
+								type="text"
+								value={search}
+								onChange={(e) => setSearch(e.target.value)}
+								placeholder="Search components..."
+								className="w-full rounded-lg border border-default-200/60 bg-default-50 py-2.5 pr-3 pl-9 text-sm text-default-900 placeholder:text-default-400 transition-colors focus:border-default-400 focus:outline-none"
+							/>
+							{search && (
+								<button
+									type="button"
+									onClick={() => setSearch("")}
+									className="absolute top-1/2 right-3 -translate-y-1/2 text-default-400 hover:text-default-600"
 								>
-									{tech}
-								</motion.span>
-							),
-						)}
+									<svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+										<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+									</svg>
+								</button>
+							)}
+						</div>
+
+						{/* Category Pills */}
+						<div className="flex flex-wrap gap-2">
+							<button
+								type="button"
+								onClick={() => setActiveCategory(null)}
+								className={`rounded-full px-4 py-1.5 text-xs font-medium tracking-wide transition-all ${
+									activeCategory === null
+										? "bg-default-900 text-default-50"
+										: "bg-default-100 text-default-600 hover:bg-default-200"
+								}`}
+							>
+								All
+								<span className="ml-1.5 opacity-60">
+									{components.length}
+								</span>
+							</button>
+							{[...categories]
+								.sort((a, b) => {
+									const aCount = components.filter(
+										(c) => c.category === a.id,
+									).length;
+									const bCount = components.filter(
+										(c) => c.category === b.id,
+									).length;
+									return bCount - aCount;
+								})
+								.map((cat) => {
+									const style = categoryStyle[cat.id];
+									const count = components.filter(
+										(c) => c.category === cat.id,
+									).length;
+									const isActive = activeCategory === cat.id;
+									return (
+										<button
+											key={cat.id}
+											type="button"
+											onClick={() =>
+												setActiveCategory(
+													isActive ? null : cat.id,
+												)
+											}
+											className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide transition-all"
+											style={
+												isActive
+													? {
+															backgroundColor: style?.accent,
+															color: "#fff",
+														}
+													: {
+															backgroundColor: `color-mix(in oklch, ${style?.accent || "#888"} 10%, transparent)`,
+															color: style?.accent,
+														}
+											}
+										>
+											{cat.name}
+											<span className="ml-1.5 opacity-60">
+												{count}
+											</span>
+										</button>
+									);
+								})}
+						</div>
+					</div>
+				</motion.div>
+
+				{/* Empty state */}
+				{filtered.length === 0 && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						className="py-20 text-center"
+					>
+						<p className="font-['Instrument_Serif'] text-2xl italic text-default-400">
+							No components found
+						</p>
+						<p className="mt-2 text-default-400 text-sm">
+							Try a different search term or category
+						</p>
+						<button
+							type="button"
+							onClick={() => {
+								setSearch("");
+								setActiveCategory(null);
+							}}
+							className="mt-4 text-[#c96b4f] text-sm underline underline-offset-4 hover:text-[#b5583f]"
+						>
+							Clear filters
+						</button>
 					</motion.div>
-				</div>
+				)}
 
 				{/* Categories */}
-				{categories.map((category, categoryIndex) => {
-					const categoryComponents = components.filter(
-						(c) => c.category === category.id,
-					);
+				<AnimatePresence mode="wait">
+					<motion.div
+						key={`${activeCategory || "all"}-${search}`}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.2 }}
+					>
+						{grouped.map((category) => {
+							const style = categoryStyle[category.id];
+							const layout = categoryLayout[category.id];
 
-					if (categoryComponents.length === 0) return null;
-
-					return (
-						<motion.div
-							key={category.id}
-							initial={{ opacity: 0, y: 50 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true, margin: "-100px" }}
-							transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
-							className="mb-20"
-						>
-							{/* Category Header */}
-							<div className="mb-10 text-center">
+							return (
 								<motion.div
-									initial={{ opacity: 0, scale: 0.9 }}
-									whileInView={{ opacity: 1, scale: 1 }}
-									viewport={{ once: true }}
-									transition={{ duration: 0.5 }}
-									className="relative inline-block"
+									key={category.id}
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.4 }}
+									className={layout?.sectionGap || "mb-20"}
+									id={`category-${category.id}`}
 								>
-									<h2 className="relative bg-linear-to-r from-default-900 to-default-600 bg-clip-text font-bold text-4xl text-transparent leading-snug md:text-5xl">
-										{category.name}
-									</h2>
-									<motion.div
-										className="-bottom-2 absolute left-0 h-1 rounded-full bg-linear-to-r from-primary via-secondary to-success"
-										initial={{ width: 0 }}
-										whileInView={{ width: "100%" }}
-										viewport={{ once: true }}
-										transition={{ duration: 0.8, delay: 0.2 }}
-									/>
-								</motion.div>
-								<motion.p
-									initial={{ opacity: 0 }}
-									whileInView={{ opacity: 1 }}
-									viewport={{ once: true }}
-									transition={{ delay: 0.3 }}
-									className="mt-4 text-default-600 text-lg"
-								>
-									{category.description}
-								</motion.p>
-							</div>
+									{/* Category Header */}
+									<div
+										className={`flex items-baseline gap-4 ${layout?.headerGap || "mb-8"}`}
+									>
+										<div
+											className="h-2.5 w-2.5 translate-y-[-1px] rounded-full"
+											style={{
+												backgroundColor:
+													style?.accent || "#888",
+											}}
+										/>
+										<h2 className="font-['Instrument_Serif'] text-2xl leading-tight italic text-default-900">
+											{category.name}
+										</h2>
+										<div
+											className={`h-px flex-1 ${style?.line || "bg-default-200"}`}
+										/>
+										<span className="text-default-400 text-xs">
+											{String(
+												category.items.length,
+											).padStart(2, "0")}
+										</span>
+									</div>
 
-							{/* Component Grid with Stagger */}
-							<motion.div
-								variants={containerVariants}
-								initial="hidden"
-								whileInView="visible"
-								viewport={{ once: true, margin: "-50px" }}
-								className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-							>
-								{categoryComponents.map((component) => (
-									<AnimatedComponentDialog
-										key={component.id}
-										component={component}
-									/>
-								))}
-							</motion.div>
-						</motion.div>
-					);
-				})}
+									{/* Component Grid */}
+									<motion.div
+										variants={staggerContainer}
+										initial="hidden"
+										whileInView="visible"
+										viewport={{
+											once: true,
+											margin: "-40px",
+										}}
+										className={
+											layout?.grid ||
+											"grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+										}
+									>
+										{category.items.map(
+											(component, idx) => (
+												<motion.div
+													key={component.id}
+													variants={cardItem}
+													className={
+														layout?.featureFirst &&
+														idx === 0
+															? "sm:col-span-2"
+															: ""
+													}
+												>
+													<AnimatedComponentDialog
+														component={component}
+														featured={
+															layout?.featureFirst &&
+															idx === 0
+														}
+														accentColor={
+															style?.accent
+														}
+														currentComponentId={componentId}
+														onCardClick={setClickedCardId}
+													/>
+												</motion.div>
+											),
+										)}
+									</motion.div>
+								</motion.div>
+							);
+						})}
+					</motion.div>
+				</AnimatePresence>
 			</section>
 		</DefaultLayout>
 	);

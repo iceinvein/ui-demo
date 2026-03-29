@@ -29,7 +29,7 @@ export function DirectOpenDialog({ component }: DirectOpenDialogProps) {
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
 				transition={{ duration: 0.2 }}
-				className="fixed inset-0 z-999 bg-black/80 backdrop-blur-sm"
+				className="fixed inset-0 z-999 bg-background/80 backdrop-blur-sm"
 				onClick={handleClose}
 			/>
 
@@ -95,7 +95,7 @@ export function DirectOpenDialog({ component }: DirectOpenDialogProps) {
 							Preview
 							{activeTab === "preview" && (
 								<motion.div
-									className="absolute right-0 bottom-0 left-0 h-0.5 bg-primary"
+									className="absolute right-0 bottom-0 left-0 h-0.5 rounded-full bg-default-900"
 									layoutId="directDialogActiveTab"
 									transition={{ type: "spring", stiffness: 400, damping: 30 }}
 								/>
@@ -114,7 +114,7 @@ export function DirectOpenDialog({ component }: DirectOpenDialogProps) {
 							Code
 							{activeTab === "code" && (
 								<motion.div
-									className="absolute right-0 bottom-0 left-0 h-0.5 bg-primary"
+									className="absolute right-0 bottom-0 left-0 h-0.5 rounded-full bg-default-900"
 									layoutId="directDialogActiveTab"
 									transition={{ type: "spring", stiffness: 400, damping: 30 }}
 								/>

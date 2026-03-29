@@ -4,8 +4,10 @@ import IndexPage from "@/pages/index";
 function App() {
 	return (
 		<Routes>
-			<Route element={<IndexPage />} path="/" />
-			<Route element={<IndexPage />} path="/component/:componentId" />
+			<Route element={<IndexPage />}>
+				<Route index />
+				<Route path="component/:componentId" />
+			</Route>
 		</Routes>
 	);
 }
