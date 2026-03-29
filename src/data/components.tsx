@@ -23,26 +23,10 @@ import { TreeViewDemo } from "@/components/tree-view-demo";
 import type { Category, ComponentItem } from "@/types/component";
 
 export const categories: Category[] = [
-	{
-		id: "navigation",
-		name: "Navigation",
-		description: "Components for navigation and routing",
-	},
-	{
-		id: "feedback",
-		name: "Feedback",
-		description: "Components for user feedback and notifications",
-	},
-	{
-		id: "data-display",
-		name: "Data Display",
-		description: "Components for displaying data and content",
-	},
-	{
-		id: "animation",
-		name: "Animation",
-		description: "Components with animations and transitions",
-	},
+	{ id: "navigation", name: "Navigation", description: "" },
+	{ id: "feedback", name: "Feedback", description: "" },
+	{ id: "data-display", name: "Data Display", description: "" },
+	{ id: "animation", name: "Animation", description: "" },
 ];
 
 export const components: ComponentItem[] = [
