@@ -118,10 +118,8 @@ export function ConfettiDemo() {
 		const buttonRect = buttonRef.current.getBoundingClientRect();
 
 		// Origin = center of button relative to container
-		const originX =
-			buttonRect.left - containerRect.left + buttonRect.width / 2;
-		const originY =
-			buttonRect.top - containerRect.top + buttonRect.height / 2;
+		const originX = buttonRect.left - containerRect.left + buttonRect.width / 2;
+		const originY = buttonRect.top - containerRect.top + buttonRect.height / 2;
 
 		const count = Math.floor(randomBetween(40, 61));
 		const baseId = nextIdRef.current;
@@ -195,12 +193,15 @@ export function ConfettiDemo() {
 			{/* Center the button */}
 			<div className="flex h-full min-h-[500px] items-center justify-center">
 				{/* The ref is attached via a wrapper span so Button can forward it */}
-				<span ref={buttonRef as React.RefObject<HTMLSpanElement>} className="inline-block">
+				<span
+					ref={buttonRef as React.RefObject<HTMLSpanElement>}
+					className="inline-block"
+				>
 					<Button
 						color="primary"
 						variant="shadow"
 						onPress={handleCelebrate}
-						className="relative z-10 px-8 py-3 text-base font-semibold"
+						className="relative z-10 px-8 py-3 font-semibold text-base"
 					>
 						Celebrate!
 					</Button>

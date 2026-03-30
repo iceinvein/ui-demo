@@ -12,12 +12,8 @@ export default function DefaultLayout({
 			<footer className="mx-auto w-full max-w-6xl px-4 py-16">
 				<div className="h-px bg-default-200/40" />
 				<div className="mt-8 flex items-baseline justify-between">
-					<p className="text-default-400 text-xs">
-						UI Showcase
-					</p>
-					<p className="text-default-400 text-xs">
-						{new Date().getFullYear()}
-					</p>
+					<p className="text-default-400 text-xs">UI Showcase</p>
+					<p className="text-default-400 text-xs">{new Date().getFullYear()}</p>
 				</div>
 			</footer>
 		</div>

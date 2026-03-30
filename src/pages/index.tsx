@@ -253,7 +253,7 @@ export default function IndexPage() {
 								>
 									{/* Category Header */}
 									<div className="mb-8 flex items-baseline justify-between border-default-200/60 border-b pb-3">
-										<h2 className="text-default-900 text-sm font-medium uppercase tracking-widest">
+										<h2 className="font-medium text-default-900 text-sm uppercase tracking-widest">
 											{category.name}
 										</h2>
 										<span className="text-default-400 text-xs tabular-nums">

@@ -2,22 +2,27 @@ import { AccordionDemo } from "@/components/accordion-demo";
 import { AnimatedDialogShowcase } from "@/components/animated-dialog-showcase";
 import { AnimatedListDemo } from "@/components/animated-list-demo";
 import { AnimatedTabsDemo } from "@/components/animated-tabs-demo";
+import { AvatarStackDemo } from "@/components/avatar-stack-demo";
 import { BokehDemo } from "@/components/bokeh-demo";
+import { BreadcrumbDemo } from "@/components/breadcrumb-demo";
 import { ButtonToDialogDemo } from "@/components/button-to-dialog-demo";
 import { CardFlipDemo } from "@/components/card-flip-demo";
+import { CircularProgressDemo } from "@/components/circular-progress-demo";
 import { CommandPaletteDemo } from "@/components/command-palette-demo";
 import { ConfettiDemo } from "@/components/confetti-demo";
 import { CounterDemo } from "@/components/counter-demo";
 import { CursorTrailDemo } from "@/components/cursor-trail-demo";
 import { DragDropListDemo } from "@/components/drag-drop-list-demo";
 import { GravityDemo } from "@/components/gravity-demo";
-import { TiltCardDemo } from "@/components/tilt-card-demo";
 import { ImageGalleryDemo } from "@/components/image-gallery-demo";
 import { LoadingDemo } from "@/components/loading-demo";
 import { MagneticDockDemo } from "@/components/magnetic-dock-demo";
 import { MultiStepFormDemo } from "@/components/multi-step-form-demo";
+import { NotificationBadgeDemo } from "@/components/notification-badge-demo";
+import { PaginationDemo } from "@/components/pagination-demo";
 import { PathMorphDemo } from "@/components/path-morph-demo";
 import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
+import { RatingStarsDemo } from "@/components/rating-stars-demo";
 import { ScrollParallaxDemo } from "@/components/scroll-parallax-demo";
 import { ScrollRevealDemo } from "@/components/scroll-reveal-demo";
 import { SidebarMenuDemo } from "@/components/sidebar-menu-demo";
@@ -27,6 +32,7 @@ import { StaggeredGridDemo } from "@/components/staggered-grid-demo";
 import { StepperDemo } from "@/components/stepper-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
 import { SwipeCardsDemo } from "@/components/swipe-cards-demo";
+import { TiltCardDemo } from "@/components/tilt-card-demo";
 import { TimelineDemo } from "@/components/timeline-demo";
 import { ToastDemo } from "@/components/toast-demo";
 import { TreeViewDemo } from "@/components/tree-view-demo";
@@ -4830,7 +4836,15 @@ export function Typewriter({
 			"Product card with perspective tilt following the mouse cursor, spring-based return animation, and a radial shine/glare effect",
 		category: "animation",
 		component: TiltCardDemo,
-		tags: ["3d", "tilt", "mouse", "spring", "card", "interactive", "perspective"],
+		tags: [
+			"3d",
+			"tilt",
+			"mouse",
+			"spring",
+			"card",
+			"interactive",
+			"perspective",
+		],
 		code: [
 			{
 				filename: "tilt-card-demo.tsx",
@@ -5087,7 +5101,13 @@ export function ScrollRevealDemo() {
 			"Celebratory particle explosion with randomized colors, shapes, and physics-based trajectories",
 		category: "animation",
 		component: ConfettiDemo,
-		tags: ["animation", "particles", "confetti", "celebration", "micro-interaction"],
+		tags: [
+			"animation",
+			"particles",
+			"confetti",
+			"celebration",
+			"micro-interaction",
+		],
 		code: `// See confetti-demo.tsx for full source`,
 	},
 	{
@@ -5109,5 +5129,65 @@ export function ScrollRevealDemo() {
 		component: PathMorphDemo,
 		tags: ["animation", "svg", "morph", "path", "shape"],
 		code: `// See path-morph-demo.tsx for full source`,
+	},
+	{
+		id: "circular-progress",
+		title: "Circular Progress",
+		description:
+			"Animated SVG progress rings with spring physics, gradient strokes, segmented styles, and synced number counters",
+		category: "feedback",
+		component: CircularProgressDemo,
+		tags: ["progress", "ring", "svg", "animation", "counter"],
+		code: `// See circular-progress-demo.tsx for full source`,
+	},
+	{
+		id: "rating-stars",
+		title: "Rating Stars",
+		description:
+			"Interactive 5-star rating with half-star precision, hover preview, spring animations, and read-only fractional displays",
+		category: "feedback",
+		component: RatingStarsDemo,
+		tags: ["rating", "stars", "interactive", "feedback"],
+		code: `// See rating-stars-demo.tsx for full source`,
+	},
+	{
+		id: "notification-badge",
+		title: "Notification Badge",
+		description:
+			"Animated count badges with rolling number transitions, pulse effects, and spring enter/exit on icon targets",
+		category: "feedback",
+		component: NotificationBadgeDemo,
+		tags: ["badge", "notification", "counter", "pulse", "animation"],
+		code: `// See notification-badge-demo.tsx for full source`,
+	},
+	{
+		id: "breadcrumb",
+		title: "Breadcrumb Trail",
+		description:
+			"Animated breadcrumbs with slide-in/out transitions, collapsible middle items, and interactive navigation",
+		category: "navigation",
+		component: BreadcrumbDemo,
+		tags: ["breadcrumb", "navigation", "animation", "collapsible"],
+		code: `// See breadcrumb-demo.tsx for full source`,
+	},
+	{
+		id: "pagination",
+		title: "Pagination",
+		description:
+			"Page selector with sliding active indicator, directional content transitions, and dot-style compact variant",
+		category: "navigation",
+		component: PaginationDemo,
+		tags: ["pagination", "navigation", "animation", "slider"],
+		code: `// See pagination-demo.tsx for full source`,
+	},
+	{
+		id: "avatar-stack",
+		title: "Avatar Stack",
+		description:
+			"Overlapping avatar circles that expand on hover with spring animations, tooltips, and add/remove interactions",
+		category: "data-display",
+		component: AvatarStackDemo,
+		tags: ["avatar", "stack", "hover", "tooltip", "animation"],
+		code: `// See avatar-stack-demo.tsx for full source`,
 	},
 ];

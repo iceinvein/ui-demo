@@ -153,8 +153,8 @@ export function TiltCardDemo() {
 					{/* ── Header gradient band ── */}
 					<div className="relative overflow-hidden rounded-t-2xl bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-600 px-6 pt-8 pb-6">
 						{/* Decorative background circles */}
-						<div className="pointer-events-none absolute -top-8 -right-8 h-32 w-32 rounded-full bg-white/10" />
-						<div className="pointer-events-none absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-white/10" />
+						<div className="-top-8 -right-8 pointer-events-none absolute h-32 w-32 rounded-full bg-white/10" />
+						<div className="-bottom-4 -left-4 pointer-events-none absolute h-20 w-20 rounded-full bg-white/10" />
 
 						{/* Status badge — lifts slightly in Z */}
 						<div
@@ -215,11 +215,11 @@ export function TiltCardDemo() {
 						{/* Footer: avatars + action buttons */}
 						<div className="flex items-center justify-between">
 							{/* Avatar stack */}
-							<div className="flex -space-x-2">
+							<div className="-space-x-2 flex">
 								{AVATARS.map(({ initials, bg }) => (
 									<div
 										key={initials}
-										className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-default-50 text-white text-xs font-semibold shadow-sm"
+										className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-default-50 font-semibold text-white text-xs shadow-sm"
 										style={{ background: bg }}
 									>
 										{initials}
@@ -231,7 +231,7 @@ export function TiltCardDemo() {
 							<div className="flex items-center gap-2">
 								<motion.button
 									type="button"
-									className="flex items-center gap-1.5 rounded-lg border border-default-200 bg-default-100 px-3 py-1.5 text-default-700 text-xs font-medium"
+									className="flex items-center gap-1.5 rounded-lg border border-default-200 bg-default-100 px-3 py-1.5 font-medium text-default-700 text-xs"
 									whileHover={{ scale: 1.04 }}
 									whileTap={{ scale: 0.96 }}
 								>
@@ -240,7 +240,7 @@ export function TiltCardDemo() {
 								</motion.button>
 								<motion.button
 									type="button"
-									className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 text-white text-xs font-medium shadow-sm"
+									className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 px-3 py-1.5 font-medium text-white text-xs shadow-sm"
 									whileHover={{ scale: 1.04 }}
 									whileTap={{ scale: 0.96 }}
 								>

@@ -1,10 +1,10 @@
 import {
 	AnimatePresence,
-	type PanInfo,
-	type Variants,
 	motion,
+	type PanInfo,
 	useMotionValue,
 	useTransform,
+	type Variants,
 } from "framer-motion";
 import { Heart, RotateCcw, X } from "lucide-react";
 import { useRef, useState } from "react";

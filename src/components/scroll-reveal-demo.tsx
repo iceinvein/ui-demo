@@ -26,7 +26,7 @@ export function ScrollRevealDemo() {
 					</p>
 					<p className="max-w-xs text-default-500 text-sm">
 						Each section animates into view as it enters the viewport using{" "}
-						<code className="rounded bg-default-100 px-1 py-0.5 font-mono text-xs text-default-600">
+						<code className="rounded bg-default-100 px-1 py-0.5 font-mono text-default-600 text-xs">
 							whileInView
 						</code>
 					</p>
@@ -51,7 +51,7 @@ export function ScrollRevealDemo() {
 							<br />
 							built for React
 						</h2>
-						<p className="mx-auto max-w-sm text-default-500 text-base leading-relaxed">
+						<p className="mx-auto max-w-sm text-base text-default-500 leading-relaxed">
 							A lightweight wrapper around Framer Motion's{" "}
 							<code className="rounded bg-default-100 px-1 font-mono text-xs">
 								whileInView
@@ -83,25 +83,25 @@ export function ScrollRevealDemo() {
 						<p className="font-medium text-default-500 text-xs uppercase tracking-wider">
 							How it works
 						</p>
-						<p className="mt-3 text-default-700 text-base leading-relaxed dark:text-default-300">
+						<p className="mt-3 text-base text-default-700 leading-relaxed dark:text-default-300">
 							The{" "}
-							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-sm text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-blue-700 text-sm dark:bg-blue-900/50 dark:text-blue-300">
 								ScrollReveal
 							</code>{" "}
 							component uses Framer Motion's{" "}
-							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-sm text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-blue-700 text-sm dark:bg-blue-900/50 dark:text-blue-300">
 								whileInView
 							</code>{" "}
 							prop to detect when an element enters the viewport. Pass a{" "}
-							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-sm text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-blue-700 text-sm dark:bg-blue-900/50 dark:text-blue-300">
 								direction
 							</code>
 							, optional{" "}
-							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-sm text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-blue-700 text-sm dark:bg-blue-900/50 dark:text-blue-300">
 								delay
 							</code>
 							, and any{" "}
-							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-sm text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+							<code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono text-blue-700 text-sm dark:bg-blue-900/50 dark:text-blue-300">
 								className
 							</code>{" "}
 							— the rest is handled automatically with a smooth ease-out quart
@@ -117,7 +117,7 @@ export function ScrollRevealDemo() {
 							<div className="pointer-events-none absolute inset-0 opacity-30">
 								<div className="absolute top-4 left-6 h-24 w-24 rounded-full bg-violet-400 blur-2xl" />
 								<div className="absolute right-10 bottom-6 h-32 w-32 rounded-full bg-pink-400 blur-2xl" />
-								<div className="absolute top-1/2 left-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-400 blur-xl" />
+								<div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-20 w-20 rounded-full bg-purple-400 blur-xl" />
 							</div>
 							<div className="relative flex flex-col items-center gap-2 text-default-400">
 								<div className="flex h-14 w-14 items-center justify-center rounded-xl border border-default-200/80 bg-white/60 shadow-sm backdrop-blur-sm dark:border-default-700/50 dark:bg-default-800/60">
@@ -156,9 +156,9 @@ export function ScrollRevealDemo() {
 						<h3 className="mb-2 font-bold text-white text-xl">
 							Ready to get started?
 						</h3>
-						<p className="mb-6 text-violet-200 text-sm">
+						<p className="mb-6 text-sm text-violet-200">
 							Drop{" "}
-							<code className="rounded bg-white/20 px-1.5 py-0.5 font-mono text-xs text-white">
+							<code className="rounded bg-white/20 px-1.5 py-0.5 font-mono text-white text-xs">
 								ScrollReveal
 							</code>{" "}
 							around any element and scroll to see it come alive.
@@ -167,7 +167,7 @@ export function ScrollRevealDemo() {
 							<div className="rounded-lg bg-white px-5 py-2.5 font-semibold text-purple-700 text-sm shadow-sm">
 								View Source
 							</div>
-							<div className="rounded-lg border border-white/30 px-5 py-2.5 font-semibold text-white text-sm">
+							<div className="rounded-lg border border-white/30 px-5 py-2.5 font-semibold text-sm text-white">
 								Explore Docs
 							</div>
 						</div>

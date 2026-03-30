@@ -33,29 +33,28 @@ export function CursorTrailDemo() {
 	const colorIndexRef = useRef(0);
 	const isInsideRef = useRef(false);
 
-	const handleMouseMove = useCallback(
-		(e: React.MouseEvent<HTMLDivElement>) => {
-			const rect = e.currentTarget.getBoundingClientRect();
-			const x = e.clientX - rect.left;
-			const y = e.clientY - rect.top;
+	const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+		const rect = e.currentTarget.getBoundingClientRect();
+		const x = e.clientX - rect.left;
+		const y = e.clientY - rect.top;
 
-			idRef.current += 1;
-			colorIndexRef.current = (colorIndexRef.current + 1) % PALETTE.length;
+		idRef.current += 1;
+		colorIndexRef.current = (colorIndexRef.current + 1) % PALETTE.length;
 
-			const newPoint: TrailPoint = {
-				id: idRef.current,
-				x,
-				y,
-				colorIndex: colorIndexRef.current,
-			};
+		const newPoint: TrailPoint = {
+			id: idRef.current,
+			x,
+			y,
+			colorIndex: colorIndexRef.current,
+		};
 
-			setTrail((prev) => {
-				const next = [...prev, newPoint];
-				return next.length > MAX_TRAIL ? next.slice(next.length - MAX_TRAIL) : next;
-			});
-		},
-		[],
-	);
+		setTrail((prev) => {
+			const next = [...prev, newPoint];
+			return next.length > MAX_TRAIL
+				? next.slice(next.length - MAX_TRAIL)
+				: next;
+		});
+	}, []);
 
 	const handleMouseLeave = useCallback(() => {
 		isInsideRef.current = false;

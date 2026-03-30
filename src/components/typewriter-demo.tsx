@@ -24,7 +24,7 @@ export function TypewriterDemo() {
 			{/* Live demo area */}
 			<div key={replayKey} className="w-full max-w-2xl space-y-6 text-center">
 				{/* Heading — large, gradient */}
-				<h2 className="bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl leading-tight text-transparent md:text-5xl">
+				<h2 className="bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl text-transparent leading-tight md:text-5xl">
 					<Typewriter
 						text={HEADING}
 						speed={45}
@@ -63,7 +63,10 @@ export function TypewriterDemo() {
 						{ label: "Default (50 ms/char)", speed: 50, delay: 500 },
 						{ label: "Fast (15 ms/char)", speed: 15, delay: 1200 },
 					].map(({ label, speed, delay }) => (
-						<div key={`${label}-${replayKey}`} className="flex items-baseline gap-3">
+						<div
+							key={`${label}-${replayKey}`}
+							className="flex items-baseline gap-3"
+						>
 							<span className="w-44 shrink-0 text-default-400 text-xs">
 								{label}
 							</span>

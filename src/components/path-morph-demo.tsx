@@ -61,7 +61,11 @@ const STAR = linearPath(
 
 // Rounded rectangle — flat sides + circular corner arcs (k=0.5523·r)
 const ROUNDED_SQUARE = (() => {
-	const L = 35, R = 165, T = 35, B = 165, r = 22;
+	const L = 35,
+		R = 165,
+		T = 35,
+		B = 165,
+		r = 22;
 	const k = 0.5523 * r;
 	return [
 		`M ${F(100)} ${F(T)}`,
@@ -84,18 +88,18 @@ const ROUNDED_SQUARE = (() => {
 // Heart — hand-crafted bezier curves (not algorithmic) for silky smooth lobes
 const HEART = [
 	"M 100 170",
-	"C 96 166 84 150 68 130",      // 1: bottom tip → lower-left
-	"C 52 110 36 88 33 68",        // 2: lower-left → left side
-	"C 30 50 38 36 54 30",         // 3: left side → left lobe outer
-	"C 66 26 78 28 86 36",         // 4: left lobe outer → left lobe inner
-	"C 92 42 96 50 100 60",        // 5: left lobe inner → center dip
-	"C 104 50 108 42 114 36",      // 6: center dip → right lobe inner
-	"C 122 28 134 26 146 30",      // 7: right lobe inner → right lobe outer
-	"C 162 36 170 50 167 68",      // 8: right lobe outer → right side
-	"C 164 88 148 110 132 130",    // 9: right side → lower-right
-	"C 116 150 104 166 100 170",   // 10: lower-right → bottom tip
-	"C 100 170 100 170 100 170",   // 11: degenerate (pad to 12)
-	"C 100 170 100 170 100 170",   // 12: degenerate (pad to 12)
+	"C 96 166 84 150 68 130", // 1: bottom tip → lower-left
+	"C 52 110 36 88 33 68", // 2: lower-left → left side
+	"C 30 50 38 36 54 30", // 3: left side → left lobe outer
+	"C 66 26 78 28 86 36", // 4: left lobe outer → left lobe inner
+	"C 92 42 96 50 100 60", // 5: left lobe inner → center dip
+	"C 104 50 108 42 114 36", // 6: center dip → right lobe inner
+	"C 122 28 134 26 146 30", // 7: right lobe inner → right lobe outer
+	"C 162 36 170 50 167 68", // 8: right lobe outer → right side
+	"C 164 88 148 110 132 130", // 9: right side → lower-right
+	"C 116 150 104 166 100 170", // 10: lower-right → bottom tip
+	"C 100 170 100 170 100 170", // 11: degenerate (pad to 12)
+	"C 100 170 100 170 100 170", // 12: degenerate (pad to 12)
 	"Z",
 ].join(" ");
 
