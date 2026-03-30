@@ -3,79 +3,91 @@ import { animate, motion, useMotionValue } from "framer-motion";
 import { useEffect, useState } from "react";
 
 // ---------------------------------------------------------------------------
-// Shape generation — all paths share M + N×C + Z command structure.
-// Catmull-Rom spline converts point arrays to smooth cubic bezier paths.
+// Shape generation — all paths: M + 12×C + Z.
+// Three path generators for different geometry types:
+//   smoothPath  — Catmull-Rom spline (organic curves: circle, heart)
+//   linearPath  — straight edges via 1/3–2/3 control points (star)
+//   Hardcoded   — precise corner arcs + flat sides (rounded rectangle)
 // ---------------------------------------------------------------------------
 
 const N_PTS = 12;
 const CX = 100;
 const CY = 100;
+const F = (v: number) => v.toFixed(2);
 
 function polarToXY(r: number, angleDeg: number): [number, number] {
 	const rad = ((angleDeg - 90) * Math.PI) / 180;
 	return [CX + r * Math.cos(rad), CY + r * Math.sin(rad)];
 }
 
-function pointsToPath(pts: [number, number][]): string {
+/** Catmull-Rom spline — smooth organic curves through all points */
+function smoothPath(pts: [number, number][]): string {
 	const n = pts.length;
-	const f = (v: number) => v.toFixed(2);
-	let d = `M ${f(pts[0][0])} ${f(pts[0][1])} `;
+	let d = `M ${F(pts[0][0])} ${F(pts[0][1])} `;
 	for (let i = 0; i < n; i++) {
 		const p0 = pts[(i - 1 + n) % n];
 		const p1 = pts[i];
 		const p2 = pts[(i + 1) % n];
 		const p3 = pts[(i + 2) % n];
-		const cp1x = p1[0] + (p2[0] - p0[0]) / 6;
-		const cp1y = p1[1] + (p2[1] - p0[1]) / 6;
-		const cp2x = p2[0] - (p3[0] - p1[0]) / 6;
-		const cp2y = p2[1] - (p3[1] - p1[1]) / 6;
-		d += `C ${f(cp1x)} ${f(cp1y)}, ${f(cp2x)} ${f(cp2y)}, ${f(p2[0])} ${f(p2[1])} `;
+		d += `C ${F(p1[0] + (p2[0] - p0[0]) / 6)} ${F(p1[1] + (p2[1] - p0[1]) / 6)}, ${F(p2[0] - (p3[0] - p1[0]) / 6)} ${F(p2[1] - (p3[1] - p1[1]) / 6)}, ${F(p2[0])} ${F(p2[1])} `;
 	}
 	return d + "Z";
 }
 
-const CIRCLE = pointsToPath(
+/** Straight-line segments — control points at 1/3 and 2/3 for sharp geometry */
+function linearPath(pts: [number, number][]): string {
+	const n = pts.length;
+	let d = `M ${F(pts[0][0])} ${F(pts[0][1])} `;
+	for (let i = 0; i < n; i++) {
+		const a = pts[i];
+		const b = pts[(i + 1) % n];
+		d += `C ${F(a[0] + (b[0] - a[0]) / 3)} ${F(a[1] + (b[1] - a[1]) / 3)}, ${F(a[0] + (2 * (b[0] - a[0])) / 3)} ${F(a[1] + (2 * (b[1] - a[1])) / 3)}, ${F(b[0])} ${F(b[1])} `;
+	}
+	return d + "Z";
+}
+
+// Circle — smooth Catmull-Rom through 12 evenly-spaced points
+const CIRCLE = smoothPath(
 	Array.from({ length: N_PTS }, (_, i) =>
 		polarToXY(70, (i / N_PTS) * 360),
 	),
 );
 
-const STAR = pointsToPath(
+// Star — 6-pointed with perfectly straight edges between tips and valleys
+const STAR = linearPath(
 	Array.from({ length: N_PTS }, (_, i) =>
 		polarToXY(i % 2 === 0 ? 78 : 30, (i / N_PTS) * 360),
 	),
 );
 
-const ROUNDED_SQUARE = pointsToPath(
-	Array.from({ length: N_PTS }, (_, i) => {
-		const rad = ((i / N_PTS) * 360 - 90) * (Math.PI / 180);
-		const c = Math.cos(rad);
-		const s = Math.sin(rad);
-		const exp = 8;
-		const r =
-			68 /
-			Math.pow(
-				Math.pow(Math.abs(c), exp) + Math.pow(Math.abs(s), exp),
-				1 / exp,
-			);
-		return [CX + r * c, CY + r * s] as [number, number];
-	}),
-);
+// Rounded rectangle — exact geometry with flat sides + circular corner arcs
+// Bounds [35,165]², corner radius 22, k = 0.5523·r for 90° bezier arc
+const ROUNDED_SQUARE = (() => {
+	const L = 35, R = 165, T = 35, B = 165, r = 22;
+	const k = 0.5523 * r;
+	return [
+		`M ${F(100)} ${F(T)}`,
+		`C ${F(114.33)} ${F(T)}, ${F(128.67)} ${F(T)}, ${F(R - r)} ${F(T)}`,
+		`C ${F(R - r + k)} ${F(T)}, ${F(R)} ${F(T + r - k)}, ${F(R)} ${F(T + r)}`,
+		`C ${F(R)} ${F(71.33)}, ${F(R)} ${F(85.67)}, ${F(R)} ${F(100)}`,
+		`C ${F(R)} ${F(114.33)}, ${F(R)} ${F(128.67)}, ${F(R)} ${F(B - r)}`,
+		`C ${F(R)} ${F(B - r + k)}, ${F(R - r + k)} ${F(B)}, ${F(R - r)} ${F(B)}`,
+		`C ${F(128.67)} ${F(B)}, ${F(114.33)} ${F(B)}, ${F(100)} ${F(B)}`,
+		`C ${F(85.67)} ${F(B)}, ${F(71.33)} ${F(B)}, ${F(L + r)} ${F(B)}`,
+		`C ${F(L + r - k)} ${F(B)}, ${F(L)} ${F(B - r + k)}, ${F(L)} ${F(B - r)}`,
+		`C ${F(L)} ${F(128.67)}, ${F(L)} ${F(114.33)}, ${F(L)} ${F(100)}`,
+		`C ${F(L)} ${F(85.67)}, ${F(L)} ${F(71.33)}, ${F(L)} ${F(T + r)}`,
+		`C ${F(L)} ${F(T + r - k)}, ${F(L + r - k)} ${F(T)}, ${F(L + r)} ${F(T)}`,
+		`C ${F(71.33)} ${F(T)}, ${F(85.67)} ${F(T)}, ${F(100)} ${F(T)}`,
+		"Z",
+	].join(" ");
+})();
 
-// Heart — 12 manually-placed points clockwise from bottom tip
-const HEART = pointsToPath([
-	[100, 170], // bottom point
-	[122, 148], // lower-right
-	[152, 115], // right side
-	[168, 82],  // upper-right
-	[152, 50],  // right lobe top
-	[126, 42],  // right lobe inner
-	[100, 62],  // center dip
-	[74, 42],   // left lobe inner
-	[48, 50],   // left lobe top
-	[32, 82],   // upper-left
-	[48, 115],  // left side
-	[78, 148],  // lower-left
+// Heart — smooth Catmull-Rom through 12 hand-placed control points
+const HEART = smoothPath([
+	[100, 170], [122, 148], [152, 115], [168, 82],
+	[152, 50], [126, 42], [100, 62], [74, 42],
+	[48, 50], [32, 82], [48, 115], [78, 148],
 ]);
 
 type ShapeKey = 0 | 1 | 2 | 3;
