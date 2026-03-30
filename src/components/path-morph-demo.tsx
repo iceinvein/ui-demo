@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 //   Hardcoded   — precise corner arcs + flat sides (rounded rectangle)
 // ---------------------------------------------------------------------------
 
-const N_PTS = 12;
 const CX = 100;
 const CY = 100;
 const F = (v: number) => v.toFixed(2);
@@ -46,48 +45,70 @@ function linearPath(pts: [number, number][]): string {
 	return d + "Z";
 }
 
-// Circle — smooth Catmull-Rom through 12 evenly-spaced points
+// All shapes: M + 24×C + Z (24 segments for smooth interpolation)
+
+// Circle — 24 smooth Catmull-Rom points
 const CIRCLE = smoothPath(
-	Array.from({ length: N_PTS }, (_, i) =>
-		polarToXY(70, (i / N_PTS) * 360),
-	),
+	Array.from({ length: 24 }, (_, i) => polarToXY(70, (i / 24) * 360)),
 );
 
-// Star — 6-pointed with perfectly straight edges between tips and valleys
-const STAR = linearPath(
-	Array.from({ length: N_PTS }, (_, i) =>
-		polarToXY(i % 2 === 0 ? 78 : 30, (i / N_PTS) * 360),
-	),
-);
+// Star — 6-pointed, 12 vertices doubled with midpoints → 24 straight segments
+const STAR = (() => {
+	const base: [number, number][] = Array.from({ length: 12 }, (_, i) =>
+		polarToXY(i % 2 === 0 ? 78 : 30, (i / 12) * 360),
+	);
+	const pts: [number, number][] = [];
+	for (let i = 0; i < base.length; i++) {
+		const a = base[i];
+		const b = base[(i + 1) % base.length];
+		pts.push(a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]);
+	}
+	return linearPath(pts);
+})();
 
-// Rounded rectangle — exact geometry with flat sides + circular corner arcs
-// Bounds [35,165]², corner radius 22, k = 0.5523·r for 90° bezier arc
+// Rounded rectangle — 24 segments: 16 straight + 8 arc (4 corners × 2 × 45°)
 const ROUNDED_SQUARE = (() => {
-	const L = 35, R = 165, T = 35, B = 165, r = 22;
-	const k = 0.5523 * r;
+	const L = 35, R = 165, T = 35, B = 165, cr = 22;
+	const k = (4 / 3) * Math.tan(Math.PI / 8) * cr; // 45° arc handle
+
+	const s = (x1: number, y1: number, x2: number, y2: number) =>
+		`C ${F(x1 + (x2 - x1) / 3)} ${F(y1 + (y2 - y1) / 3)}, ${F(x1 + (2 * (x2 - x1)) / 3)} ${F(y1 + (2 * (y2 - y1)) / 3)}, ${F(x2)} ${F(y2)}`;
+
+	const a45 = (cx: number, cy: number, a: number) => {
+		const a2 = a + Math.PI / 4;
+		const ex = cx + cr * Math.cos(a2);
+		const ey = cy + cr * Math.sin(a2);
+		const sx = cx + cr * Math.cos(a);
+		const sy = cy + cr * Math.sin(a);
+		return `C ${F(sx + k * -Math.sin(a))} ${F(sy + k * Math.cos(a))}, ${F(ex - k * -Math.sin(a2))} ${F(ey - k * Math.cos(a2))}, ${F(ex)} ${F(ey)}`;
+	};
+
 	return [
 		`M ${F(100)} ${F(T)}`,
-		`C ${F(114.33)} ${F(T)}, ${F(128.67)} ${F(T)}, ${F(R - r)} ${F(T)}`,
-		`C ${F(R - r + k)} ${F(T)}, ${F(R)} ${F(T + r - k)}, ${F(R)} ${F(T + r)}`,
-		`C ${F(R)} ${F(71.33)}, ${F(R)} ${F(85.67)}, ${F(R)} ${F(100)}`,
-		`C ${F(R)} ${F(114.33)}, ${F(R)} ${F(128.67)}, ${F(R)} ${F(B - r)}`,
-		`C ${F(R)} ${F(B - r + k)}, ${F(R - r + k)} ${F(B)}, ${F(R - r)} ${F(B)}`,
-		`C ${F(128.67)} ${F(B)}, ${F(114.33)} ${F(B)}, ${F(100)} ${F(B)}`,
-		`C ${F(85.67)} ${F(B)}, ${F(71.33)} ${F(B)}, ${F(L + r)} ${F(B)}`,
-		`C ${F(L + r - k)} ${F(B)}, ${F(L)} ${F(B - r + k)}, ${F(L)} ${F(B - r)}`,
-		`C ${F(L)} ${F(128.67)}, ${F(L)} ${F(114.33)}, ${F(L)} ${F(100)}`,
-		`C ${F(L)} ${F(85.67)}, ${F(L)} ${F(71.33)}, ${F(L)} ${F(T + r)}`,
-		`C ${F(L)} ${F(T + r - k)}, ${F(L + r - k)} ${F(T)}, ${F(L + r)} ${F(T)}`,
-		`C ${F(71.33)} ${F(T)}, ${F(85.67)} ${F(T)}, ${F(100)} ${F(T)}`,
+		s(100, T, 121.5, T),              s(121.5, T, R - cr, T),
+		a45(R - cr, T + cr, -Math.PI / 2), a45(R - cr, T + cr, -Math.PI / 4),
+		s(R, T + cr, R, 78.5),            s(R, 78.5, R, 100),
+		s(R, 100, R, 121.5),              s(R, 121.5, R, B - cr),
+		a45(R - cr, B - cr, 0),            a45(R - cr, B - cr, Math.PI / 4),
+		s(R - cr, B, 121.5, B),           s(121.5, B, 100, B),
+		s(100, B, 78.5, B),               s(78.5, B, L + cr, B),
+		a45(L + cr, B - cr, Math.PI / 2),  a45(L + cr, B - cr, (3 * Math.PI) / 4),
+		s(L, B - cr, L, 121.5),           s(L, 121.5, L, 100),
+		s(L, 100, L, 78.5),               s(L, 78.5, L, T + cr),
+		a45(L + cr, T + cr, Math.PI),      a45(L + cr, T + cr, (5 * Math.PI) / 4),
+		s(L + cr, T, 78.5, T),            s(78.5, T, 100, T),
 		"Z",
 	].join(" ");
 })();
 
-// Heart — smooth Catmull-Rom through 12 hand-placed control points
+// Heart — 24 hand-placed points for smooth Catmull-Rom curves
 const HEART = smoothPath([
-	[100, 170], [122, 148], [152, 115], [168, 82],
-	[152, 50], [126, 42], [100, 62], [74, 42],
-	[48, 50], [32, 82], [48, 115], [78, 148],
+	[100, 170], [110, 160], [122, 148], [138, 130],
+	[152, 112], [162, 95],  [168, 78],  [164, 62],
+	[154, 50],  [140, 43],  [126, 42],  [112, 48],
+	[100, 62],  [88, 48],   [74, 42],   [60, 43],
+	[46, 50],   [36, 62],   [32, 78],   [38, 95],
+	[48, 112],  [62, 130],  [78, 148],  [90, 160],
 ]);
 
 type ShapeKey = 0 | 1 | 2 | 3;
