@@ -14,6 +14,7 @@ type Orb = {
 
 const GRAVITY = 0.3;
 const DAMPING = 0.7;
+const COLLISION_DAMPING = 0.85;
 const MAX_ORBS = 50;
 const ATTRACTION_STRENGTH = 0.08;
 
@@ -135,7 +136,54 @@ export function GravityDemo() {
 					orb.y = height - orb.radius;
 					orb.vy *= -DAMPING;
 				}
+			}
 
+			// ── Orb-to-orb collision detection & response ──
+			const orbs = orbsRef.current;
+			for (let i = 0; i < orbs.length; i++) {
+				for (let j = i + 1; j < orbs.length; j++) {
+					const a = orbs[i];
+					const b = orbs[j];
+					const dx = b.x - a.x;
+					const dy = b.y - a.y;
+					const dist = Math.sqrt(dx * dx + dy * dy);
+					const minDist = a.radius + b.radius;
+
+					if (dist < minDist && dist > 0.01) {
+						// Normal vector from a → b
+						const nx = dx / dist;
+						const ny = dy / dist;
+
+						// Separate: push apart so they don't overlap
+						const overlap = (minDist - dist) / 2;
+						a.x -= nx * overlap;
+						a.y -= ny * overlap;
+						b.x += nx * overlap;
+						b.y += ny * overlap;
+
+						// Relative velocity along collision normal
+						const dvx = a.vx - b.vx;
+						const dvy = a.vy - b.vy;
+						const dvn = dvx * nx + dvy * ny;
+
+						// Only resolve if approaching
+						if (dvn > 0) {
+							// Mass proportional to area (r²)
+							const ma = a.radius * a.radius;
+							const mb = b.radius * b.radius;
+							const impulse = (2 * dvn) / (ma + mb) * COLLISION_DAMPING;
+
+							a.vx -= impulse * mb * nx;
+							a.vy -= impulse * mb * ny;
+							b.vx += impulse * ma * nx;
+							b.vy += impulse * ma * ny;
+						}
+					}
+				}
+			}
+
+			// ── Render ──
+			for (const orb of orbsRef.current) {
 				ctx.shadowBlur = 20;
 				ctx.shadowColor = orb.glow;
 
