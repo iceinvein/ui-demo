@@ -150,7 +150,7 @@ export function AnimatedComponentDialog({
 				isOpen={isOpen}
 				onClick={handleOpen}
 				dialogId={dialogId}
-				className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-default-200/50 bg-default-50 text-left transition-all duration-200 hover:border-default-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-400 focus-visible:ring-offset-2"
+				className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-default-200/50 bg-default-50 text-left transition-colors duration-200 hover:border-default-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-400 focus-visible:ring-offset-2"
 			>
 				{/* Live Preview Area */}
 				<div
