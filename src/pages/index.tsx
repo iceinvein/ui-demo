@@ -6,65 +6,11 @@ import { DirectOpenDialog } from "@/components/direct-open-dialog";
 import { categories, components } from "@/data/components";
 import DefaultLayout from "@/layouts/default";
 
-const categoryStyle: Record<
-	string,
-	{ accent: string; bg: string; line: string }
-> = {
-	animation: {
-		accent: "#c96b4f",
-		bg: "bg-[#c96b4f]/[0.04]",
-		line: "bg-[#c96b4f]/20",
-	},
-	"data-display": {
-		accent: "#5f9a7e",
-		bg: "bg-[#5f9a7e]/[0.04]",
-		line: "bg-[#5f9a7e]/20",
-	},
-	navigation: {
-		accent: "#7c8a9e",
-		bg: "bg-[#7c8a9e]/[0.04]",
-		line: "bg-[#7c8a9e]/20",
-	},
-	feedback: {
-		accent: "#c9a44e",
-		bg: "bg-[#c9a44e]/[0.04]",
-		line: "bg-[#c9a44e]/20",
-	},
-};
-
-const categoryLayout: Record<
-	string,
-	{
-		grid: string;
-		featureFirst: boolean;
-		headerGap: string;
-		sectionGap: string;
-	}
-> = {
-	animation: {
-		grid: "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3",
-		featureFirst: true,
-		headerGap: "mb-8",
-		sectionGap: "mb-28 md:mb-36",
-	},
-	"data-display": {
-		grid: "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3",
-		featureFirst: true,
-		headerGap: "mb-8",
-		sectionGap: "mb-24 md:mb-32",
-	},
-	navigation: {
-		grid: "grid grid-cols-1 gap-5 md:grid-cols-2",
-		featureFirst: false,
-		headerGap: "mb-10",
-		sectionGap: "mb-28 md:mb-36",
-	},
-	feedback: {
-		grid: "grid grid-cols-1 gap-5 md:grid-cols-2",
-		featureFirst: false,
-		headerGap: "mb-10",
-		sectionGap: "mb-20",
-	},
+const categoryAccent: Record<string, string> = {
+	animation: "#c96b4f",
+	"data-display": "#5f9a7e",
+	navigation: "#7c8a9e",
+	feedback: "#c9a44e",
 };
 
 const staggerContainer = (reduced: boolean) => ({
@@ -138,30 +84,25 @@ export default function IndexPage() {
 				<DirectOpenDialog component={directOpenComponent} />
 			)}
 
-			<section className="relative z-10 mx-auto max-w-6xl px-4 py-16 md:py-24">
+			<section className="relative z-10 mx-auto max-w-6xl px-4 py-12 md:py-20">
 				{/* Hero */}
 				<motion.div
-					className="mb-16 md:mb-20"
+					className="mb-10 md:mb-14"
 					initial={prefersReducedMotion ? false : { opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
+					transition={{ duration: prefersReducedMotion ? 0 : 0.4 }}
 				>
-					<h1 className="mb-6 font-['Instrument_Serif'] text-[clamp(4.5rem,3rem+7.5vw,9rem)] text-default-900 leading-[0.92] tracking-tight">
-						UI
-						<br />
-						<em>Showcase</em>
+					<h1 className="font-['Instrument_Serif'] text-[clamp(2.5rem,2rem+3vw,4.5rem)] text-default-900 leading-[1] tracking-tight">
+						UI Showcase
 					</h1>
-					<div className="flex items-center gap-4">
-						<div className="h-px w-12 bg-[#c96b4f]/35" />
-						<p className="text-base text-default-500 tracking-wide">
-							{components.length} animated React components, built by hand.
-						</p>
-					</div>
+					<p className="mt-3 text-default-400 text-sm">
+						{components.length} animated components — React & Framer Motion
+					</p>
 				</motion.div>
 
-				{/* Filter Bar — shadow appears when stuck via [:stuck] pseudo-class workaround */}
+				{/* Filter Bar */}
 				<motion.div
-					className="-mx-4 sticky top-16 z-40 mb-16 border-default-200/40 border-b bg-background/80 px-4 py-4 shadow-[0_0_0_0_transparent] backdrop-blur-xl transition-shadow md:mb-20 [&:not(:hover)]:supports-[position:sticky]:shadow-sm"
+					className="-mx-4 sticky top-16 z-40 mb-12 border-default-200/30 border-b bg-background/90 px-4 py-3 backdrop-blur-xl md:mb-16"
 					initial={{ opacity: 0, y: -8 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.4, delay: 0.2 }}
@@ -220,7 +161,7 @@ export default function IndexPage() {
 								className={`rounded-full px-4 py-1.5 font-medium text-xs tracking-wide transition-all ${
 									activeCategory === null
 										? "bg-default-900 text-default-50"
-										: "bg-default-100 text-default-600 hover:bg-default-200"
+										: "bg-default-100 text-default-500 hover:bg-default-200 hover:text-default-700"
 								}`}
 							>
 								All
@@ -237,7 +178,6 @@ export default function IndexPage() {
 									return bCount - aCount;
 								})
 								.map((cat) => {
-									const style = categoryStyle[cat.id];
 									const count = components.filter(
 										(c) => c.category === cat.id,
 									).length;
@@ -249,21 +189,14 @@ export default function IndexPage() {
 											onClick={() =>
 												setActiveCategory(isActive ? null : cat.id)
 											}
-											className="rounded-full px-4 py-1.5 font-medium text-xs tracking-wide transition-all"
-											style={
+											className={`rounded-full px-4 py-1.5 font-medium text-xs tracking-wide transition-all ${
 												isActive
-													? {
-															backgroundColor: style?.accent,
-															color: "#fff",
-														}
-													: {
-															backgroundColor: `color-mix(in oklch, ${style?.accent || "#888"} 10%, transparent)`,
-															color: style?.accent,
-														}
-											}
+													? "bg-default-900 text-default-50"
+													: "bg-default-100 text-default-500 hover:bg-default-200 hover:text-default-700"
+											}`}
 										>
 											{cat.name}
-											<span className="ml-1.5 opacity-60">{count}</span>
+											<span className="ml-1.5 opacity-50">{count}</span>
 										</button>
 									);
 								})}
@@ -290,7 +223,7 @@ export default function IndexPage() {
 								setSearch("");
 								setActiveCategory(null);
 							}}
-							className="mt-4 text-[#c96b4f] text-sm underline underline-offset-4 hover:text-[#b5583f]"
+							className="mt-4 text-default-500 text-sm underline underline-offset-4 hover:text-default-700"
 						>
 							Clear filters
 						</button>
@@ -307,8 +240,7 @@ export default function IndexPage() {
 						transition={{ duration: 0.2 }}
 					>
 						{grouped.map((category) => {
-							const style = categoryStyle[category.id];
-							const layout = categoryLayout[category.id];
+							const accent = categoryAccent[category.id] || "#888";
 
 							return (
 								<motion.div
@@ -316,27 +248,16 @@ export default function IndexPage() {
 									initial={{ opacity: 0, y: 20 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ duration: 0.4 }}
-									className={layout?.sectionGap || "mb-20"}
+									className="mb-20 md:mb-28"
 									id={`category-${category.id}`}
 								>
 									{/* Category Header */}
-									<div
-										className={`flex items-baseline gap-4 ${layout?.headerGap || "mb-8"}`}
-									>
-										<div
-											className="h-2.5 w-2.5 translate-y-[-1px] rounded-full"
-											style={{
-												backgroundColor: style?.accent || "#888",
-											}}
-										/>
-										<h2 className="font-['Instrument_Serif'] text-2xl text-default-900 italic leading-tight">
+									<div className="mb-8 flex items-baseline justify-between border-default-200/60 border-b pb-3">
+										<h2 className="text-default-900 text-sm font-medium uppercase tracking-widest">
 											{category.name}
 										</h2>
-										<div
-											className={`h-px flex-1 ${style?.line || "bg-default-200"}`}
-										/>
-										<span className="text-default-400 text-xs">
-											{String(category.items.length).padStart(2, "0")}
+										<span className="text-default-400 text-xs tabular-nums">
+											{category.items.length}
 										</span>
 									</div>
 
@@ -349,25 +270,16 @@ export default function IndexPage() {
 											once: true,
 											margin: "-40px",
 										}}
-										className={
-											layout?.grid ||
-											"grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
-										}
+										className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
 									>
-										{category.items.map((component, idx) => (
+										{category.items.map((component) => (
 											<motion.div
 												key={component.id}
 												variants={cardItem(!!prefersReducedMotion)}
-												className={
-													layout?.featureFirst && idx === 0
-														? "sm:col-span-2"
-														: ""
-												}
 											>
 												<AnimatedComponentDialog
 													component={component}
-													featured={layout?.featureFirst && idx === 0}
-													accentColor={style?.accent}
+													accentColor={accent}
 													currentComponentId={componentId}
 													onCardClick={setClickedCardId}
 												/>

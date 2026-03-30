@@ -18,7 +18,7 @@ export default {
 			themes: {
 				dark: {
 					colors: {
-						background: "#0a0a0a", // Softer black (zinc-950)
+						background: "#18181b", // zinc-900
 					},
 				},
 			},

@@ -75,7 +75,6 @@ class PreviewErrorBoundary extends Component<
 
 type AnimatedComponentDialogProps = {
 	component: ComponentItem;
-	featured?: boolean;
 	accentColor?: string;
 	currentComponentId?: string;
 	onCardClick?: (id: string) => void;
@@ -102,7 +101,6 @@ function useInView(ref: React.RefObject<HTMLElement | null>) {
 
 export function AnimatedComponentDialog({
 	component,
-	featured = false,
 	accentColor = "#888888",
 	currentComponentId,
 	onCardClick,
@@ -142,8 +140,7 @@ export function AnimatedComponentDialog({
 	const PreviewComponent = component.component;
 	const tags = component.tags || [];
 
-	const previewHeight = featured ? 200 : 140;
-	const previewScale = featured ? 0.38 : 0.3;
+	const previewScale = 0.3;
 	const previewInverseScale = Math.round((1 / previewScale) * 100);
 
 	return (
@@ -153,16 +150,12 @@ export function AnimatedComponentDialog({
 				isOpen={isOpen}
 				onClick={handleOpen}
 				dialogId={dialogId}
-				className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-default-200/40 bg-default-50 text-left transition-shadow duration-300 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-400 focus-visible:ring-offset-2"
+				className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-default-200/50 bg-default-50 text-left transition-all duration-200 hover:border-default-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-400 focus-visible:ring-offset-2"
 			>
 				{/* Live Preview Area */}
 				<div
 					ref={previewRef}
-					className="relative overflow-hidden rounded-t-xl"
-					style={{
-						height: previewHeight,
-						backgroundColor: `color-mix(in oklch, ${accentColor} 6%, transparent)`,
-					}}
+					className="relative h-36 overflow-hidden rounded-t-xl bg-default-100/50"
 				>
 					{shouldRenderPreview && (
 						<div
@@ -179,46 +172,25 @@ export function AnimatedComponentDialog({
 						</div>
 					)}
 					{/* Bottom fade */}
-					<div
-						className="absolute inset-x-0 bottom-0 h-14 transition-opacity duration-300 group-hover:opacity-60"
-						style={{
-							background: `linear-gradient(to top, color-mix(in oklch, ${accentColor} 6%, var(--heroui-default-50, #fafafa)) 0%, transparent 100%)`,
-						}}
-					/>
-					{/* Hover overlay */}
-					<div className="absolute inset-0 bg-default-900/0 transition-colors duration-300 group-hover:bg-default-900/[0.03]" />
+					<div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-default-50 to-transparent" />
 				</div>
 
 				{/* Content */}
-				<div className="flex flex-1 flex-col p-5">
-					<h3
-						className={`mb-1.5 text-default-900 leading-tight ${
-							featured
-								? "font-['Instrument_Serif'] text-2xl italic"
-								: "font-semibold text-[15px]"
-						}`}
-					>
+				<div className="flex flex-1 flex-col p-4">
+					<h3 className="mb-1 font-medium text-default-900 text-sm leading-tight">
 						{component.title}
 					</h3>
-					<p
-						className={`text-default-500 leading-relaxed ${
-							featured ? "mb-4 text-sm" : "mb-3 line-clamp-2 text-xs"
-						}`}
-					>
+					<p className="mb-3 line-clamp-2 text-default-400 text-xs leading-relaxed">
 						{component.description}
 					</p>
 
 					{/* Tags */}
 					{tags.length > 0 && (
 						<div className="mt-auto flex flex-wrap gap-1.5">
-							{tags.slice(0, featured ? 5 : 3).map((tag) => (
+							{tags.slice(0, 3).map((tag) => (
 								<span
 									key={tag}
-									className="rounded-full px-2 py-0.5 font-mono text-[10px] tracking-wide"
-									style={{
-										backgroundColor: `color-mix(in oklch, ${accentColor} 12%, transparent)`,
-										color: accentColor,
-									}}
+									className="rounded-full bg-default-100 px-2 py-0.5 font-mono text-[10px] text-default-400 tracking-wide"
 								>
 									{tag}
 								</span>
