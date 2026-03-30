@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMatch } from "react-router-dom";
 import { AnimatedComponentDialog } from "@/components/animated-component-dialog";
 import { DirectOpenDialog } from "@/components/direct-open-dialog";
@@ -41,6 +41,19 @@ export default function IndexPage() {
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
 	const [clickedCardId, setClickedCardId] = useState<string | null>(null);
 	const prefersReducedMotion = useReducedMotion();
+	const searchRef = useRef<HTMLInputElement>(null);
+
+	// ⌘K / Ctrl+K to focus search
+	const handleGlobalKey = useCallback((e: KeyboardEvent) => {
+		if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+			e.preventDefault();
+			searchRef.current?.focus();
+		}
+	}, []);
+	useEffect(() => {
+		document.addEventListener("keydown", handleGlobalKey);
+		return () => document.removeEventListener("keydown", handleGlobalKey);
+	}, [handleGlobalKey]);
 
 	// Reset card click tracking when navigating away from a component
 	useEffect(() => {
@@ -96,7 +109,9 @@ export default function IndexPage() {
 						UI Showcase
 					</h1>
 					<p className="mt-3 text-default-400 text-sm">
-						{components.length} animated components — React & Framer Motion
+						{components.length} components across {categories.length} categories
+						<span className="mx-1.5 text-default-300">·</span>
+						React & Framer Motion
 					</p>
 				</motion.div>
 
@@ -124,12 +139,18 @@ export default function IndexPage() {
 								/>
 							</svg>
 							<input
+								ref={searchRef}
 								type="text"
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
 								placeholder="Search components..."
-								className="w-full rounded-lg border border-default-200/60 bg-default-50 py-2.5 pr-3 pl-9 text-default-900 text-sm transition-colors placeholder:text-default-400 focus:border-default-400 focus:outline-none"
+								className="w-full rounded-lg border border-default-200/60 bg-default-50 py-2.5 pr-10 pl-9 text-default-900 text-sm transition-colors placeholder:text-default-400 focus:border-default-400 focus:outline-none"
 							/>
+							{!search && (
+								<kbd className="-translate-y-1/2 absolute top-1/2 right-3 hidden rounded border border-default-200/60 bg-default-100 px-1.5 py-0.5 font-mono text-[10px] text-default-400 sm:inline-block">
+									⌘K
+								</kbd>
+							)}
 							{search && (
 								<button
 									type="button"

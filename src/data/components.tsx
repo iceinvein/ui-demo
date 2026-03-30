@@ -22,7 +22,9 @@ import { NotificationBadgeDemo } from "@/components/notification-badge-demo";
 import { PaginationDemo } from "@/components/pagination-demo";
 import { PathMorphDemo } from "@/components/path-morph-demo";
 import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
+import { PricingCardsDemo } from "@/components/pricing-cards-demo";
 import { RatingStarsDemo } from "@/components/rating-stars-demo";
+import { SortableTableDemo } from "@/components/sortable-table-demo";
 import { ScrollParallaxDemo } from "@/components/scroll-parallax-demo";
 import { ScrollRevealDemo } from "@/components/scroll-reveal-demo";
 import { SidebarMenuDemo } from "@/components/sidebar-menu-demo";
@@ -35,6 +37,8 @@ import { SwipeCardsDemo } from "@/components/swipe-cards-demo";
 import { TiltCardDemo } from "@/components/tilt-card-demo";
 import { TimelineDemo } from "@/components/timeline-demo";
 import { ToastDemo } from "@/components/toast-demo";
+import { ToggleSwitchDemo } from "@/components/toggle-switch-demo";
+import { TooltipDemo } from "@/components/tooltip-demo";
 import { TreeViewDemo } from "@/components/tree-view-demo";
 import { TypewriterDemo } from "@/components/typewriter-demo";
 import type { Category, ComponentItem } from "@/types/component";
@@ -5189,5 +5193,45 @@ export function ScrollRevealDemo() {
 		component: AvatarStackDemo,
 		tags: ["avatar", "stack", "hover", "tooltip", "animation"],
 		code: `// See avatar-stack-demo.tsx for full source`,
+	},
+	{
+		id: "tooltip",
+		title: "Tooltip",
+		description:
+			"Animated tooltips with spring scale transitions, directional arrows, and rich content support",
+		category: "feedback",
+		component: TooltipDemo,
+		tags: ["tooltip", "hover", "popup", "animation"],
+		code: `// See tooltip-demo.tsx for full source`,
+	},
+	{
+		id: "toggle-switch",
+		title: "Toggle Switch",
+		description:
+			"Animated toggle switches with spring physics, icon variants, labeled tracks, and accessible keyboard support",
+		category: "feedback",
+		component: ToggleSwitchDemo,
+		tags: ["toggle", "switch", "form", "animation", "accessible"],
+		code: `// See toggle-switch-demo.tsx for full source`,
+	},
+	{
+		id: "pricing-cards",
+		title: "Pricing Cards",
+		description:
+			"Monthly/yearly pricing toggle with animated price transitions, featured card highlighting, and staggered entrance",
+		category: "data-display",
+		component: PricingCardsDemo,
+		tags: ["pricing", "cards", "toggle", "animation"],
+		code: `// See pricing-cards-demo.tsx for full source`,
+	},
+	{
+		id: "sortable-table",
+		title: "Sortable Table",
+		description:
+			"Data table with animated row reordering on sort, filterable search, status badges, and mini progress bars",
+		category: "data-display",
+		component: SortableTableDemo,
+		tags: ["table", "sort", "filter", "data", "animation"],
+		code: `// See sortable-table-demo.tsx for full source`,
 	},
 ];
