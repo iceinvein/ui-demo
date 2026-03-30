@@ -119,13 +119,11 @@ function CircularRing({ config, replayKey }: CircularRingProps) {
 	// Map 0-100 → circumference → 0  (full circle when progress=100)
 	const strokeDashoffset = useTransform(progress, [0, 100], [circumference, 0]);
 
-	// Rounded integer for the label — synced to React state so it's a valid ReactNode
+	// Sync motion value → React state for the counter display
 	const [displayValue, setDisplayValue] = useState(0);
-	useTransform(progress, (v) => {
-		const rounded = Math.round(v);
-		setDisplayValue(rounded);
-		return rounded;
-	});
+	useEffect(() => {
+		return progress.on("change", (v) => setDisplayValue(Math.round(v)));
+	}, [progress]);
 
 	// Re-run the animation whenever replayKey changes.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: replayKey is intentionally used as a replay trigger
