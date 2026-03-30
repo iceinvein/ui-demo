@@ -194,31 +194,16 @@ export function PathMorphDemo() {
 		<div className="flex min-h-[500px] flex-col items-center justify-center gap-8 p-8">
 			{/* Title */}
 			<div className="text-center">
-				<motion.h2
-					className="mb-1 bg-gradient-to-r from-violet-500 via-pink-500 to-amber-400 bg-clip-text font-bold text-2xl text-transparent"
-					initial={{ opacity: 0, y: -12 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5 }}
-				>
+				<h2 className="mb-1 bg-gradient-to-r from-violet-500 via-pink-500 to-amber-400 bg-clip-text font-bold text-2xl text-transparent">
 					SVG Path Morphing
-				</motion.h2>
-				<motion.p
-					className="text-default-500 text-sm"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ delay: 0.2 }}
-				>
+				</h2>
+				<p className="text-default-500 text-sm">
 					Smooth spring-based interpolation between shapes
-				</motion.p>
+				</p>
 			</div>
 
 			{/* SVG stage */}
-			<motion.div
-				className="relative flex items-center justify-center"
-				initial={{ opacity: 0, scale: 0.9 }}
-				animate={{ opacity: 1, scale: 1 }}
-				transition={{ duration: 0.5, delay: 0.1 }}
-			>
+			<div className="relative flex items-center justify-center">
 				{/* Glow layer — blurred duplicate for ambient effect */}
 				<svg
 					viewBox="0 0 200 200"
@@ -263,16 +248,10 @@ export function PathMorphDemo() {
 						}}
 					/>
 				</svg>
-			</motion.div>
+			</div>
 
 			{/* Active shape label */}
-			<motion.div
-				key={activeShape}
-				initial={{ opacity: 0, y: 6 }}
-				animate={{ opacity: 1, y: 0 }}
-				exit={{ opacity: 0, y: -6 }}
-				className="text-center"
-			>
+			<div className="text-center">
 				<span
 					className="inline-block rounded-full border px-4 py-1 font-medium text-sm"
 					style={{
@@ -283,7 +262,7 @@ export function PathMorphDemo() {
 				>
 					{currentShape.name}
 				</span>
-			</motion.div>
+			</div>
 
 			{/* Shape selector buttons */}
 			<div className="flex flex-wrap items-center justify-center gap-3">
