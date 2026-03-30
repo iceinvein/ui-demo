@@ -165,17 +165,22 @@ export function PathMorphDemo() {
 		return () => clearInterval(id);
 	}, [isPlaying]);
 
-	// Animate fill/stroke colors when shape changes
+	// Animate fill/stroke colors when shape changes — cleanup prevents
+	// running animations from interfering with dialog exit morph
 	useEffect(() => {
 		const target = SHAPES[activeShape];
-		animate(fillMotion, target.fill, {
+		const a1 = animate(fillMotion, target.fill, {
 			duration: 0.6,
 			ease: "easeInOut",
 		});
-		animate(strokeMotion, target.stroke, {
+		const a2 = animate(strokeMotion, target.stroke, {
 			duration: 0.6,
 			ease: "easeInOut",
 		});
+		return () => {
+			a1.stop();
+			a2.stop();
+		};
 	}, [activeShape, fillMotion, strokeMotion]);
 
 	const handleShapeSelect = (key: ShapeKey) => {
