@@ -1,8 +1,9 @@
 import {
+	type MotionValue,
 	motion,
+	useMotionValue,
 	useSpring,
 	useTransform,
-	type MotionValue,
 } from "framer-motion";
 import {
 	ExternalLink,
@@ -12,54 +13,42 @@ import {
 	TrendingUp,
 	Zap,
 } from "lucide-react";
-import { useRef, useState } from "react";
-
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
+import { useRef } from "react";
 
 const SPRING_CONFIG = { stiffness: 300, damping: 30, mass: 0.5 };
 const MAX_ROTATION = 15;
 
-// ---------------------------------------------------------------------------
-// useTilt hook
-// ---------------------------------------------------------------------------
-
-type TiltState = { rotateX: number; rotateY: number; nx: number; ny: number };
-const RESET: TiltState = { rotateX: 0, rotateY: 0, nx: 0.5, ny: 0.5 };
-
 function useTilt() {
 	const cardRef = useRef<HTMLDivElement>(null);
-	const [tilt, setTilt] = useState<TiltState>(RESET);
 
-	// Spring-smoothed rotation values
-	const rotateX = useSpring(tilt.rotateX, SPRING_CONFIG);
-	const rotateY = useSpring(tilt.rotateY, SPRING_CONFIG);
+	const rawRotateX = useMotionValue(0);
+	const rawRotateY = useMotionValue(0);
+	const rawShineX = useMotionValue(0.5);
+	const rawShineY = useMotionValue(0.5);
 
-	// Spring-smoothed normalised cursor position (0–1) for the shine
-	const shineNx = useSpring(tilt.nx, SPRING_CONFIG);
-	const shineNy = useSpring(tilt.ny, SPRING_CONFIG);
+	const rotateX = useSpring(rawRotateX, SPRING_CONFIG);
+	const rotateY = useSpring(rawRotateY, SPRING_CONFIG);
+	const shineNx = useSpring(rawShineX, SPRING_CONFIG);
+	const shineNy = useSpring(rawShineY, SPRING_CONFIG);
 
 	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
 		const card = cardRef.current;
 		if (!card) return;
-
 		const rect = card.getBoundingClientRect();
-		// Normalised: 0 = left/top edge, 1 = right/bottom edge
 		const nx = (e.clientX - rect.left) / rect.width;
 		const ny = (e.clientY - rect.top) / rect.height;
-
-		// rotateX: negative at top (tilt top toward viewer), positive at bottom
-		// rotateY: negative at left, positive at right
-		setTilt({
-			rotateX: -(ny - 0.5) * 2 * MAX_ROTATION,
-			rotateY: (nx - 0.5) * 2 * MAX_ROTATION,
-			nx,
-			ny,
-		});
+		rawRotateX.set(-(ny - 0.5) * 2 * MAX_ROTATION);
+		rawRotateY.set((nx - 0.5) * 2 * MAX_ROTATION);
+		rawShineX.set(nx);
+		rawShineY.set(ny);
 	};
 
-	const handleMouseLeave = () => setTilt(RESET);
+	const handleMouseLeave = () => {
+		rawRotateX.set(0);
+		rawRotateY.set(0);
+		rawShineX.set(0.5);
+		rawShineY.set(0.5);
+	};
 
 	return {
 		cardRef,
