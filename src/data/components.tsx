@@ -6,15 +6,20 @@ import { BokehDemo } from "@/components/bokeh-demo";
 import { ButtonToDialogDemo } from "@/components/button-to-dialog-demo";
 import { CardFlipDemo } from "@/components/card-flip-demo";
 import { CommandPaletteDemo } from "@/components/command-palette-demo";
+import { ConfettiDemo } from "@/components/confetti-demo";
 import { CounterDemo } from "@/components/counter-demo";
+import { CursorTrailDemo } from "@/components/cursor-trail-demo";
 import { DragDropListDemo } from "@/components/drag-drop-list-demo";
 import { GravityDemo } from "@/components/gravity-demo";
+import { TiltCardDemo } from "@/components/tilt-card-demo";
 import { ImageGalleryDemo } from "@/components/image-gallery-demo";
 import { LoadingDemo } from "@/components/loading-demo";
 import { MagneticDockDemo } from "@/components/magnetic-dock-demo";
 import { MultiStepFormDemo } from "@/components/multi-step-form-demo";
+import { PathMorphDemo } from "@/components/path-morph-demo";
 import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
 import { ScrollParallaxDemo } from "@/components/scroll-parallax-demo";
+import { ScrollRevealDemo } from "@/components/scroll-reveal-demo";
 import { SidebarMenuDemo } from "@/components/sidebar-menu-demo";
 import { SkeletonDemo } from "@/components/skeleton-demo";
 import { SplitTextDemo } from "@/components/split-text-demo";
@@ -25,6 +30,7 @@ import { SwipeCardsDemo } from "@/components/swipe-cards-demo";
 import { TimelineDemo } from "@/components/timeline-demo";
 import { ToastDemo } from "@/components/toast-demo";
 import { TreeViewDemo } from "@/components/tree-view-demo";
+import { TypewriterDemo } from "@/components/typewriter-demo";
 import type { Category, ComponentItem } from "@/types/component";
 
 export const categories: Category[] = [
@@ -4697,5 +4703,411 @@ export function GravityDemo() {
 }`,
 			},
 		],
+	},
+	{
+		id: "typewriter",
+		title: "Typewriter",
+		description:
+			"Character-by-character text reveal with configurable speed, start delay, blinking cursor, and completion callback",
+		category: "animation",
+		component: TypewriterDemo,
+		tags: ["animation", "text", "typewriter", "typing"],
+		code: [
+			{
+				filename: "typewriter-demo.tsx",
+				language: "tsx",
+				code: `import { Button } from "@heroui/button";
+import { useState } from "react";
+import { Typewriter } from "./ui/typewriter";
+
+export function TypewriterDemo() {
+  const [replayKey, setReplayKey] = useState(0);
+  const [subVisible, setSubVisible] = useState(false);
+
+  const replay = () => {
+    setSubVisible(false);
+    setTimeout(() => setReplayKey((k) => k + 1), 0);
+  };
+
+  return (
+    <div className="flex min-h-[400px] flex-col items-center justify-center gap-10 p-8">
+      <div key={replayKey} className="w-full max-w-2xl space-y-6 text-center">
+        <h2 className="bg-linear-to-r from-primary via-secondary to-success bg-clip-text font-bold text-4xl text-transparent">
+          <Typewriter
+            text="Build interfaces that feel alive."
+            speed={45}
+            cursor
+            onComplete={() => setSubVisible(true)}
+          />
+        </h2>
+        <p className="min-h-[3rem] text-default-600 text-lg">
+          {subVisible && (
+            <Typewriter
+              text="Smooth, configurable character-by-character text reveal."
+              speed={28}
+            />
+          )}
+        </p>
+      </div>
+      <Button color="primary" variant="shadow" onPress={replay}>
+        Replay Animation
+      </Button>
+    </div>
+  );
+}`,
+			},
+			{
+				filename: "ui/typewriter.tsx",
+				language: "tsx",
+				code: `import { useEffect, useRef, useState } from "react";
+
+export type TypewriterProps = {
+  text: string;
+  speed?: number;   // ms per character, default 50
+  delay?: number;   // ms before typing starts, default 0
+  cursor?: boolean; // keep cursor visible after typing completes
+  onComplete?: () => void;
+  className?: string;
+};
+
+export function Typewriter({
+  text,
+  speed = 50,
+  delay = 0,
+  cursor = false,
+  onComplete,
+  className = "",
+}: TypewriterProps) {
+  const [displayed, setDisplayed] = useState("");
+  const [isTyping, setIsTyping]   = useState(false);
+  const [isDone, setIsDone]       = useState(false);
+  const onCompleteRef = useRef(onComplete);
+
+  useEffect(() => { onCompleteRef.current = onComplete; }, [onComplete]);
+
+  useEffect(() => {
+    setDisplayed("");
+    setIsTyping(false);
+    setIsDone(false);
+    const t = setTimeout(() => setIsTyping(true), delay);
+    return () => clearTimeout(t);
+  }, [text, delay, speed]);
+
+  useEffect(() => {
+    if (!isTyping) return;
+    if (displayed.length >= text.length) {
+      setIsTyping(false);
+      setIsDone(true);
+      onCompleteRef.current?.();
+      return;
+    }
+    const t = setTimeout(
+      () => setDisplayed(text.slice(0, displayed.length + 1)),
+      speed,
+    );
+    return () => clearTimeout(t);
+  }, [isTyping, displayed, text, speed]);
+
+  const showCursor = isTyping || (cursor && isDone) || (!isDone && delay > 0);
+
+  return (
+    <span className={className}>
+      {displayed}
+      <span
+        className={showCursor ? "typewriter-cursor" : "typewriter-cursor--hidden"}
+        aria-hidden="true"
+      />
+    </span>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "tilt-card",
+		title: "3D Tilt Card",
+		description:
+			"Product card with perspective tilt following the mouse cursor, spring-based return animation, and a radial shine/glare effect",
+		category: "animation",
+		component: TiltCardDemo,
+		tags: ["3d", "tilt", "mouse", "spring", "card", "interactive", "perspective"],
+		code: [
+			{
+				filename: "tilt-card-demo.tsx",
+				language: "tsx",
+				code: `import { motion, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { ExternalLink, Github, Globe, Star, TrendingUp, Zap } from "lucide-react";
+import { useRef, useState } from "react";
+
+const SPRING_CONFIG = { stiffness: 300, damping: 30, mass: 0.5 };
+const MAX_ROTATION = 15;
+
+function useTilt() {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0, nx: 0.5, ny: 0.5 });
+  const rotateX = useSpring(tilt.rotateX, SPRING_CONFIG);
+  const rotateY = useSpring(tilt.rotateY, SPRING_CONFIG);
+  const shineNx = useSpring(tilt.nx, SPRING_CONFIG);
+  const shineNy = useSpring(tilt.ny, SPRING_CONFIG);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const nx = (e.clientX - rect.left) / rect.width;
+    const ny = (e.clientY - rect.top) / rect.height;
+    setTilt({
+      rotateX: -(ny - 0.5) * 2 * MAX_ROTATION,
+      rotateY: (nx - 0.5) * 2 * MAX_ROTATION,
+      nx,
+      ny,
+    });
+  };
+
+  const handleMouseLeave = () =>
+    setTilt({ rotateX: 0, rotateY: 0, nx: 0.5, ny: 0.5 });
+
+  return { cardRef, rotateX, rotateY, shineNx, shineNy, handleMouseMove, handleMouseLeave };
+}
+
+function ShineOverlay({ nx, ny }: { nx: MotionValue<number>; ny: MotionValue<number> }) {
+  const background = useTransform([nx, ny] as const, ([x, y]: number[]) =>
+    \`radial-gradient(circle at \${Math.round(x * 100)}% \${Math.round(y * 100)}%, rgba(255,255,255,0.85) 0%, transparent 65%)\`
+  );
+  return (
+    <motion.div
+      className="pointer-events-none absolute inset-0 z-10 rounded-2xl"
+      style={{ background, opacity: 0.2 }}
+    />
+  );
+}
+
+export function TiltCardDemo() {
+  const { cardRef, rotateX, rotateY, shineNx, shineNy, handleMouseMove, handleMouseLeave } =
+    useTilt();
+
+  return (
+    <div className="relative flex min-h-[500px] items-center justify-center p-8">
+      <div style={{ perspective: "900px" }}>
+        <motion.div
+          ref={cardRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          className="relative w-[340px] cursor-pointer select-none rounded-2xl border border-default-200 bg-default-50 shadow-2xl"
+        >
+          <ShineOverlay nx={shineNx} ny={shineNy} />
+          {/* violet-to-blue header with translateZ depth on badge/title/description */}
+          {/* Stats grid (Stars, Forks, Speed), tag pills, avatar stack */}
+          {/* GitHub + Docs motion.button footer */}
+        </motion.div>
+      </div>
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "scroll-reveal",
+		title: "Scroll Reveal",
+		description:
+			"Scroll-triggered entrance animations with directional offsets, staggered delays, and exponential ease-out easing",
+		category: "animation",
+		component: ScrollRevealDemo,
+		tags: ["animation", "scroll", "reveal", "viewport", "entrance", "stagger"],
+		code: [
+			{
+				filename: "scroll-reveal.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import type { ReactNode } from "react";
+
+type Direction = "up" | "down" | "left" | "right";
+
+type ScrollRevealProps = {
+  children: ReactNode;
+  direction?: Direction;
+  delay?: number;
+  duration?: number;
+  className?: string;
+};
+
+function getInitialState(direction: Direction) {
+  const offset = 40;
+  switch (direction) {
+    case "up":    return { y:  offset, x: 0,       opacity: 0 };
+    case "down":  return { y: -offset, x: 0,       opacity: 0 };
+    case "left":  return { y: 0,       x:  offset, opacity: 0 };
+    case "right": return { y: 0,       x: -offset, opacity: 0 };
+  }
+}
+
+export function ScrollReveal({
+  children,
+  direction = "up",
+  delay = 0,
+  duration = 0.6,
+  className,
+}: ScrollRevealProps) {
+  const initial = getInitialState(direction);
+
+  return (
+    <motion.div
+      className={className}
+      initial={initial}
+      whileInView={{ y: 0, x: 0, opacity: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{
+        duration,
+        delay,
+        ease: [0.25, 1, 0.5, 1],
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}`,
+			},
+			{
+				filename: "scroll-reveal-demo.tsx",
+				language: "tsx",
+				code: `import { motion } from "framer-motion";
+import { ArrowDown, CheckCircle, Sparkles, Star, Zap } from "lucide-react";
+import { ScrollReveal } from "./ui/scroll-reveal";
+
+const stats = [
+  { label: "Components", value: "47+", color: "from-violet-500 to-purple-600" },
+  { label: "Animations", value: "120+", color: "from-blue-500 to-cyan-600" },
+  { label: "Downloads",  value: "8.4k", color: "from-emerald-500 to-teal-600" },
+];
+
+const features = [
+  { icon: Zap,         label: "Lightning fast performance" },
+  { icon: Star,        label: "Smooth 60fps animations" },
+  { icon: CheckCircle, label: "Accessible by default" },
+  { icon: Sparkles,    label: "Fully customizable" },
+];
+
+export function ScrollRevealDemo() {
+  return (
+    <div className="min-h-[800px] overflow-y-auto">
+      <div className="mx-auto max-w-2xl space-y-24 px-6 py-10">
+
+        {/* Scroll hint */}
+        <div className="flex flex-col items-center gap-3 py-4 text-center">
+          <p className="font-semibold text-default-700 text-lg">Scroll to reveal</p>
+          <motion.div
+            className="mt-2 flex items-center gap-1.5 text-default-400 text-sm"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ArrowDown className="h-4 w-4" />
+            <span>Scroll down</span>
+          </motion.div>
+        </div>
+
+        {/* Heading — slides up */}
+        <ScrollReveal direction="up">
+          <div className="text-center">
+            <h2 className="mb-4 bg-linear-to-r from-violet-500 via-purple-500 to-pink-500 bg-clip-text font-bold text-4xl text-transparent">
+              Animate on scroll, built for React
+            </h2>
+            <p className="mx-auto max-w-sm text-default-500">
+              A lightweight wrapper around Framer Motion's whileInView.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        {/* Stat cards — stagger from below */}
+        <div className="grid grid-cols-3 gap-4">
+          {stats.map((stat, i) => (
+            <ScrollReveal key={stat.label} direction="up" delay={i * 0.12}>
+              <div className="flex flex-col items-center gap-2 rounded-2xl border border-default-200 p-6 text-center">
+                <span className={\`bg-linear-to-br \${stat.color} bg-clip-text font-bold text-3xl text-transparent\`}>
+                  {stat.value}
+                </span>
+                <span className="text-default-500 text-sm">{stat.label}</span>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+
+        {/* Paragraph — slides from left */}
+        <ScrollReveal direction="left">
+          <div className="rounded-2xl border border-blue-200/50 bg-blue-500/5 p-7">
+            <p className="text-default-700 leading-relaxed">
+              Pass a direction, optional delay, and any className — the rest
+              is handled automatically with a smooth ease-out quart curve.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        {/* Image placeholder — fades in */}
+        <ScrollReveal direction="up" duration={0.8}>
+          <div className="flex h-52 items-center justify-center rounded-2xl border border-default-200 bg-linear-to-br from-violet-500/10 to-pink-500/10">
+            <div className="flex flex-col items-center gap-2 text-default-400">
+              <Sparkles className="h-8 w-8 text-violet-500" />
+              <span className="text-sm">Image placeholder</span>
+            </div>
+          </div>
+        </ScrollReveal>
+
+        {/* Feature list — slides from right */}
+        <div className="space-y-3">
+          {features.map((feature, i) => (
+            <ScrollReveal key={feature.label} direction="right" delay={i * 0.1}>
+              <div className="flex items-center gap-4 rounded-xl border border-default-200 p-4">
+                <feature.icon className="h-5 w-5 text-violet-500" />
+                <span className="text-default-700 text-sm">{feature.label}</span>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+
+        {/* CTA — slides up */}
+        <ScrollReveal direction="up" delay={0.05}>
+          <div className="rounded-2xl bg-linear-to-br from-violet-600 to-purple-700 p-8 text-center">
+            <h3 className="mb-2 font-bold text-white text-xl">Ready to get started?</h3>
+            <p className="text-violet-200 text-sm">
+              Drop ScrollReveal around any element and scroll to see it come alive.
+            </p>
+          </div>
+        </ScrollReveal>
+      </div>
+    </div>
+  );
+}`,
+			},
+		],
+	},
+	{
+		id: "confetti",
+		title: "Confetti Burst",
+		description:
+			"Celebratory particle explosion with randomized colors, shapes, and physics-based trajectories",
+		category: "animation",
+		component: ConfettiDemo,
+		tags: ["animation", "particles", "confetti", "celebration", "micro-interaction"],
+		code: `// See confetti-demo.tsx for full source`,
+	},
+	{
+		id: "cursor-trail",
+		title: "Cursor Trail",
+		description:
+			"Interactive cursor trail with color-cycling dots that fade and shrink as they follow your mouse",
+		category: "animation",
+		component: CursorTrailDemo,
+		tags: ["animation", "cursor", "trail", "interactive", "mouse"],
+		code: `// See cursor-trail-demo.tsx for full source`,
+	},
+	{
+		id: "path-morph",
+		title: "Path Morphing",
+		description:
+			"SVG shapes that smoothly morph between circle, star, rounded square, and heart using spring physics",
+		category: "animation",
+		component: PathMorphDemo,
+		tags: ["animation", "svg", "morph", "path", "shape"],
+		code: `// See path-morph-demo.tsx for full source`,
 	},
 ];

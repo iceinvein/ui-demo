@@ -20,3 +20,23 @@ body {
 .perspective-1000 {
 	perspective: 1000px;
 }
+
+/* Typewriter cursor blink */
+@keyframes typewriter-blink {
+	0%, 100% { opacity: 1; }
+	50%       { opacity: 0; }
+}
+
+.typewriter-cursor {
+	display: inline-block;
+	width: 2px;
+	height: 1em;
+	background-color: currentColor;
+	margin-left: 2px;
+	vertical-align: text-bottom;
+	animation: typewriter-blink 0.75s step-start infinite;
+}
+
+.typewriter-cursor--hidden {
+	display: none;
+}
