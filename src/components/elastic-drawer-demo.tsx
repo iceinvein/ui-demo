@@ -85,7 +85,7 @@ export function ElasticDrawerDemo() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.45 }}
 			>
-				<h2 className="bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text font-bold text-2xl text-transparent">
+				<h2 className="font-bold text-2xl text-violet-500">
 					Elastic Drawer
 				</h2>
 				<p className="text-default-500 text-sm">
@@ -114,7 +114,7 @@ export function ElasticDrawerDemo() {
 
 				{/* App content behind the drawer */}
 				<div className="flex flex-col items-center gap-6 px-6 pt-12">
-					<div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500">
+					<div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-600">
 						<Settings className="h-8 w-8 text-white" />
 					</div>
 					<div className="text-center">

@@ -109,8 +109,7 @@ export default function IndexPage() {
 						UI Showcase
 					</h1>
 					<p className="mt-3 text-default-400 text-sm">
-						{components.length} components across {categories.length} categories
-						<span className="mx-1.5 text-default-300">·</span>
+						A collection of {components.length} interactive components built with
 						React & Framer Motion
 					</p>
 				</motion.div>

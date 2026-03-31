@@ -76,7 +76,7 @@ function VerticalFab({
 			{/* Main FAB */}
 			<motion.button
 				type="button"
-				className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-xl"
+				className="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-xl"
 				whileTap={{ scale: 0.92 }}
 				onClick={onToggle}
 				animate={{ rotate: open ? 45 : 0 }}
@@ -144,7 +144,7 @@ function ArcFab({
 			{/* Main FAB */}
 			<motion.button
 				type="button"
-				className="absolute inset-0 z-10 flex items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-xl"
+				className="absolute inset-0 z-10 flex items-center justify-center rounded-full bg-indigo-600 text-white shadow-xl"
 				whileTap={{ scale: 0.92 }}
 				onClick={onToggle}
 				animate={{ rotate: open ? 135 : 0 }}
@@ -212,7 +212,7 @@ function GridFab({
 			{/* Main FAB */}
 			<motion.button
 				type="button"
-				className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-xl"
+				className="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-xl"
 				whileTap={{ scale: 0.92 }}
 				onClick={onToggle}
 				animate={{ rotate: open ? 45 : 0 }}
@@ -245,11 +245,11 @@ export function FabDemo() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.45 }}
 			>
-				<h2 className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text font-bold text-2xl text-transparent">
+				<h2 className="font-bold text-2xl text-indigo-500">
 					Floating Action Button
 				</h2>
 				<p className="text-default-500 text-sm">
-					Speed dial with spring-animated variants
+					Tap the button, then try the layout variants below
 				</p>
 			</motion.div>
 
@@ -362,7 +362,7 @@ export function FabDemo() {
 						}}
 						className={`rounded-full border px-3 py-1 font-mono text-xs transition-all ${
 							v.id === variant
-								? "border-indigo-500/50 bg-indigo-500/10 text-indigo-400"
+								? "border-indigo-500/40 bg-indigo-500/8 text-indigo-500"
 								: "border-default-200/60 text-default-500 hover:border-default-300 hover:text-default-700"
 						}`}
 					>

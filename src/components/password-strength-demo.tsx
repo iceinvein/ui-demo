@@ -50,11 +50,11 @@ export function PasswordStrengthDemo() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.45 }}
 			>
-				<h2 className="bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text font-bold text-2xl text-transparent">
+				<h2 className="font-bold text-2xl text-blue-500">
 					Password Strength
 				</h2>
 				<p className="text-default-500 text-sm">
-					Real-time validation with animated feedback
+					Type a password and watch the requirements respond
 				</p>
 			</motion.div>
 
@@ -245,7 +245,7 @@ export function PasswordStrengthDemo() {
 						key={preset.label}
 						type="button"
 						onClick={() => setPassword(preset.value)}
-						className="rounded-full border border-default-200/60 px-3 py-1 font-mono text-default-500 text-xs transition-all hover:border-indigo-500/30 hover:text-indigo-400"
+						className="rounded-full border border-default-200/60 px-3 py-1 font-mono text-default-500 text-xs transition-all hover:border-blue-500/30 hover:text-blue-500"
 					>
 						{preset.label}
 					</button>

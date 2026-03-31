@@ -113,11 +113,11 @@ export function TextScrambleDemo() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.45 }}
 			>
-				<h2 className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text font-bold text-2xl text-transparent">
+				<h2 className="font-bold text-2xl text-emerald-500">
 					Text Scramble
 				</h2>
 				<p className="text-default-500 text-sm">
-					Characters decode through randomized noise before settling
+					Watch characters resolve from noise into words
 				</p>
 			</motion.div>
 
@@ -132,16 +132,6 @@ export function TextScrambleDemo() {
 				animate={{ opacity: 1, scale: 1 }}
 				transition={{ duration: 0.5, delay: 0.15 }}
 			>
-				{/* Terminal-style header bar */}
-				<div className="flex items-center gap-2 border-default-200/60 border-b px-5 py-3">
-					<div className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
-					<div className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
-					<div className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
-					<span className="ml-3 font-mono text-default-400 text-xs">
-						scramble.decode()
-					</span>
-				</div>
-
 				{/* Scramble display */}
 				<div className="flex min-h-[200px] flex-col items-center justify-center gap-8 p-8">
 					<div
@@ -168,7 +158,7 @@ export function TextScrambleDemo() {
 								}}
 								className={`rounded-full border px-3 py-1 font-mono text-xs transition-all ${
 									i === activePhrase
-										? "border-emerald-500/50 bg-emerald-500/10 text-emerald-400"
+										? "border-emerald-500/40 bg-emerald-500/8 text-emerald-500"
 										: "border-default-200/60 text-default-500 hover:border-default-300 hover:text-default-700"
 								}`}
 							>
@@ -228,7 +218,7 @@ export function TextScrambleDemo() {
 				</motion.button>
 				<motion.button
 					type="button"
-					className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 px-4 py-2 text-sm text-white"
+					className="flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm text-white"
 					whileTap={{ scale: 0.97 }}
 					onClick={cyclePhrase}
 				>

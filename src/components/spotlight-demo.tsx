@@ -38,7 +38,7 @@ export function SpotlightDemo() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.45 }}
 			>
-				<h2 className="bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text font-bold text-2xl text-transparent">
+				<h2 className="font-bold text-2xl text-amber-500">
 					Spotlight Reveal
 				</h2>
 				<p className="text-default-500 text-sm">

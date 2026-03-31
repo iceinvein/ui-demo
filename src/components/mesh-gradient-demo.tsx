@@ -155,11 +155,11 @@ export function MeshGradientDemo() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.45 }}
 			>
-				<h2 className="bg-gradient-to-r from-teal-400 via-emerald-400 to-cyan-400 bg-clip-text font-bold text-2xl text-transparent">
+				<h2 className="font-bold text-2xl text-teal-500">
 					Mesh Gradient
 				</h2>
 				<p className="text-default-500 text-sm">
-					Ambient color blobs that morph and drift endlessly
+					Switch presets to see different color moods
 				</p>
 			</motion.div>
 
@@ -242,7 +242,7 @@ export function MeshGradientDemo() {
 							}}
 							className={`rounded-full border px-3 py-1 font-mono text-xs capitalize transition-all ${
 								name === preset
-									? "border-emerald-500/50 bg-emerald-500/10 text-emerald-400"
+									? "border-teal-500/40 bg-teal-500/8 text-teal-500"
 									: "border-default-200/60 text-default-500 hover:border-default-300 hover:text-default-700"
 							}`}
 						>

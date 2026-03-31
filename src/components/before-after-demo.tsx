@@ -232,7 +232,7 @@ export function BeforeAfterDemo() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.45 }}
 			>
-				<h2 className="bg-gradient-to-r from-indigo-400 to-sky-400 bg-clip-text font-bold text-2xl text-transparent">
+				<h2 className="font-bold text-2xl text-indigo-500">
 					Before / After
 				</h2>
 				<p className="text-default-500 text-sm">
