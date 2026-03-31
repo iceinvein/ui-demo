@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { CSSProperties, ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const spring = { type: "spring" as const, stiffness: 400, damping: 30 };
 const instant = { duration: 0.01 };
@@ -21,13 +21,20 @@ export function AnimatedDialog({
 	const prefersReducedMotion = useReducedMotion();
 	const transition = prefersReducedMotion ? instant : spring;
 
+	// Ref keeps Escape handler stable so the effect only runs on open/close,
+	// not on every parent re-render that creates a new onClose reference.
+	const onCloseRef = useRef(onClose);
+	useEffect(() => {
+		onCloseRef.current = onClose;
+	});
+
 	useEffect(() => {
 		if (isOpen) {
 			const originalOverflow = document.body.style.overflow;
 			document.body.style.overflow = "hidden";
 
 			const handleEscape = (e: KeyboardEvent) => {
-				if (e.key === "Escape") onClose();
+				if (e.key === "Escape") onCloseRef.current();
 			};
 			document.addEventListener("keydown", handleEscape);
 
@@ -36,7 +43,7 @@ export function AnimatedDialog({
 				document.removeEventListener("keydown", handleEscape);
 			};
 		}
-	}, [isOpen, onClose]);
+	}, [isOpen]);
 
 	return (
 		<>

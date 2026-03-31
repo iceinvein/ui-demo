@@ -1,6 +1,6 @@
 import { Button } from "@heroui/button";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ComponentItem } from "@/types/component";
 import { CodeViewer } from "./code-viewer";
@@ -20,6 +20,18 @@ export function DirectOpenDialog({ component }: DirectOpenDialogProps) {
 	const handleClose = () => {
 		navigate("/");
 	};
+
+	useEffect(() => {
+		document.body.style.overflow = "hidden";
+		const onEscape = (e: KeyboardEvent) => {
+			if (e.key === "Escape") handleClose();
+		};
+		document.addEventListener("keydown", onEscape);
+		return () => {
+			document.body.style.overflow = "";
+			document.removeEventListener("keydown", onEscape);
+		};
+	});
 
 	return (
 		<AnimatePresence>

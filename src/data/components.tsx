@@ -1,4 +1,7 @@
 import { AccordionDemo } from "@/components/accordion-demo";
+import { BeforeAfterDemo } from "@/components/before-after-demo";
+import { ElasticDrawerDemo } from "@/components/elastic-drawer-demo";
+import { FabDemo } from "@/components/fab-demo";
 import { AnimatedDialogShowcase } from "@/components/animated-dialog-showcase";
 import { AnimatedListDemo } from "@/components/animated-list-demo";
 import { AnimatedTabsDemo } from "@/components/animated-tabs-demo";
@@ -17,14 +20,17 @@ import { GravityDemo } from "@/components/gravity-demo";
 import { ImageGalleryDemo } from "@/components/image-gallery-demo";
 import { LoadingDemo } from "@/components/loading-demo";
 import { MagneticDockDemo } from "@/components/magnetic-dock-demo";
+import { MeshGradientDemo } from "@/components/mesh-gradient-demo";
 import { MultiStepFormDemo } from "@/components/multi-step-form-demo";
 import { NotificationBadgeDemo } from "@/components/notification-badge-demo";
 import { PaginationDemo } from "@/components/pagination-demo";
+import { PasswordStrengthDemo } from "@/components/password-strength-demo";
 import { PathMorphDemo } from "@/components/path-morph-demo";
 import { PetrolCounterDemo } from "@/components/petrol-counter-demo";
 import { PricingCardsDemo } from "@/components/pricing-cards-demo";
 import { RatingStarsDemo } from "@/components/rating-stars-demo";
 import { SortableTableDemo } from "@/components/sortable-table-demo";
+import { SpotlightDemo } from "@/components/spotlight-demo";
 import { ScrollParallaxDemo } from "@/components/scroll-parallax-demo";
 import { ScrollRevealDemo } from "@/components/scroll-reveal-demo";
 import { SidebarMenuDemo } from "@/components/sidebar-menu-demo";
@@ -34,6 +40,7 @@ import { StaggeredGridDemo } from "@/components/staggered-grid-demo";
 import { StepperDemo } from "@/components/stepper-demo";
 import { StreamingCodeDemo } from "@/components/streaming-code-demo";
 import { SwipeCardsDemo } from "@/components/swipe-cards-demo";
+import { TextScrambleDemo } from "@/components/text-scramble-demo";
 import { TiltCardDemo } from "@/components/tilt-card-demo";
 import { TimelineDemo } from "@/components/timeline-demo";
 import { ToastDemo } from "@/components/toast-demo";
@@ -5233,5 +5240,75 @@ export function ScrollRevealDemo() {
 		component: SortableTableDemo,
 		tags: ["table", "sort", "filter", "data", "animation"],
 		code: `// See sortable-table-demo.tsx for full source`,
+	},
+	{
+		id: "text-scramble",
+		title: "Text Scramble",
+		description:
+			"Cyberpunk-style text decode where characters cycle through randomized noise before settling left-to-right",
+		category: "animation",
+		component: TextScrambleDemo,
+		tags: ["animation", "text", "scramble", "decode", "rAF"],
+		code: `// See text-scramble-demo.tsx for full source`,
+	},
+	{
+		id: "spotlight-reveal",
+		title: "Spotlight Reveal",
+		description:
+			"Dark overlay with a cursor-following radial spotlight that reveals hidden content underneath",
+		category: "animation",
+		component: SpotlightDemo,
+		tags: ["animation", "cursor", "mask", "reveal", "interactive"],
+		code: `// See spotlight-demo.tsx for full source`,
+	},
+	{
+		id: "elastic-drawer",
+		title: "Elastic Drawer",
+		description:
+			"Bottom sheet with rubber-band spring physics — stretches past bounds on drag, then snaps back with overshoot",
+		category: "animation",
+		component: ElasticDrawerDemo,
+		tags: ["animation", "drawer", "spring", "gesture", "elastic", "drag"],
+		code: `// See elastic-drawer-demo.tsx for full source`,
+	},
+	{
+		id: "mesh-gradient",
+		title: "Mesh Gradient",
+		description:
+			"Ambient animated gradient with drifting color blobs, blur compositing, and switchable presets (aurora, sunset, nebula, ocean)",
+		category: "animation",
+		component: MeshGradientDemo,
+		tags: ["animation", "gradient", "ambient", "generative", "background"],
+		code: `// See mesh-gradient-demo.tsx for full source`,
+	},
+	{
+		id: "password-strength",
+		title: "Password Strength",
+		description:
+			"Real-time password validation with animated strength bar, color transitions, and spring-animated requirement checklist",
+		category: "feedback",
+		component: PasswordStrengthDemo,
+		tags: ["feedback", "validation", "password", "form", "animation"],
+		code: `// See password-strength-demo.tsx for full source`,
+	},
+	{
+		id: "before-after",
+		title: "Before / After",
+		description:
+			"Draggable comparison slider with pointer-driven divider, clipped overlay, and labeled before/after states",
+		category: "data-display",
+		component: BeforeAfterDemo,
+		tags: ["comparison", "slider", "drag", "interactive", "before-after"],
+		code: `// See before-after-demo.tsx for full source`,
+	},
+	{
+		id: "fab",
+		title: "Floating Action Button",
+		description:
+			"Speed dial FAB with 3 layout variants (vertical stack, arc fan, grid popup) and staggered spring animations",
+		category: "navigation",
+		component: FabDemo,
+		tags: ["navigation", "fab", "menu", "spring", "mobile"],
+		code: `// See fab-demo.tsx for full source`,
 	},
 ];
