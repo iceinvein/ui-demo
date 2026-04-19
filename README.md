@@ -1,123 +1,95 @@
 # UI Component Showcase
 
-My personal collection of interactive UI components featuring smooth animations, live previews, and syntax-highlighted code examples. This project demonstrates my approach to building beautiful, reusable components with modern web technologies.
+An interactive gallery of 50+ production-ready React components with live previews, syntax-highlighted source, and purposeful motion. Built as a portfolio piece and a working reference library for component design patterns.
 
-## ✨ Features
+## Overview
 
-- **Interactive Component Gallery** - Browse components organized by categories (Navigation, Animation, Data Display)
-- **Live Previews** - See each component in action with real-time interactions
-- **Code Viewer** - Syntax-highlighted code with one-click copy functionality and file tabs
-- **Multi-File Support** - View component implementations across multiple files with smooth transitions
-- **Smooth Animations** - Buttery-smooth transitions powered by Framer Motion with spring physics
-- **Morphing Dialogs** - Shared layout animations that morph cards into full-screen dialogs
-- **Responsive Design** - Beautiful on all screen sizes with optimized touch interactions
-- **Type-Safe** - Fully typed with TypeScript for better developer experience
+Every component is demonstrated in a self-contained card that expands into a morphing dialog. Each dialog pairs a live preview with the exact TypeScript source powering it, across multiple files where relevant. The goal is to show not just what a component does, but how it is built.
 
-## 🎯 About This Project
+## Features
 
-This is my personal showcase for UI components I've built and designed. It serves as:
+- **Interactive gallery** organised by category (Navigation, Feedback, Data Display, Animation)
+- **Live previews** with real interactions, not screenshots
+- **Syntax-highlighted source** with file tabs and one-click copy
+- **Shared-layout morphing dialogs** that animate from card to full-screen preview
+- **Dynamic height tabs** with smooth transitions measured via `ResizeObserver`
+- **Spring-based motion** tuned for natural, physics-driven feel
+- **Fully typed** component registry with strict TypeScript
+- **Responsive and accessible** across touch and pointer input
 
-- A **portfolio piece** demonstrating my UI/UX development skills
-- A **living library** of reusable components I've created
-- An **interactive demo** of my work with modern React and animation techniques
-- A **reference** for my component design patterns and code quality
+## Tech Stack
 
-## 🛠️ Technologies Used
+- [Vite 7](https://vitejs.dev) for development and builds
+- [React 19](https://react.dev) with the React Compiler enabled
+- [TypeScript 5](https://www.typescriptlang.org) for end-to-end type safety
+- [Framer Motion](https://www.framer.com/motion) and [motion](https://motion.dev) for animations
+- [HeroUI](https://heroui.com) for base UI primitives
+- [Tailwind CSS 4](https://tailwindcss.com) for styling
+- [Biome](https://biomejs.dev) for linting and formatting
+- [Lucide](https://lucide.dev) for iconography
 
-- [Vite](https://vitejs.dev/guide/) - Lightning-fast build tool
-- [React](https://react.dev) + [TypeScript](https://www.typescriptlang.org) - Type-safe component development
-- [HeroUI](https://heroui.com) - Beautiful UI component library
-- [Tailwind CSS](https://tailwindcss.com) - Utility-first styling
-- [Framer Motion](https://www.framer.com/motion) - Smooth animations
-- [React Syntax Highlighter](https://github.com/react-syntax-highlighter/react-syntax-highlighter) - Code highlighting
+## Getting Started
 
-## 🚀 Running Locally
-
-Want to explore the code or see how it works? Here's how to run it:
+This project uses [Bun](https://bun.sh) as its package manager and runtime.
 
 ```bash
 # Install dependencies
-npm install
+bun install
 
-# Start the development server
-npm run dev
+# Start the dev server
+bun run dev
+
+# Type-check and build for production
+bun run build
+
+# Lint and format (Biome)
+bun run lint
 ```
 
-Visit `http://localhost:5173` to see the showcase in action!
+The dev server runs at `http://localhost:5173`.
 
-## 💡 Technical Highlights
-
-This project demonstrates several advanced React and animation techniques:
-
-- **Shared Layout Animations** - Using Framer Motion's `layoutId` to create seamless morphing transitions between components
-- **Dynamic Height Measurement** - Automatic content height calculation with `ResizeObserver` for smooth tab transitions
-- **AnimatePresence Management** - Proper cleanup and exit animations with `mode="wait"` to prevent DOM leaks
-- **Spring Physics** - Natural, physics-based animations using spring configurations for realistic motion
-- **Overflow Management** - Careful handling of `overflow` properties to prevent unwanted scrolling during animations
-- **Type-Safe Component Registry** - Centralized component data with full TypeScript support
-- **Code Synchronization** - Component code examples that exactly match the live implementations
-
-## 🏗️ How It's Built
-
-### Tech Stack
-
-- **[Vite](https://vitejs.dev/guide/)** - Lightning-fast build tool
-- **[React](https://react.dev) + [TypeScript](https://www.typescriptlang.org)** - Type-safe component development
-- **[HeroUI](https://heroui.com)** - Beautiful UI component library
-- **[Tailwind CSS](https://tailwindcss.com)** - Utility-first styling
-- **[Framer Motion](https://www.framer.com/motion)** - Smooth animations
-- **[React Syntax Highlighter](https://github.com/react-syntax-highlighter/react-syntax-highlighter)** - Code highlighting
-
-### Project Structure
+## Project Structure
 
 ```text
 src/
 ├── components/
-│   ├── component-card.tsx              # Animated card for each component
-│   ├── component-dialog.tsx            # Standard modal for viewing components
-│   ├── animated-component-dialog.tsx   # Morphing dialog with shared layout animations
-│   ├── code-viewer.tsx                 # Syntax-highlighted code display with file tabs
-│   ├── *-demo.tsx                      # Demo components for each UI component
-│   └── ui/                             # Reusable UI components library
-│       ├── animated-tabs.tsx           # Animated tabs with dynamic height
-│       ├── animated-dialog.tsx         # Morphing dialog primitives
-│       ├── button-to-dialog.tsx        # Button-to-dialog transformation
-│       ├── streaming-code.tsx          # Streaming code animation
-│       ├── animated-number.tsx         # Slot machine number counter
-│       ├── split-text.tsx              # Character-by-character text animation
-│       └── animated-list.tsx           # Animated list with enter/exit animations
+│   ├── component-card.tsx              # Gallery card with shared layout id
+│   ├── component-dialog.tsx            # Standard modal shell
+│   ├── animated-component-dialog.tsx   # Morphing dialog using shared layouts
+│   ├── code-viewer.tsx                 # Syntax-highlighted source with tabs
+│   ├── *-demo.tsx                      # Per-component demos (50+)
+│   └── ui/                             # Reusable primitives
 ├── data/
-│   └── components.tsx                  # Component registry with code examples
+│   └── components.tsx                  # Component registry + inline source
 ├── pages/
-│   └── index.tsx                       # Main landing page
+│   └── index.tsx                       # Landing page and gallery
 └── types/
-    └── component.ts                    # TypeScript type definitions
+    └── component.ts                    # Shared type definitions
 ```
 
-## 🎨 Featured Components
+## Categories
 
 ### Navigation
+Animated Tabs, Sidebar Menu, Command Palette, Breadcrumb Trail, Pagination, Stepper, Magnetic Dock.
 
-- **Animated Tabs** - Smooth animated tabs with dynamic height adjustment and swipe transitions. Features spring-based physics, automatic content height measurement, and seamless slide animations between tabs.
-
-### Animation
-
-- **Animated Dialog** - Smooth morphing dialog that transitions from a button with shared layout animations. Includes backdrop blur, spring physics, and staggered content animations inspired by Family's design patterns.
-
-- **Button to Dialog** - Destructive action button that morphs into a warning dialog with smooth layout animations. The button stays in place during the transformation, creating a seamless confirmation flow.
-
-- **Streaming Code** - Animated code display that types out character by character with syntax highlighting. Features a blinking cursor, configurable typing speed, and smooth reveal animations.
-
-- **Slot Machine Number Counter** - Animated number counter with slot machine-style rolling digits. Features smooth spring animations, stable keys for seamless transitions, and support for growing numbers. Includes a petrol station pump demo with press-and-hold interaction.
-
-- **Split Text Animation** - Text animation that splits into individual characters with staggered spring animations. Perfect for creating eye-catching text reveals and transitions.
+### Feedback
+Toast Notifications, Skeleton Loaders, Loading States, Circular Progress, Notification Badge, Tooltip, Password Strength, Confetti Burst.
 
 ### Data Display
+Animated Task List, Drag & Drop List, Sortable Table, Tree View, Timeline, Staggered Grid, Avatar Stack, Pricing Cards, Rating Stars, Image Gallery, Accordion, Before / After, Swipeable Card Stack, Counter & Stats.
 
-- **Animated Task List** - Modern task list with smooth enter/exit animations using lucide-react icons. Features spring physics, layout animations, and elegant hover states with swipe-to-delete functionality.
+### Animation
+Animated Dialog, Button to Dialog, Streaming Code, Slot Machine Counter, Split Text, Typewriter, Text Scramble, 3D Card Flip, 3D Tilt Card, Path Morphing, Scroll Parallax, Scroll Reveal, Cursor Trail, Spotlight Reveal, Mesh Gradient, Bokeh Effects, Gravity Simulation, Elastic Drawer, Floating Action Button, Multi-Step Form, Toggle Switch, Petrol Counter.
 
-_More components being added regularly as I build them!_
+## Technical Highlights
 
-## 📄 License
+- **Shared layout animations** via Framer Motion `layoutId` for seamless card-to-dialog morphs
+- **Dynamic height measurement** with `ResizeObserver` for tab content that resizes mid-transition
+- **`AnimatePresence` with `mode="wait"`** to keep exit animations clean and avoid orphaned DOM
+- **Spring physics configs** tuned per interaction for natural motion rather than time-based easing
+- **Typed component registry** with inline source strings that stay in sync with live demos
+- **React Compiler** enabled via `babel-plugin-react-compiler` for automatic memoisation
 
-Licensed under the [MIT license](https://github.com/heroui-inc/vite-template/blob/main/LICENSE).
+## License
+
+Licensed under the [MIT License](./LICENSE).
